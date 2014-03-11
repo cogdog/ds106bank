@@ -6,6 +6,8 @@ ABOUT
 -----
 This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a collection site of any collection of assignments, tasks etc. Generically I call them "Things" though internally you will find code references to "assignments". 
 
+You can find a live demo running at http://bank.ds106.us/
+
 The idea is a site where categories of things are created; within them are things to do as assignments. So we might have a site of "Challenges", and within there you might groups of Cooking Challenges, Fitness Challenges (think of them as categories). Within each are specific challenges to do, like "Make Bread From Scratch" "Cook Ham Bone Soup", or "Do 100 Pushups"). You can allows site visitors to add their own challenges via a web form. 
 
 For each challenge, you can set up a site to allow people to submit their responses to a challenge via a web form, or if part of an ongoing activity or community, to aggregate them in from external blogs.
@@ -19,7 +21,7 @@ Requirements
 A Wordpress hosted site (really?). It can work on a multisite or as a single install. Depending on how you wish to run the site, you might install plugins below. You will also fins suggestions for Widgets that are useful for sidebars and footers.
 
 
-Installing and Configuring the The,e
+Installing and Configuring the Theme
 ----------
 1. Upload the **ds106banker** an the **wp-bootstrap** directories to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links. You will have to create a zip directory fo each theme folder.
 2. Activate the **ds106banker** theme.
