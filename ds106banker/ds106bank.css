@@ -1,0 +1,98 @@
+/* Style sheet to fully override any other bootstrap CSS, will be called
+   last in the chain since bootstrap wants to load themes last. Take that!
+                                                                             */
+
+.more-link {
+	text-align: right;
+}
+
+/* -----------------------= Assignment type index =------------------------- */
+.thing-archive header, .thing-archive section {
+	padding: 1em;
+}
+
+.thing-archive {
+	background-color: #ededed;
+	min-height: 500px;
+	margin:2em 0;
+	border: 8px solid #fff;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	
+}
+
+.thing-icon {
+	text-align:center;
+	background-color: #ededed;
+	padding:0;
+	min-height: 240px;
+	position: relative;
+}
+
+.thing-icon img, .thing-icon iframe {
+  width: auto;
+  height: 100%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+
+.assignment-header {
+	margin: 20px 0 0;
+}
+
+.assignment-selector {
+	text-align:right;
+}
+
+.hilite {
+	background-color: #ededed;
+}
+
+/* ---------------------------= Ratings =------------------------------------- */
+.post-ratings {
+	display: inline;
+
+}
+
+
+/* ----------------------------= Forms =------------------------------------- */
+
+#bank106form input[type="text"], #bank106form textarea, #assignmentSelect select {
+	width:90%;
+}
+
+#bank106form label {
+	font-weight: bold;
+
+}
+
+#bank106form fieldset  {
+	margin: 0 0 20px 0;
+}
+
+
+#commentform textarea {
+	width: 60%;
+	height: 150px;
+}
+/* ---------------------------= Menus =------------------------------------- */
+
+.footer-links{
+	float: right;
+	margin-bottom: 18px;
+}
+
+.footer-links .menu{
+	list-style-type: none;
+	margin-left: 0;
+}
+
+.footer-links .menu li{
+	float: left;
+	margin-left: 10px;
+}
+
+

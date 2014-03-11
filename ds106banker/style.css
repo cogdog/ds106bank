@@ -1,0 +1,17 @@
+/*
+Theme Name: 	ds106 Assignment Banker
+Theme URI: 		http://bank.ds106.us/
+Description: 	Customizable theme to create sites like the ds106 Assignment bank (http://assignments.ds106.us/). Based  on WP-Bootstrap (http://320press.com) -- responsive theme using Bootstrap framework. 
+Version: 		0.15
+Template:       wp-bootstrap
+Author: 		CogDog
+Author URI: 	http://cogdogblog.com/
+Tags: ds106, black, white, one-column, two-columns, flexible-width, custom-background, custom-colors, custom-menu, full-width-template, theme-options
+License: GNU General Public License v2.0 & Apache License 2.0
+License URI: http://www.gnu.org/licenses/gpl-2.0.html http://www.apache.org/licenses/LICENSE-2.0
+
+
+    Do not import parent style sheet since it is progreammed in already via the parent theme.       
+
+    Any custom CSS should be added to ds106bank.css so it becomes last to load
+    If it is added here, a bootstrap theme might override your precious CSS.  */
