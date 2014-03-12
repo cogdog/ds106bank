@@ -16,6 +16,8 @@ The ds106 Assignment Bank Theme is build as a child theme of the [Wordpress Boot
 
 Hopefully it is flexible to meet many use cases. The design allows you to create a site where the front of the site is the menu of types of things, but that could also be an internal page, and a normal blog flow can be front and center. The theme does not create any of the navigation menus for you, but you will find suggestions as to the types of things you can make available via the built in Wordpress menu editor.
 
+**Note** Am trying to sort out jquery bug for Thing Types options; you can only update one thunmbnail at  atime (save after each). Need to sort out turning click events on and off.
+
 Requirements
 ------------
 A Wordpress hosted site (really?). It can work on a multisite or as a single install. Depending on how you wish to run the site, you might install plugins below. You will also fins suggestions for Widgets that are useful for sidebars and footers.

@@ -174,21 +174,20 @@ get_header(); ?>
 									</ul>
 								</nav>
 							<?php } ?>
-								
-					
-							<?php else : ?>
-					
-							<article id="post-not-found">
-								<header>
-									<h1><?php _e("No Posts Yet", "wpbootstrap"); ?></h1>
-								</header>
-								<section class="post_content">
-									<p><?php _e("Sorry, What you were looking for is not here.", "wpbootstrap"); ?></p>
-								</section>
-								<footer>
-								</footer>
-							</article>
-					
+							<?php else:?>
+							<div class="col-md-8">
+								<article>
+									<header>
+									</header>
+									<section class="post_content">
+										<p><?php _e("Hmmm, Nothing here. You should create some " . THINGNAME . "s to go here!", "wpbootstrap"); ?></p>
+									</section>
+									<footer>
+									</footer>
+								</article>
+								</div>
+
+													
 							<?php endif; ?>
 						</div>
 					</div>

@@ -12,7 +12,8 @@
 var file_frame;
 
 // called for via click of upload button in theme options
-jQuery(document).on('click', '.upload_image_button', function(){ 
+
+jQuery(document).on('click', '.upload_image_button', function(){
 
 	// not sure what this does!
 	event.preventDefault();
@@ -55,4 +56,5 @@ jQuery(document).on('click', '.upload_image_button', function(){
 
 	// Finally, open the modal
 	file_frame.open();
+	
 });

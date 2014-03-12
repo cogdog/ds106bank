@@ -1,6 +1,10 @@
 <?php
 /*
 Template Name: Assignment Menu
+
+This formats the main menu for the types of things, linking each to the page that lists all
+assignments within.  A Wordpress Page should be created and set to use this template. the
+title of the page and any content are displayed above the menu.
 */
 ?>
 
@@ -30,8 +34,7 @@ Template Name: Assignment Menu
 						</footer> <!-- end article footer -->
 					
 					</article> <!-- end article -->
-					
-
+				
 					
 					<?php endwhile; ?>		
 					
@@ -42,7 +45,7 @@ Template Name: Assignment Menu
 					    	<h1><?php _e("Not Found", "wpbootstrap"); ?></h1>
 					    </header>
 					    <section class="post_content">
-					    	<p><?php _e("Sorry, but the requested resource was not found on this site.", "wpbootstrap"); ?></p>
+					    	<p><?php _e("Sorry, we could not find anything to display", "wpbootstrap"); ?></p>
 					    </section>
 					    <footer>
 					    </footer>
@@ -53,51 +56,54 @@ Template Name: Assignment Menu
 				</div> <!-- end #main -->    
 			</div> <!-- end #content -->
 				<?php
+				
+				// Generate the menu of "things"
 								
-				// get the terms for the assugnment types, eventually with options
-				// fed by theme
+				// get all the terms for the custom post type 
 				$assignmenttypes = get_assignment_types();
 
  				if ( count($assignmenttypes) == 0 ) {
  				
- 					// warning warning if no types yet created
+ 					// warning warning if no things have yet created
  					echo '<div class="clearfix row"><div class="col-sm-2 col-md-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . THINGNAME . 's have been set up. You can do that if you explore the Assignment Bank Options under tge <em>Types</em> tab.</p></div></div>';
  					
  				} else {	
  					
- 					$startrow = false; // flag to start a new row
+ 					$startrow = false; // status for beginning of row
  					
  					foreach ($assignmenttypes as $atype) {
- 												
+ 								
+ 							// toggle row flag signal				
  							$startrow = !$startrow;
 							
-							// start a new row?
+							// start a new row? fix any wraps
 							if ($startrow)  {
 								echo '<div class="clearfix row">'; 
 							}
 						?>
 						
  						<?php
- 						// get the taxonomy for this type
+ 						// get the term for this type of taxonomy
  						$items = get_term_by('id', $atype->term_id, 'assignmenttypes');
  						
- 						// buld string for icon
+ 						// string for start of link around icon
  						$type_url_str = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="All ' . $atype->name . 's">';
- 						// build link string for text
+ 						// string for start of link around 
  						$type_url_btn = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="All ' . $atype->name . 's" class="btn btn-primary">';
  						?>
  						<div class="col-sm-4 col-md-offset-1 frontmenu">
  						
 							<article role="article" class="thing-archive">
-								<!--  thing header -->
+								<!--  thing name header -->
 								<header>							
 									<h3 class="h2"><?php echo $type_url_str . $atype->name ?></a></h3>
 								</header> 
 								<!-- end thing header -->
 
-								<!-- thing icon or embedded media -->
+								<!-- thing icon -->
 								<div class="thing-icon">
-								<?php echo $type_url_str . '<img src="' . ds106bank_option( $atype->slug . '_type_thumb' ) . '" alt="' . $atype->name . ' assignments" /></a>'; ?>
+								
+								<?php echo $type_url_str . '<img src="' .ds106bank_option( 'thing_type_' . $atype->term_id . '_thumb') . '" alt="' . $atype->name . ' assignments" /></a>'; ?>
 								</div>
 								<!-- end icon or media -->
 					

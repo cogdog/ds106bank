@@ -13,7 +13,7 @@
 					
 					<p class="pull-right"><a href="http://cogdog.info/" id="credit320" title="By the big dog">built by @cogdog</a></p>
 			
-					<p class="attribution"><strong><?php bloginfo('name'); ?></strong> is an implementation of the <a href="http://assignments.ds10u.us/">DS106 Assignment Bank</a> as a Wordpress theme</p>
+					<p class="attribution"><strong><?php bloginfo('name'); ?></strong> is an implementation of the <a href="http://assignments.ds106.us/">DS106 Assignment Bank</a> as a Wordpress theme</p>
 				
 				</div> <!-- end #inner-footer -->
 				

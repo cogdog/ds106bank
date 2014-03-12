@@ -331,6 +331,7 @@ function post_type_assignments() {
 						'public' => true,
 						'show_ui' => true,
 						'menu_position' => 5,
+						'show_in_nav_menus' => true,
 						'supports'  => array(
 									'title',
 									'editor',
@@ -376,6 +377,7 @@ function post_type_assignments() {
 						'public' => true,
 						'show_ui' => true,
 						'menu_position' => 5,
+						'show_in_nav_menus' => true,
 						'supports'  => array(
 									'title',
 									'editor',

@@ -393,13 +393,24 @@ class ds106bank_Theme_Options {
 		/* Types of Things Settings
 		===========================================*/
 		
+		
+		$this->settings['bug_note'] = array(
+			'section' => 'types',
+			'title'   => '', // Not used for headings.
+			'desc'    => 'Note!',
+			'std'	  => 'There is a bug, you can only update one thumbnail at a stime, save after each change until this can be debugged.', 
+			'type'    => 'heading'
+		);
+
+
+
 		// lets get all the existing assignment types
 		$assigntypes = get_assignment_types();
 		$i = 0;
 		
 		foreach ( $assigntypes as $atype ) {
 			$i++;
-			$setting_name = $atype->slug . '_type';
+			$setting_name = 'thing_type_' . $atype->term_id;
 						
 			$this->settings["$setting_name"] = 
 				array(
@@ -428,9 +439,9 @@ class ds106bank_Theme_Options {
 				);
 				
 			$this->settings[$setting_name . '_thumb'] = array(
-			'title'   => __( 'Thumbnail image' ),
+			'title'   => __( ucfirst($atype->name) . ' Thumbnail' ),
 			'desc'    => __( '<hr /><p>&nbsp;</p>' ),
-			'std'     =>  ucfirst($atype->name) . ' Thumbnail',
+			'std'     =>  'http://placehold.it/' . THUMBW . 'x' . THUMBH,
 			'type'    => 'medialoader',
 			'section' => 'types'
 			);
@@ -551,7 +562,7 @@ class ds106bank_Theme_Options {
 				}
 
 				echo '<input type="hidden" name="ds106banker_options[' . $id . ']" id="' . $id . '" value="' . esc_attr( $options[$id] ) . '" />
-  <br /><input type="button" class="upload_image_button button-primary" name="_ds106banker_button' . $id .'" id="_ds106banker_button' . $id .'" data-options_id="' . $id  . '" data-uploader_title="Set ' .  $std . '" data-uploader_button_text="Select Thumbnail" value="Set/Change Thumbnail" />
+  <br /><input type="button" class="upload_image_button button-primary" name="_ds106banker_button' . $id .'" id="_ds106banker_button' . $id .'" data-options_id="' . $id  . '" data-uploader_title="Set ' .  THINGNAME . ' Thumbnail" data-uploader_button_text="Select Thumbnail" value="Set/Change Thumbnail" />
 </div><!-- uploader -->';
 				
 				if ( $desc != '' )
@@ -712,9 +723,9 @@ class ds106bank_Theme_Options {
 			// updates for thing types
 			foreach ( $assigntypes as $atype ) {
 				// name of setting
-				$setting_name = $atype->slug . '_type';
+				$setting_name = 'thing_type_' . $atype->term_id;
 								
-				if ( $input['del_' . $el_setting_name] == 1 ) {
+				if ( $input['del_' . $setting_name] == 1 ) {
 					// delete term if box is checked
 					wp_delete_term( $atype->term_id, 'assignmenttypes');
 				} else {
@@ -726,8 +737,6 @@ class ds106bank_Theme_Options {
 					));
 				}
 			}
-			
-
 			
 			foreach ( $this->checkboxes as $id ) {
 				if ( isset( $options[$id] ) && ! isset( $input[$id] ) )
@@ -741,7 +750,6 @@ class ds106bank_Theme_Options {
 		
 		
 	}
-
  }
  
  
