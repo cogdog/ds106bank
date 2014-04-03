@@ -1,4 +1,5 @@
 <?php
+// manages all of the theme options
 // heavy lifting via http://alisothegeek.com/2011/01/wordpress-settings-api-tutorial-1/
 
 class ds106bank_Theme_Options {
@@ -8,15 +9,12 @@ class ds106bank_Theme_Options {
 	private $checkboxes;
 	private $settings;
 
-
 	/* Initialize */
 	function __construct() {
-	
 
 		// This will keep track of the checkbox options for the validate_settings function.
 		$this->checkboxes = array();
 		$this->settings = array();
-		
 		
 		//$this->bank106_init();
 		$this->get_settings();
@@ -45,8 +43,6 @@ class ds106bank_Theme_Options {
 		
 		// and some pretty styling
 		add_action( 'admin_print_styles-' . $admin_page, array( &$this, 'styles' ) );
-
-		 
 	}
 
 	/* HTML to display the theme options page */
@@ -57,8 +53,7 @@ class ds106bank_Theme_Options {
 		
 		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == true )
 			echo '<div class="updated fade"><p>' . __( 'Theme options updated.' ) . '</p></div>';
-			
-			
+				
 		echo '<form action="options.php" method="post" enctype="multipart/form-data">';
 
 			settings_fields( 'ds106banker_options' );
@@ -297,7 +292,7 @@ class ds106bank_Theme_Options {
 			'type'    => 'text',
 			'section' => 'general'
 		);
-						
+
 		$this->settings['def_thumb'] = array(
 			'title'   => __( 'Set default ' . lcfirst(THINGNAME) . ' thumbnail image' ),
 			'desc'    => __( 'This image will be used if none is defined.' ),
@@ -305,8 +300,47 @@ class ds106bank_Theme_Options {
 			'type'    => 'medialoader',
 			'section' => 'general'
 		);
-
-
+		
+		
+		// ------- creative commons options
+		
+		$this->settings['cc_heading'] = array(
+			'section' => 'general',
+			'title'   => '', // Not used for headings.
+			'desc'	 => 'Apply Creative Commons to ' . THINGNAME . 's',
+			'std'    => '',
+			'type'    => 'heading'
+		);
+		
+		$this->settings['use_cc'] = array(
+			'section' => 'general',
+			'title'   => __( 'Usage Mode' ),
+			'desc'    => __( 'How licenses are applied' ),
+			'type'    => 'radio',
+			'std'     => 'site',
+			'choices' => array(
+				'none' => 'No Creative Commons',
+				'site' => 'Apply one license to all ' . lcfirst(THINGNAME) . 's',
+				'user' => 'Enable users to choose license when submitting  a ' . lcfirst(THINGNAME)
+			)
+		);
+		
+		$this->settings['cc_site'] = array(
+			'section' => 'general',
+			'title'   => __( 'License for All ' . THINGNAME . 's'),
+			'desc'    => __( 'Choose a license that will appear sitewide' ),
+			'type'    => 'select',
+			'std'     => 'by',
+			'choices' => array(
+				'by' => 'CC BY Attribution',
+				'by-sa' => 'CC Attribution-ShareAlike',
+				'by-nd' => 'CC BY-ND Attribution-NoDerivs',
+				'by-nc' => 'CC BY-NC Attribution-NonCommercial',
+				'by-nc-sa' => 'CC BY-NC-SA	Attribution-NonCommercial-ShareAlike',
+				'by-nc-nd' => 'CC BY-NC-ND Attribution-NonCommercial-NoDerivs',
+			)
+		);
+		
 		$this->settings['ratings_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.

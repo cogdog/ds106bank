@@ -20,6 +20,8 @@
 	$my_hub_site = ds106bank_option('syndication_site_name'); // external syndication site
 	$my_hub_url =  ds106bank_option('syndication_site_url'); // external syndication url
 	$my_syndication_tag = ds106bank_option( 'extra_tag' ); // external syndication required tag
+	
+	$my_cc_mode = ds106bank_option( 'use_cc' ); // creative commons usage mode
 
 	// store assignment link for later use
 	$my_permalink = get_permalink();
@@ -250,12 +252,27 @@
 							</ol>
 							 <?php wp_reset_query(); ?>
 						</div>
+						<div class="col-md-12 hilite clearfix">
+							<p class="meta" style="text-align:center; padding:1em;">
+							<?php 
+								// display creative commons?
+						
+								if ( $my_cc_mode != 'none' ) {
+							
+								// get the license code, either define for site or post meta for user assigned						
+								$cc_code = ( $my_cc_mode == 'site') ? ds106bank_option( 'cc_site' ) : get_post_meta($post->ID, 'cc', true);
+								echo cc_license_html($cc_code, $assignmentAuthor, get_the_time( "Y", $my_id ));
+							}
+							?>						
+						
+							</p>
+						</div>
 					
 					</div>
 					
 					<div id="content" class="row">
-						<div class="col-md-8">
-						<!-- comments -->	
+						<div class="col-md-8 ">
+					<!-- comments -->	
 						<?php comments_template('',true); ?>
 					
 						</div>

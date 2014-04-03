@@ -113,9 +113,9 @@ get_header(); ?>
 							
 							// start a new row?
 							if ($startrow)  {
-								echo '<div class="clearfix row"><div class="col-md-5 assignment_listing">'; 
+								echo '<div class="clearfix row"><div class="col-md-5">'; 
 							} else {
-								echo '<div class="col-md-5 col-md-offset-1 assignment_listing">';
+								echo '<div class="col-md-5 col-md-offset-1">';
 							}
 						?>
 					

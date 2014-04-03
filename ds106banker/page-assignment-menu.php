@@ -91,7 +91,7 @@ title of the page and any content are displayed above the menu.
  						// string for start of link around 
  						$type_url_btn = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="All ' . $atype->name . 's" class="btn btn-primary">';
  						?>
- 						<div class="col-sm-4 col-md-offset-1 frontmenu">
+ 						<div class="col-sm-5 col-md-offset-1">
  						
 							<article role="article" class="thing-archive">
 								<!--  thing name header -->

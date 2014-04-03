@@ -15,8 +15,10 @@ $assignmentRating = 1;
 $assignmentExampleOpts = 1;
 $feedback_msg = '';
 
-// set up captcha? 
+// creative commons usage mode
+$my_cc_mode = ds106bank_option( 'use_cc' ); 
 
+// set up captcha? 
 $use_captcha =  ds106bank_option('use_captcha');
 if ($use_captcha) require_once( get_stylesheet_directory() . '/includes/recaptchalib.php');
 
@@ -39,6 +41,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		$assignmentRating = 		$_POST['assignmentRating'];		
  		$assignmentExampleOpts = 	$_POST['assignmentExampleOpts'];
  		$assignmentURL = 			esc_url( trim($_POST['assignmentURL']), array('http', 'https') ); 
+ 		$assignmentCC = 			$_POST['assignmentCC'];
  		
 			
  		// let's do some validation, story an error message for each problem found
@@ -63,6 +66,12 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				$errors[] = '<strong>Example URL Missing or not Entered Correctly</strong>- if you have an example, please enter the full URL where it can be found- it must start with "http://"';	 
  			}
  		} // end url CHECK
+ 		
+ 		// check selection of license option
+ 		if ($assignmentCC == '--')  {
+ 			$errors[] = '<strong>License Not Selected</strong>- Choose the license you wish to attach to thie ' . lcfirst(THINGNAME);	 
+ 		}
+ 		
  		
  		// check captcha
 		if ( $use_captcha and isset( $_POST["recaptcha_response_field"]) ) {
@@ -128,6 +137,10 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				// the rating count set to 1
 				update_post_meta( $post_id,  'ratings_users', 1 );
 
+
+				// user selected license
+				if ( $my_cc_mode == 'user' ) update_post_meta( $post_id,  'cc', $assignmentCC);
+				
 				// upload thumnbail
 				if ( $_FILES ) {
 					foreach ( $_FILES as $file => $array ) {
@@ -231,12 +244,12 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  			</fieldset>
  
 			<fieldset>
-				<label for="assignmentTitle"><?php _e( THINGNAME . ' Title:', 'bonestheme' ) ?></label>
+				<label for="assignmentTitle"><?php _e( THINGNAME . ' Title', 'bonestheme' ) ?></label>
 				<input type="text" name="assignmentTitle" id="assignmentTitle" class="required" value="<?php  echo $assignmentTitle; ?>" tabindex="1" />
 			</fieldset>
 			
 			<fieldset>
-					<label for="assignmentDescription"><?php _e(THINGNAME . ' Description:', 'bonestheme') ?></label>
+					<label for="assignmentDescription"><?php _e(THINGNAME . ' Description', 'bonestheme') ?></label>
 					<textarea name="assignmentDescription" id="assignmentDescription" rows="8" cols="30" class="required" tabindex="4"><?php echo stripslashes( $assignmentDescription );?></textarea>
 			</fieldset>
 			
@@ -246,7 +259,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 			</fieldset>
 			
 			<fieldset>
-				<label for="submitterEmail"><?php _e( 'Your Email Address:', 'bonestheme' ) ?></label>
+				<label for="submitterEmail"><?php _e( 'Your Email Address', 'bonestheme' ) ?></label>
 				<p>Note: Your email address is never displayed, and is only used if we need to contact you about your submission.</p>
 				<input type="text" name="submitterEmail" id="submitterEmail" class="required" value="<?php echo $submitterEmail; ?>" tabindex="3" />
 			</fieldset>
@@ -284,7 +297,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 
  				?>
 				</fieldset>
- 				<?php endif?>
+ 			<?php endif?>
  				
  				
  				<fieldset>
@@ -299,7 +312,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				</fieldset>
  				
  				<fieldset id="assignmentURLfield">
- 				<label for="assignmentURL"><?php _e( 'Where to See an Example', 'bonestheme' )?></label>
+ 				<label for="assignmentURL"><?php _e( 'URL for Example', 'bonestheme' )?></label>
  				<input type="text" name="assignmentURL" id="assignmentURL" class="required" value="<?php echo $assignmentURL; ?>" tabindex="13" />
  				
  				</fieldset>
@@ -311,6 +324,23 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				<input type="file" name="assignmentImage" id="assignmentImage" tabindex="14" />
  				
  				</fieldset>
+ 				
+ 				<?php if ($my_cc_mode == 'site') :?>
+ 				<p><strong>All <?php echo lcfirst(THINGNAME)?>s added to this site will be licensed</strong></p>
+ 				
+ 				<p style="text-align:center">
+				<?php echo cc_license_html(ds106bank_option( 'cc_site' ));?>
+ 				</p>
+ 				
+ 				<?php elseif  ($my_cc_mode == 'user') :?>
+					<fieldset id="assignmentCCfield">
+					<label for="assignmentCC"><?php _e( 'License Options', 'bonestheme' )?></label>
+					<select name="assignmentCC" id="assignmentCC" class="required">
+					<option value="--">Select...</option>
+					<?php echo cc_license_select_options($assignmentCC) ?>
+					</select>				
+					</fieldset>
+ 				<?php endif?>
  				
  				
  				<?php if ($use_captcha):?>

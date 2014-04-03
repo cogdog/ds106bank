@@ -1,10 +1,10 @@
 <?php
 /* 
-This are functions.php calls specific to the ds106
+This are functions calls specific to the ds106
 assignment bank for use in the WP-Boostrap Theme.
 
 Developed by: Alan Levine @cogdog
-URL: http://cogdogblog.com/
+URL: http://cogdog.info/
 
 */
 
@@ -22,7 +22,7 @@ add_action( 'init', 'bank106_load_theme_options' );
 /* 
 	Tell WordPress to run ds106bank_setup() when the 'after_setup_theme' hook is run.
 	Note that this function is hooked into the after_setup_theme hook, which runs
-	before the init hook.
+	before the init hook. There was a good reason for this which now eludes me
 */
 add_action( 'init', 'ds106bank_setup' );
 
@@ -37,10 +37,14 @@ function ds106bank_setup() {
 	define('MEDIAW', get_option( 'medium_size_w' ) );
 	
 	// loaded from theme options()
-	define('THINGNAME', ds106bank_option('thingname') ); // the kind of things here
-	define('DEFTHUMBID', ds106bank_option('def_thumb' ) ); //url for default thumb image
+	define('THINGNAME', ds106bank_option('thingname') ); // the kind of things here, should be singular
 	
 } // function ds106bank_setup
+
+
+// -----  add allowable url parameter
+add_filter('query_vars', 'bank106_queryvars' );
+
 
 function bank106_queryvars( $qvars ) {
 	$qvars[] = 'srt'; // sort parameters for things
@@ -50,155 +54,23 @@ function bank106_queryvars( $qvars ) {
 	return $qvars;
 }   
 
-
-
-
-/************* GENERAL TOOLS *****************/	
-
-function bank106dump( $var ) {
-	// debugging tool 
-	echo '<pre>';
-	var_dump( $var );
-	echo '</pre>';
-}
-
-// run re-writes on theme switch
+// ----- run re-writes on theme switch
 add_action( 'after_switch_theme', 'bank106_rewrite_flush' );
 
 function bank106_rewrite_flush() {
     flush_rewrite_rules();  
 }
 
-// add allowable url parameter
-add_filter('query_vars', 'bank106_queryvars' );
-
-function is_url_embeddable( $url ) {
-// test if URL matches the ones that Wordpress can embedded
-// by string matching
-	
-	$allowed_embeds = array(
-					'youtube.com/watch?',
-					'youtu.be',
-					'flickr.com/photos',
-					'vimeo.com', 
-					'soundcloud.com',
-	);
-		
-	foreach( $allowed_embeds as $fragment ) {
-  		if  (strpos( $url, $fragment ) !== false ) {
-			return ( true );
-		}
-	}	
-	
-	return ( false );
-}
-
-function url_is_img ($url) {
-// tests for urls with file extensions that are image types
-
-	$fileExtention = pathinfo ( $url, PATHINFO_EXTENSION ); // get file extension	
-	return ( in_array( strtolower( $fileExtention) ,  ['jpg', 'jpeg', 'png', 'gif']  ) );
-}
-
-
-function get_assignment_icon ($pid, $width, $imgsize) {
-// output icon for assignment or embeded media if example is embeddable
-
-	if ( get_post_meta( $pid, 'fwp_url', true ) ) {
-		// url for example of assignment
-		$assignmentURL = get_post_meta( $pid, 'fwp_url', true );
-			
-		// try and get embed code for youtube
-		if ( is_url_embeddable($assignmentURL) ) {
-			$embedcode = wp_oembed_get( $assignmentURL, array('width'=>$width ));
-		}
-		
-		// set up html for linking to example
-		$imgcode =  '<a href="' . $assignmentURL. '">'; 
-		
-		if ( url_is_img( $assignmentURL ) ) $imgcode .= '<img src="' . $assignmentURL . '" width="' . $width . '" alt="" />';
-		$after_image = '</a>';
-			
-	} else {
-		$after_image = '';
-	}
-		
-	// if we are not embedding , use a thumbnail
-	if (!$embedcode) {
-		echo $imgcode;
-		
-		// output thumbnail or placeholder
-		if (has_post_thumbnail() ) {
-			the_post_thumbnail($imgsize);
-		} else {
-			// use the default image
-			// echo  wp_get_attachment_image( DEFTHUMBID, $imgsize );
-			echo '<img src="' . DEFTHUMBID . ' " width="' . $width  .  '" alt="" />';
-		} 
-	
-		echo $after_image;
-	} else {
-		echo $embedcode;
-	}
-}                    
-
-/************* UTILTIES *****************/	
-
-function get_id_from_tag( $input ) {
-	// gets a post id from a tag, in form of assiognment114, Tutorial12
-	// from http://stackoverflow.com/a/13538212/2418186
-	$input = preg_replace('/[^0-9]/', '', $input);
-
-	return $input == '' ? '1' : $input;
-}
-
-function get_assignment_id_from_terms($postid) {
-	// for a give example ID, get the terms, and extra th epost ID from either the assignment tag or tutorial tag
-	$all_the_terms = wp_get_object_terms( $postid, array('assignmenttags', 'tutorialtags') );
-
-	if ( !empty( $all_the_terms ) ) {	  
-		if ( !is_wp_error( $all_the_terms ) ) {
-
-				foreach( $all_the_terms as $term ) {
-					$tid =  get_id_from_tag( $term->name );
-					if ( $tid ) return ( $tid );
-				}		
-				return (0);
-		}
-	}
-	return (0);
-}
-
+// ----- set up author type queries for exaples
+add_action( 'pre_get_posts', 'bank106_author_examples' );
 function bank106_author_examples( $query ) {
     if ( $query->is_author() && $query->is_main_query() ) {
         $query->set( 'post_type', 'examples' );
     }
 }
-add_action( 'pre_get_posts', 'bank106_author_examples' );
 
-
-function bank106_singular_thing( $thing=THINGNAME)  {
-// return the singular form of a $thing
-	return ( substr( $thing, 0, -1 ) );
-}
-
-function bank106_wp_ratings_installed() {
-
-	if ( function_exists('the_ratings' ) ) {
-		return ('WP-PostRatings <strong>is installed</strong> and will be applied to all ' . lcfirst(THINGNAME) . 's. Check the documentation tab for details on options. Edit <a href="' . admin_url( 'admin.php?page=wp-postratings/postratings-options.php') .'">ratings options</a> or <a href="' . admin_url( 'admin.php?page=wp-postratings/postratings-templates.php') .'">ratings display templates</a>.'); 
-	} else {
-		return ('WP-PostRatings <strong>is not installed</strong>. To enable difficulty ranking of ' . lcfirst(THINGNAME) . 's install the <a href="http://wordpress.org/plugins/wp-postratings/" target="_blank">WP-PostRatings plugin</a> via the Add New Plugin interface. Check the documentation tab for details on options andssettings for display of the ratings.'); 
-	}
-}
-
-function bank106_fwp_installed() {
-
-	if ( function_exists('is_syndicated' ) ) {
-		return ('Feed Wordpress <strong>is installed</strong>.'); 
-	} else {
-		return ('Feed Wordpress <strong>is NOT installed</strong>. To enable syndication of examples to this site, install the <a href="http://wordpress.org/plugins/feedwordpress/" target="_blank">Feed Wordpress plugin</a> via the Add New Plugin interface. Check the documentation tab for proper Feed Wordpress settings.'); 
-	}
-}
+// -----  Add admin menu link for Assignment Bank Options
+add_action( 'wp_before_admin_bar_render', 'bank106_options_to_admin' );
 
 function bank106_options_to_admin() {
     global $wp_admin_bar;
@@ -211,35 +83,17 @@ function bank106_options_to_admin() {
         'href' => admin_url( 'themes.php?page=ds106bank-options')
     ) );
 }
-// and we hook our function via
-add_action( 'wp_before_admin_bar_render', 'bank106_options_to_admin' );
 
 
-// return meta data value
-function get_assignment_meta( $pid, $metadname, $default=0 ) {
-	return( ( get_post_meta($pid, $metadname, true ) ) ? get_post_meta( $pid,  $metadname, true)  : $default );
-}
-
-
-// get assignment types from terms in the taxonomy
-function get_assignment_types( $orderby='name', $order ='ASC' ) {
-	$atypes = get_terms( 'assignmenttypes', 
-		array(
-			'orderby'	=>  $orderby,
-			'order'		=>  $order,
-			'hide_empty'=> 0,
-			)
-	);
-
-	return( $atypes );
-}
-
+// ----- Allow changes to excerpt length (and option entered in admin)
+add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 
 function custom_excerpt_length( $length ) {
 	return ds106bank_option('exlen');
 }
-add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 
+// -----  customize the "more..." link
+add_filter( 'excerpt_more', 'bank106_excerpt_more' );
 function bank106_excerpt_more( $more ) {
 
 	// get link
@@ -251,62 +105,29 @@ function bank106_excerpt_more( $more ) {
 
 	return ' <a class="read-more" href="'. $the_real_permalink . '">read more &raquo;</a>';
 }
-add_filter( 'excerpt_more', 'bank106_excerpt_more' );
 
-/************* OPTIONS STUFF *****************/	
+/*************************** OPTIONS STUFF ************************************/	
 
 function ds106bank_enqueue_options_scripts() {
-
-	// woedpress js needed
+	// Set up javascript for the theme options interface
+	
+	// media scripts needed for wordpress media uploaders
 	wp_enqueue_media();
 	
 	// custom jquery for the options admin screen
 	wp_register_script( 'bank106_options_js' , get_stylesheet_directory_uri() . '/js/jquery.options.js', array( 'jquery' ), '1.0', TRUE );
 	wp_enqueue_script( 'bank106_options_js' );
-
-
 }
 
-/************* FORM STUFF *****************/	
+function bank106_load_theme_options() {
+	// load theme options Settings
 
-function ds106bank_enqueue_add_scripts() {
-	// custom jquery for the add assignment form
-	wp_register_script( 'bank106_add_assignment_js' , get_stylesheet_directory_uri() . '/js/jquery.add-assignment.js', array( 'jquery' ), '1.0', TRUE );
-	wp_enqueue_script( 'bank106_add_assignment_js' );
+	if ( file_exists( get_stylesheet_directory()  . '/class.ds106bank-theme-options.php' ) ) {
+		include_once( get_stylesheet_directory()  . '/class.ds106bank-theme-options.php' );
+	}
 }
 
-function bank106_add_new_types( $new_types ) {
-
-	// convert text area input into array, based on new line breaks (remove CR)
-	$new_types = explode( "\n", str_replace( "\r", "", $new_types ) );
-	
-	foreach ( $new_types as $item) {
-		if ( $item != '' AND term_exists(  $item, 'assignmenttypes') == 0) {
-		
-    		// check if term does not exist (or is blank), then add to assignment type teaxonomy
-    		wp_insert_term( $item, 'assignmenttypes' );
-    	}
-    }
-}
-
-
-function bank106_insert_attachment( $file_handler, $post_id) {
-	// used for uploading images from submission forms
-	if ($_FILES[$file_handler]['error'] !== UPLOAD_ERR_OK) __return_false();
-
-	require_once( ABSPATH . "wp-admin" . '/includes/image.php' );
-	require_once( ABSPATH . "wp-admin" . '/includes/file.php' );
-	require_once( ABSPATH . "wp-admin" . '/includes/media.php' );
-
-	$attach_id = media_handle_upload( $file_handler, $post_id );
-	
-	return ($attach_id);
-	
-	
-}
-
-
-/************* CONTENT TYPES *****************/		
+/*************************** CONTENT TYPES ***********************************/		
 
 function post_type_assignments() {
 	// create post type for assignments- things to do
@@ -399,19 +220,22 @@ function post_type_assignments() {
 }
 
 
+// modify the listings to include custom columns
 add_filter( 'manage_edit-examples_columns', 'bank106_set_custom_edit_examples_columns' );
 add_action( 'manage_examples_posts_custom_column' , 'bank106_custom_examples_column', 10, 2 );
  
-/* modify the admin listing for examples */
+
 function bank106_set_custom_edit_examples_columns( $columns ) {
+	// modify the admin listing for examples
     unset($columns['categories']); //remove categories
+    
+    // add column for the THINGNAMEs
     $columns['thing'] = __( THINGNAME, 'bonestheme' );
     return $columns;
 }
 
 function bank106_custom_examples_column( $column, $post_id ) {
 	switch ( $column ) {
-
         case 'thing' :
         	// get the ID for the assignment
         	$aid = get_assignment_id_from_terms( $post_id );
@@ -426,8 +250,7 @@ function bank106_custom_examples_column( $column, $post_id ) {
         
 }
 
-
-/* set unique tages on saving an assignment  */
+// ----- set unique tags on saving an assignment 
 add_action( 'save_post', 'set_assignment_tag');
 
 function set_assignment_tag( $post_id ) {
@@ -444,7 +267,7 @@ function set_assignment_tag( $post_id ) {
 }
     
 function update_assignment_tags( $post_id ) {
-    // helper function to update the bank assignmed tags to an assignment
+    // helper function to update the bank assignmed tags 
     
     // get terms for type of assignment
 	$assignmenttype_terms = wp_get_object_terms($post_id, 'assignmenttypes');
@@ -476,15 +299,14 @@ function update_assignment_tags( $post_id ) {
     wp_set_object_terms( $post_id, $tutorial_tag, 'tutorialtags', true );
 }
 
-
-/************* CUSTOM TAXONOMIIES *****************/
+/************************** CUSTOM TAXONOMIIES *******************************/
 
 function create_assignmentbank_tax() {
 
 	// singular name
 	$singularThing = 'Thing';
 	
-	// taxonomy for assignment types
+	// create taxonomy for assignment types
 	register_taxonomy(
 		'assignmenttypes', // Taxonomy name
 		array( 'assignments' ), // Post Types applied ro
@@ -567,25 +389,7 @@ function create_assignmentbank_tax() {
 }
 
 
-function update_assignment_meta($id, $example_count, $tutorial_count) {
-// update meta data to track the views and the number of examples done for each assignment
-
-	// get current value, if it does nto exist, then 0
-	$visit_count = ( get_post_meta($id, 'assignment_visits', true) ) ? get_post_meta($id, 'assignment_visits', true) : 0; 
-	$visit_count++;
-	
-	//update visit counts
-	update_post_meta($id,  'assignment_visits', $visit_count);
-	
-	// now update the number of examples
-	update_post_meta($id,  'assignment_examples', $example_count);
-	
-	// now update the number of tutorials
-	update_post_meta($id,  'assignment_tutorials', $tutorial_count);
-}
-
 function bank106_update_tax ( $oldthingname, $newthingname ) {
-	
 	// Updates the taxonomies if the name of the Things changes...
 
 	// first process the assignment tags
@@ -620,28 +424,289 @@ function bank106_update_tax ( $oldthingname, $newthingname ) {
 	}
 }
 
-function bank106_load_theme_options() {
-	// load theme options Settings
+/************************** FOR ASSIGNMENTS  *********************************/	
 
-	if ( file_exists( get_stylesheet_directory()  . '/class.ds106bank-theme-options.php' ) ) {
-		include_once( get_stylesheet_directory()  . '/class.ds106bank-theme-options.php' );
+function is_url_embeddable( $url ) {
+// test if URL matches the ones that Wordpress can do oembed on
+// test by by string matching
+	
+	$allowed_embeds = array(
+					'youtube.com/watch?',
+					'youtu.be',
+					'flickr.com/photos',
+					'vimeo.com', 
+					'soundcloud.com',
+	);
+	
+	// walk the array til we get a match
+	foreach( $allowed_embeds as $fragment ) {
+  		if  (strpos( $url, $fragment ) !== false ) {
+			return ( true );
+		}
+	}	
+	
+	// no matches, no embeds for you
+	return ( false );
+}
+
+function url_is_img ($url) {
+// tests urls to see if they point to an image type
+
+	$fileExtention = pathinfo ( $url, PATHINFO_EXTENSION ); // get file extension	
+	return ( in_array( strtolower( $fileExtention) ,  ['jpg', 'jpeg', 'png', 'gif']  ) );
+}
+
+
+function get_assignment_icon ($pid, $width, $imgsize) {
+// output icon for assignment or embeded media if example is embeddable
+
+	if ( get_post_meta( $pid, 'fwp_url', true ) ) {
+		// url for example of assignment
+		$assignmentURL = get_post_meta( $pid, 'fwp_url', true );
+			
+		// try and get embed code for the linke (e.g. youtube, flickr, soundcloid)
+		$embedcode = ( is_url_embeddable($assignmentURL) ) ? wp_oembed_get( $assignmentURL, array('width'=>$width )) : false;
+		
+		// set up html for linking to example
+		$imgcode =  '<a href="' . $assignmentURL. '">'; 
+		
+		if ( url_is_img( $assignmentURL ) ) $imgcode .= '<img src="' . $assignmentURL . '" width="' . $width . '" alt="" />';
+		$after_image = '</a>';
+			
+	} else {
+		$after_image = '';
+	}
+		
+	// if we are not embedding , use a thumbnail
+	if (!$embedcode) {
+		echo $imgcode;
+		
+		// Do we have a thumbnail defined?
+		if ( '' != get_the_post_thumbnail($pid) ) {
+			the_post_thumbnail($imgsize);
+		} else {
+			// no, use the default image
+			echo '<img src="' . ds106bank_option('def_thumb' ) . ' " width="' . $width  .  '" alt="" />';
+		} 
+	
+		echo $after_image;
+	} else {
+		echo $embedcode;
+	}
+} 
+
+function update_assignment_meta($id, $example_count, $tutorial_count) {
+// update custom post meta to track the views and the number of examples done for each assignment
+// called on each view of an assignment
+
+	// get current value, if it does nto exist, then 0
+	$visit_count = ( get_post_meta($id, 'assignment_visits', true) ) ? get_post_meta($id, 'assignment_visits', true) : 0; 
+	$visit_count++;
+	
+	//update visit counts
+	update_post_meta($id,  'assignment_visits', $visit_count);
+	
+	// now update the number of examples
+	update_post_meta($id,  'assignment_examples', $example_count);
+	
+	// now update the number of tutorials
+	update_post_meta($id,  'assignment_tutorials', $tutorial_count);
+}
+
+
+/****************** FOR CREATIVE COMMONS LICENSING  **************************/	
+function cc_license_html ($license, $author='', $yr) {
+	// outputs the proper license for a THINGNAME
+	// $license is abbeviation. author is from post metadatae, Yr is from post date
+	
+	if ( !isset( $license ) or $licence == '' ) return '';
+	
+	
+	if ($license == 'copyright') {
+		// boo copyrighted! sigh, slap on the copyright text
+		return 'This work by ' . $author . ' is &copy;' . $yr . ' All Rights Reserved';
+	} 
+	
+	// names of creative commons licenses
+	$commons = array (
+		'by' => 'Attribution',
+		'by-sa' => 'Attribution-ShareAlike',
+		'by-nd' => 'Attribution-NoDerivs',
+		'by-nc' => 'Attribution-NonCommercial',
+		'by-nc-sa' => 'Attribution-NonCommercial-ShareAlike',
+		'by-nc-nd' => 'Attribution-NonCommercial-NoDerivs',
+	);
+	
+	// do we have an author?
+	$credit = ($author == '' OR  $author == 'Anonymous') ? '' : ' by ' . $author;
+	
+	return '<a rel="license" href="http://creativecommons.org/licenses/' . $license . '/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/' . $license . '/4.0/88x31.png" /></a><br />This work' . $credit . ' is licensed under a <a rel="license" href="http://creativecommons.org/licenses/' . $license . '/4.0/">Creative Commons ' . $commons[$license] . ' 4.0 International License</a>.';            
+}
+
+
+function cc_license_select_options ($curr) {
+	// output for select form options for use in forms
+
+	$str = '';
+	
+	// to restrict the list of options, comment out lines you do not want
+	// to make available (HACK HACK HACK)
+	$licenses = array (
+		'by' => 'Creative Commons Attribution',
+		'by-sa' => 'Creative Commons Attribution-ShareAlike',
+		'by-nd' => 'Creative Commons Attribution-NoDerivs',
+		'by-nc' => 'Creative Commons Attribution-NonCommercial',
+		'by-nc-sa' => 'Creative Commons Attribution-NonCommercial-ShareAlike',
+		'by-nc-nd' => 'Creative Commons Attribution-NonCommercial-NoDerivs',
+		'copyright' => 'Copyrighted All Rights Reserved',
+	);
+	
+	foreach ($licenses as $key => $value) {
+		// build the striing of select options
+		$selected = ( $key == $curr ) ? ' selected' : '';
+		$str .= '<option value="' . $key . '"' . $selected  . '>' . $value . '</option>';
+	}
+	
+	return ($str);
+}
+	
+
+/************************ GENERAL USEFUL STUFF *******************************/	
+
+function get_id_from_tag( $input ) {
+	// gets a post id from a tag, in form of Assiognment114, Tutorial12
+	//  e.g. use pattern matching to find numeric part of string
+	// from http://stackoverflow.com/a/13538212/2418186
+	
+	$input = preg_replace('/[^0-9]/', '', $input);
+
+	return $input == '' ? '1' : $input;
+}
+
+function get_assignment_id_from_terms($postid) {
+	// for a given example post ID, get the terms from either the assignment tag or tutorial tag
+	$all_the_terms = wp_get_object_terms( $postid, array('assignmenttags', 'tutorialtags') );
+
+	if ( !empty( $all_the_terms ) ) {	  
+		if ( !is_wp_error( $all_the_terms ) ) {
+
+				foreach( $all_the_terms as $term ) {
+					$tid =  get_id_from_tag( $term->name );
+					if ( $tid ) return ( $tid );
+				}		
+				return (0);
+		}
+	}
+	return (0);
+}
+
+function bank106_singular_thing( $thing=THINGNAME)  {
+// return the singular form of a $thing
+	return ( substr( $thing, 0, -1 ) );
+}
+
+
+function get_assignment_meta( $pid, $metadname, $default=0 ) {
+// return post metadata
+	return( ( get_post_meta($pid, $metadname, true ) ) ? get_post_meta( $pid,  $metadname, true)  : $default );
+}
+
+
+function get_assignment_types( $orderby='name', $order ='ASC' ) {
+// get all assignment types from terms in the taxonomy, basically all the types of THINGS
+	$atypes = get_terms( 'assignmenttypes', 
+		array(
+			'orderby'	=>  $orderby,
+			'order'		=>  $order,
+			'hide_empty'=> 0,
+			)
+	);
+
+	return( $atypes );
+}
+
+
+
+/*************************** PLUGIN DETECTORS ********************************/	
+
+function bank106_wp_ratings_installed() {
+	// return status for WP-POSTRATINGS
+	if ( function_exists('the_ratings' ) ) {
+		return ('WP-PostRatings <strong>is installed</strong> and will be applied to all ' . lcfirst(THINGNAME) . 's. Check the documentation tab for details on options. Edit <a href="' . admin_url( 'admin.php?page=wp-postratings/postratings-options.php') .'">ratings options</a> or <a href="' . admin_url( 'admin.php?page=wp-postratings/postratings-templates.php') .'">ratings display templates</a>.'); 
+	} else {
+		return ('WP-PostRatings <strong>is not installed</strong>. To enable difficulty ranking of ' . lcfirst(THINGNAME) . 's install the <a href="http://wordpress.org/plugins/wp-postratings/" target="_blank">WP-PostRatings plugin</a> via the Add New Plugin interface. Check the documentation tab for details on options andssettings for display of the ratings.'); 
 	}
 }
 
-/*************** SHORT CODES *****************/	
-// short code for number of assignments in the bank
+function bank106_fwp_installed() {
+	// Status check for FeedWordPress
+	if ( function_exists('is_syndicated' ) ) {
+		return ('Feed Wordpress <strong>is installed</strong>.'); 
+	} else {
+		return ('Feed Wordpress <strong>is NOT installed</strong>. To enable syndication of examples to this site, install the <a href="http://wordpress.org/plugins/feedwordpress/" target="_blank">Feed Wordpress plugin</a> via the Add New Plugin interface. Check the documentation tab for proper Feed Wordpress settings.'); 
+	}
+}
+
+
+/***************************** FORM STUFF ************************************/	
+
+function ds106bank_enqueue_add_scripts() {
+	// custom jquery for the add assignment form
+	wp_register_script( 'bank106_add_assignment_js' , get_stylesheet_directory_uri() . '/js/jquery.add-assignment.js', array( 'jquery' ), '1.0', TRUE );
+	wp_enqueue_script( 'bank106_add_assignment_js' );
+}
+
+function bank106_add_new_types( $new_types ) {
+	// convert text area input into array, based on new line breaks (remove CR)
+	// and add each items as a new taxonomy type
+	
+	$new_types = explode( "\n", str_replace( "\r", "", $new_types ) );
+	
+	foreach ( $new_types as $item) {
+		if ( $item != '' AND term_exists(  $item, 'assignmenttypes') == 0) {
+		
+    		// check if term does not exist (or is blank), then add to assignment type teaxonomy
+    		wp_insert_term( $item, 'assignmenttypes' );
+    	}
+    }
+}
+
+
+function bank106_insert_attachment( $file_handler, $post_id) {
+	// used for uploading images from  the add assignment submission forms
+	if ($_FILES[$file_handler]['error'] !== UPLOAD_ERR_OK) __return_false();
+
+	require_once( ABSPATH . "wp-admin" . '/includes/image.php' );
+	require_once( ABSPATH . "wp-admin" . '/includes/file.php' );
+	require_once( ABSPATH . "wp-admin" . '/includes/media.php' );
+
+	$attach_id = media_handle_upload( $file_handler, $post_id );
+	
+	return ($attach_id);
+	
+}
+
+
+
+
+/****************************** SHORT CODES **********************************/	
+
+// ----- short code for number of assignments in the bank
 add_shortcode('thingcount', 'getThingCount');
 
 function getThingCount() {
 	return wp_count_posts('assignments')->publish  . ' ' . THINGNAME . 's';
 }
 
-// short code for number of examples in the bank
+// ----- short code for number of examples in the bank
 add_shortcode('examplecount', 'getExampleCount');
 
 function getExampleCount() {
 	return wp_count_posts('examples')->publish . ' examples';
 }
+
+// ----- short code to create a list of Feedwordpress subscribed feeds
+add_shortcode("feedroll", "bank106_feedroll");  
 
 function bank106_feedroll( $atts ) {  
 	global $wpdb;
@@ -689,7 +754,5 @@ function bank106_feedroll( $atts ) {
 	// here comes the short code output  
     return $content;  
 }
-
-add_shortcode("feedroll", "bank106_feedroll");  
 
 ?>
