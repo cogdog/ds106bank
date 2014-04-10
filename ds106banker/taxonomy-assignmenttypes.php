@@ -76,6 +76,10 @@ get_header(); ?>
 						}
 					} 
 
+
+					 // Add "s" if the count is 0 or more than 1
+ 					$plural = ( $wp_query->found_posts == 1 ) ? '' : 's';
+
 					
 					?>				
 					<div class="page-header">
@@ -83,7 +87,7 @@ get_header(); ?>
 						<p><em><?php echo $term->description;?></em></p>
 						
 						<form id="taxassignmentview" method="get">
-						<p>There are  <strong><?php echo $wp_query->found_posts;?></strong> <?php echo $term->name;?> <?php echo  THINGNAME;?>s. View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
+						<p>There are  <strong><?php echo $wp_query->found_posts;?></strong> <?php echo $term->name;?> <?php echo  THINGNAME . $plural?>. View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
 							<?php
 							// remove any query string from current URL
 							$base_url = strtok( $_SERVER["REQUEST_URI"], '?' );

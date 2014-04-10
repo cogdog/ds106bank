@@ -177,7 +177,7 @@ class ds106bank_Theme_Options {
 	
 		$this->settings['thingname'] = array(
 			'title'   => __( 'Name for Things in the Bank' ),
-			'desc'    => __( 'What is the name for the kind of things banked here? Assignment? Challenge? Task? Must be singular. Changing a previous value will update all assigned tags.' ),
+			'desc'    => __( 'What is the name for the kind of thing banked here? Assignment? Challenge? Task? Must be singular and should not contain an numbers (0-9).' ),
 			'std'     => 'Assignment',
 			'type'    => 'text',
 			'section' => 'general'
@@ -194,32 +194,50 @@ class ds106bank_Theme_Options {
 				'draft' => 'Set to draft',
 			)
 		);		
- 		
- 		// Build array to hold options for select	
-	  	$page_options = array( '--' => 'Select Page');
-
-		 // walk pages
-	  	$all_pages = get_pages(); 
-		foreach ( $all_pages as $item ) {
-  			$page_options[$item->post_name] =  $item->post_title;
-  		}
  
-		$this->settings['example_form_page'] = array(
+ 		$this->settings['thing_order'] = array(
 			'section' => 'general',
-			'title'   => __( 'Page for Adding Examples/Tutorials'),
-			'desc'    => __( 'Existing page for form to add new examples; one using <strong>Submit Exmaple/Tutorial Form</strong> as template' ),
-			'type'    => 'select',
-			'std'     => '--',
-			'choices' => $page_options
-		);	
+			'title'   => __( 'Display Order' ),
+			'desc'    => __( 'On the main index, the order in which ' . lcfirst(THINGNAME) . 's are listed' ),
+			'type'    => 'radio',
+			'std'     => 'name',
+			'choices' => array(
+				'name' => 'Title',
+				'id' => 'Date Created',
+				'count' => 'Count',
+			)
+		);		
+
+ 		$this->settings['thing_orderby'] = array(
+			'section' => 'general',
+			'title'   => __( 'Display Order Sorting' ),
+			'desc'    => __( 'Which to list first?' ),
+			'type'    => 'radio',
+			'std'     => 'ASC',
+			'choices' => array(
+				'ASC' => 'Ascending',
+				'DESC' => 'Descending',
+			)
+		);		
 
 		$this->settings['exlen'] = array(
 			'title'   => __( 'Excerpt Length' ),
-			'desc'    => __( 'Number of words to show for assignment, example descriptions when displayed' ),
+			'desc'    => __( 'Number of words to show for content when displayed on an index or archive page' ),
 			'std'     => '55',
 			'type'    => 'text',
 			'section' => 'general'
 		);
+		
+		
+		// ------- captcha options
+		
+		$this->settings['captcha_heading'] = array(
+		'section' => 'general',
+		'title' 	=> '' ,// Not used for headings.
+		'desc'   => 'Captcha Settings', 
+		'std'    => 'To reduce spamm activate a captcha for submission forms',
+		'type'    => 'heading'
+		);		
 		
 		$this->settings['use_captcha'] = array(
 			'section' => 'general',
@@ -261,6 +279,8 @@ class ds106bank_Theme_Options {
 			'section' => 'general'
 		);
 
+
+		// ------- media- thumbnaiil sizes, default image
 		$this->settings['thumbnail_heading'] = array(
 		'section' => 'general',
 		'title' 	=> '' ,// Not used for headings.
@@ -302,8 +322,7 @@ class ds106bank_Theme_Options {
 		);
 		
 		
-		// ------- creative commons options
-		
+		// ------- creative commons options		
 		$this->settings['cc_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
@@ -350,6 +369,7 @@ class ds106bank_Theme_Options {
 		);
 
 
+		// ------- example setup options
 		$this->settings['examples_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
@@ -365,6 +385,25 @@ class ds106bank_Theme_Options {
 			'type'    => 'checkbox',
 			'std'     => 1 // Set to 1 to be checked by default, 0 to be unchecked by default.
 		);
+		
+ 		// Build array to hold options for select, an array of published pages on the site
+	  	$page_options = array( '--' => 'Select Page');
+
+		 // walk pages
+	  	$all_pages = get_pages(); 
+		foreach ( $all_pages as $item ) {
+  			$page_options[$item->post_name] =  $item->post_title;
+  		}
+ 
+		$this->settings['example_form_page'] = array(
+			'section' => 'general',
+			'title'   => __( 'Page for Adding Examples/Tutorials'),
+			'desc'    => __( 'Existing page for form to add new examples; one using <strong>Submit Example/Tutorial Form</strong> as template' ),
+			'type'    => 'select',
+			'std'     => '--',
+			'choices' => $page_options
+		);	
+
 
 		$this->settings['new_example_status'] = array(
 			'section' => 'general',
@@ -378,6 +417,7 @@ class ds106bank_Theme_Options {
 			)
 		);
 
+		// ------- syndication options
 		$this->settings['syndication_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
@@ -427,17 +467,6 @@ class ds106bank_Theme_Options {
 		/* Types of Things Settings
 		===========================================*/
 		
-		
-		$this->settings['bug_note'] = array(
-			'section' => 'types',
-			'title'   => '', // Not used for headings.
-			'desc'    => 'Note!',
-			'std'	  => 'There is a bug, you can only update one thumbnail at a stime, save after each change until this can be debugged.', 
-			'type'    => 'heading'
-		);
-
-
-
 		// lets get all the existing assignment types
 		$assigntypes = get_assignment_types();
 		$i = 0;
@@ -445,7 +474,10 @@ class ds106bank_Theme_Options {
 		foreach ( $assigntypes as $atype ) {
 			$i++;
 			$setting_name = 'thing_type_' . $atype->term_id;
-						
+			
+			
+			
+			// ------- settings for each type of thing: name, delete option, description, thumbnail 			
 			$this->settings["$setting_name"] = 
 				array(
 					'title'   => __( THINGNAME . ' Type #' . $i ),
@@ -482,6 +514,7 @@ class ds106bank_Theme_Options {
 			
 		}
 		
+		// ------- field so users can add new types of things
 		$this->settings['new_type_heading'] = array(
 			'section' => 'types',
 			'title'   => '', // Not used for headings.
@@ -727,7 +760,8 @@ class ds106bank_Theme_Options {
 				
 			// has the thing name changed? If so we need to update the taxonmy terms
 			if ( $input['thingname'] !=  THINGNAME  ) {
-				
+						
+			// return ( substr( $thing, 0, -1 ) );
 				bank106_update_tax( THINGNAME, $input['thingname'] );
 			}
 			

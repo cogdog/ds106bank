@@ -600,12 +600,6 @@ function get_assignment_id_from_terms($postid) {
 	return (0);
 }
 
-function bank106_singular_thing( $thing=THINGNAME)  {
-// return the singular form of a $thing
-	return ( substr( $thing, 0, -1 ) );
-}
-
-
 function get_assignment_meta( $pid, $metadname, $default=0 ) {
 // return post metadata
 	return( ( get_post_meta($pid, $metadname, true ) ) ? get_post_meta( $pid,  $metadname, true)  : $default );

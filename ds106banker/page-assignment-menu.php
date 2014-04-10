@@ -59,8 +59,8 @@ title of the page and any content are displayed above the menu.
 				
 				// Generate the menu of "things"
 								
-				// get all the terms for the custom post type 
-				$assignmenttypes = get_assignment_types();
+				// get all the terms for the custom post type for things, in sort order specified in settings
+				$assignmenttypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
 
  				if ( count($assignmenttypes) == 0 ) {
  				
@@ -90,6 +90,10 @@ title of the page and any content are displayed above the menu.
  						$type_url_str = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="All ' . $atype->name . 's">';
  						// string for start of link around 
  						$type_url_btn = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="All ' . $atype->name . 's" class="btn btn-primary">';
+ 						
+ 						// Add "s" if the count is 0 or more than 1
+ 						$plural = ( $atype->count == 1 ) ? '' : 's';
+ 						
  						?>
  						<div class="col-sm-5 col-md-offset-1">
  						
@@ -103,7 +107,7 @@ title of the page and any content are displayed above the menu.
 								<!-- thing icon -->
 								<div class="thing-icon">
 								
-								<?php echo $type_url_str . '<img src="' .ds106bank_option( 'thing_type_' . $atype->term_id . '_thumb') . '" alt="' . $atype->name . ' assignments" /></a>'; ?>
+								<?php echo $type_url_str . '<img src="' . ds106bank_option( 'thing_type_' . $atype->term_id . '_thumb') . '" alt="' . $atype->name . ' assignments" /></a>'; ?>
 								</div>
 								<!-- end icon or media -->
 					
@@ -111,7 +115,7 @@ title of the page and any content are displayed above the menu.
 								<section class="post_content">
 						
 									<p><?php echo $atype->description ?></p>
-									<p class="more-link"><?php echo $type_url_btn?>View <?php echo THINGNAME?>s</a></p>
+									<p class="more-link"><?php echo $type_url_btn?>View <?php echo $atype->count?> <?php echo THINGNAME . $plural?></a></p>
 	
 								</section> <!-- end article section -->
 						
