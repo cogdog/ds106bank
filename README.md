@@ -14,7 +14,7 @@ A specific assignment, for example, the [Six Word Memoir(http://assignments.ds10
 
 The idea for a general version is a site where types of "things" are created by the site owner(essentially categories).  They are displayed on a main index, which can bem but does not have to be, the entrance to your site:
 
-!(https://github.com/cogdog/ds106bank/blob/master/images/assignment-bank-front.jpg "Assignment Bank Index")
+![Front Page](images/assignment-bank-front.jpg "Assignment Bank Index")
 
 Within each category is a collection of things
 
