@@ -73,11 +73,11 @@ A few settings must be made in Feed Wordpress to work correctly with the Assignm
 ![](ds106banker/images/fwp-update-scheduling.jpg)
 Under **Updates Scheduling** in the  **Feed and Updates Feed Wordpress Settings** set the  **set to automatically check for updates after pages load** to generate the process of feed checking. This is the easiest approach that is triggered by site activity- if you understand cron scripts you can set that up as an alternative.
 
-![](ds106banker/images/fwp-post-settings.jpg}
+![](ds106banker/images/fwp-post-settings.jpg)
 At the bottom of the **Posts and Links Feed Wordpress Settings**  in the section for **Custom Post Types (advanced database settings)**, set the option for Custom Post Types to **Examples Done**. What this does is to associate all syndicated posts with the content type that defines the examples. 
 
 
-![](ds106banker/images/fwp-tag-settings.jpg}
+![](ds106banker/images/fwp-tag-settings.jpg)
 
 To the RSS feeds that Feed Wordpress syndicates, any tags or categories an incoming feed are actually associated as categories in the RSS structure. 
 
@@ -93,7 +93,8 @@ Setting Up Pages
 Three Wordpress pages must be set up, to create the main index of all things, another to house the form for adding a ne thing, and a third for users to add an example of a response to a thing.
 
 1. Create a new page for a  **Main Menu** This generates the index of all types of things; they will be listed in the  order specified by your theme options. The title and content of the page (which you edit) is displayed above a grid of types of things. To enable the functionality, set the page template to **Assignment Menu** If you wish this page to be the front of the site, use the **Wordpress Reading Settings** to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).
-!(https://github.com/cogdog/ds106bank/blob/master/ds106banker/images/reading-settings.jpg)
+
+![](ds106banker/images/reading-settings.jpg)
 
 2. Create a new page to **Submit New Things** You will need this even if you do not allow visitors to add them so you can add them yourself (the page can be unlinked or have a password set on it). The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Assignments**.
 
