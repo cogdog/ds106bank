@@ -18,7 +18,7 @@ The idea for a general version is a site where types of "things" are created by 
 
 Within each category is a collection of things
 
-!(images/assignment-bank-type-view.jpg "Assignment Bank Type View")
+![Assignment Bank Type View](images/assignment-bank-type-view.jpg "Assignment Bank Type View")
 
 So we might have a site of "Challenges", and within there you might groups of Cooking Challenges, Fitness Challenges (think of them as categories). Within each are specific challenges to do, like "Make Bread From Scratch" "Cook Ham Bone Soup", or "Do 100 Pushups"). You can allows site visitors to add their own challenges via a web form. 
 
@@ -70,14 +70,16 @@ If this is not a desired feature, the plugin is not needed. You can still allow 
 
 A few settings must be made in Feed Wordpress to work correctly with the Assignment Bank Theme.
 
-!(https://github.com/cogdog/ds106bank/blob/master/ds106banker/images/fwp-update-scheduling.jpg)
+![](ds106banker/images/fwp-update-scheduling.jpg)
 Under **Updates Scheduling** in the  **Feed and Updates Feed Wordpress Settings** set the  **set to automatically check for updates after pages load** to generate the process of feed checking. This is the easiest approach that is triggered by site activity- if you understand cron scripts you can set that up as an alternative.
 
-!(https://github.com/cogdog/ds106bank/blob/master/ds106banker/fwp-post-settings.jpg}
+![](ds106banker/fwp-post-settings.jpg}
 At the bottom of the **Posts and Links Feed Wordpress Settings**  in the section for **Custom Post Types (advanced database settings)**, set the option for Custom Post Types to **Examples Done**. What this does is to associate all syndicated posts with the content type that defines the examples. 
 
 
-!(https://github.com/cogdog/ds106bank/blob/master/ds106banker/fwp-tag-settings.jpg}To the RSS feeds that Feed Wordpress syndicates, any tags or categories an incoming feed are actually associated as categories in the RSS structure. 
+![](ds106banker/fwp-tag-settings.jpg}
+
+To the RSS feeds that Feed Wordpress syndicates, any tags or categories an incoming feed are actually associated as categories in the RSS structure. 
 
 In the **Feed Categories & Tags Feed Wordpress Settings** check the options for **Match feed categories** and **Match inline tags** to include **Thing Tags** and **Tutorial Tags**. This will match all incoming tags to be associated with the taxonomy that organize the examples into the proper Thing types.
 
@@ -95,11 +97,11 @@ Three Wordpress pages must be set up, to create the main index of all things, an
 
 2. Create a new page to **Submit New Things** You will need this even if you do not allow visitors to add them so you can add them yourself (the page can be unlinked or have a password set on it). The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Assignments**.
 
-!(https://github.com/cogdog/ds106bank/blob/master/ds106banker/images/add-thing.jpg "Form to add a new thing")
+![](ds106banker/images/add-thing.jpg "Form to add a new thing")
 
 3. Create a new page to **Submit Examples**. This form is used to allow visitors to add examples or tutorial for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Example/Tutorial Form**
 
-!(https://github.com/cogdog/ds106bank/blob/master/ds106banker/images/add-example.jpg "Form to add a new example")
+![](ds106banker/images/add-example.jpg "Form to add a new example")
 
 
 Creating menus
