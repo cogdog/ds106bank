@@ -78,21 +78,6 @@
 	width: 60%;
 	height: 150px;
 }
-/* ---------------------------= Menus =------------------------------------- */
 
-.footer-links{
-	float: right;
-	margin-bottom: 18px;
-}
-
-.footer-links .menu{
-	list-style-type: none;
-	margin-left: 0;
-}
-
-.footer-links .menu li{
-	float: left;
-	margin-left: 10px;
-}
 
 

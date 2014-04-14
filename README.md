@@ -35,16 +35,18 @@ A self hosted Wordpress hosted site (in other words "you cannot use this on Word
 
 
 ## Installing and Configuring the Theme
+(see headings below with the same number for more detail, there's a boat load of detail...)
+
 1. Upload the **ds106banker** and the **wp-bootstrap** directories to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links. You will have to create a zip file for each theme folder.
 2. Activate the **ds106banker** theme.
 3. Install Wp-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme.
-4. Find the **Assignment Bank Options** listed both under the **Appearance** settings in the Wordpress Dashboard, or via the admin nav bar.
-5. Create holding pages for the Main Index, the form to add examples, and a form for creating new "things" (see below)
-6. Set the theme options (detailed in length below)
-7. Customize the site menus, widgets. The theme provides a few shortcodes you can use on any page or sidebar.
+4. Create holding pages for the Main Index, the form to add examples, and a form for creating new "things" (see below)
+5. Set the theme options (detailed in length below). Find the **Assignment Bank Options** listed both under the **Appearance** settings in the Wordpress Dashboard, or via the admin nav bar.
+6. Customize the site menus. The theme provides a few shortcodes you can use on any page or sidebar.
+7. Other Suggested plugins
 8. Create some stuff
 
-### Setting up WP-Ratings
+### (3) Setting up WP-Ratings
 Install the [WP-Ratings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing rating feature. Not installing the plugin (or de-activating it) removes any ratings features from the site.
 
 A few settings for the plugin are necessary. 
@@ -57,7 +59,7 @@ Set the **Post Ratings Templates**  as indicated below to reduce the clutter the
 * **Ratings Vote Text, Ratings None** Enter `%RATINGS_IMAGES_VOTE%`
 * **Ratings Voted Text, Ratings No Permission Text, Highest Rated** Enter `%RATINGS_IMAGES%`
 
-### Setting Up Feed Wordpress
+### (3) Setting Up Feed Wordpress
 Install the [Feed Wordpress plugin](http://wordpress.org/plugins/feedwordpress/) if you wish to syndicate in responses to "thongs" as examples. This means that you can add blog feeds to the bank (it does the feed aggregation) or you can syndicate in from another site that is aggregating feeds (the ds 106 model). 
 
 If this is not a desired feature, the plugin is not needed. You can still allow visitors to submit their examples via a web form.
@@ -82,7 +84,7 @@ If you have no use for other tags in posts, under **Unmatched Categories** check
 If you have any use to mark all of the syndicated posts, the options at the bottom of this screen allow you to add Wordpress tags or categories to them (e.g. add a "syndicated" tag).
 
 
-### Setting Up Pages
+### (4) Setting Up Pages
 Three Wordpress pages must be set up, to create the main index of all things, another to house the form for adding a ne thing, and a third for users to add an example of a response to a thing.
 
 1. Create a new page for a  **Main Menu** This generates the index of all types of things; they will be listed in the  order specified by your theme options. The title and content of the page (which you edit) is displayed above a grid of types of things. To enable the functionality, set the page template to **Assignment Menu** If you wish this page to be the front of the site, use the **Wordpress Reading Settings** to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).
@@ -97,7 +99,9 @@ Three Wordpress pages must be set up, to create the main index of all things, an
 
 ![](images/add-example.jpg "Form to add a new example")
 
-### Assignment Bank Theme Options
+
+----------
+### (5) Assignment Bank Theme Options
 This theme has a comprehensive set of options, available via the **Assignment Bank Options## form the main admin toolbar.
 
 #### Assignment Bank Options: General Settings: Things Settings
@@ -184,16 +188,46 @@ The title can always be edited, and you can add/edit the short description. Then
 
 Checking a type for deletion will remove it permanently upon saving.
 
+----------
+
+### (6) Creating Menus
+The structure of the sites navigation is left to the owner; use the built in Wordpress menu editor to activate a top menu *the footer menu seems to not be formatted in the parent theme, and has been removed from the assignment bank footer.php template).
+
+This means you can create any structure you like, including archives for the types of things. Below is the structure of the demo site:
+
+![](images/assignment-bank-menus.jpg)
+
+A few special URLs are available, for say a site set up on `/bank.yourdomain.org` (the slug `assignments` is unfortunately basked in)
+
+* `http://bank.yourdomain.org/assignments` an archive of all things
+* `http://bank.yourdomain.org/assignments/?srt=random` a random thing
+* `http://bank.yourdomain.org/examples` an archive of all examples added to the site
 
 
-### Creating Menus
-coming soon
+### (6) Shortcodes
+These shortcodes can be used in an page, post, Widget
 
-### Shortcodes
-yep we got 'em, just have to write about 'em
+`[thingcount]` generates a count of all "things" in the bank such as **34 challenges**
 
-### Customizing CSS
-got style?
+`[examplecount]` generates a count of all "examples" in the bank such as **112 examples*
+
+`[feedroll]`  If Feed Wordpress is installed, this shortcode generates a list of all subscribed blogs, useful as a sidebar widget. If feeds have different tags to segment them, a specific list can be produced by `[feedroll tag="section5"]`
+
+### (6) Customizing CSS
+Most of the theme's design is managed by the parent WP-Bootstrap theme. You do not to never edit that, right?
+
+Because of the way styles are loaded, the typical child theme for the Assignment Bank [style.css](ds106banker/style.css) is blank except for the information needed to establish the relationship to the parent theme. Any custom style over-rides should be added to [style.css](ds106banker/ds106bank.css)
+
+### (7) Other Suggested plugins
+The following plugins are installed on the [demo site](http://bank.ds106.us/) to create useful sidebar/footer Widgets
+
+* [Flexible Post Widget](http://wordpress.org/plugins/flexible-posts-widget/‎) provides a widget that can list the custom post types used in the theme; as used in the footer of the demo site, it can provide a  widget listing of randomly ordered "things" and "examples"
+
+![](images/flexible-post-widget.jpg)
+
+* [List Custom Taxonomy Widget](http://wordpress.org/plugins/list-custom-taxonomy-widget/‎) provides a widget like the built in Category widget, but for custom Taxonomies (the structure used to create the types of things). This widget can list all as links, plus put the count of items Within
+
+![](images/list-custom-taxonomy-widget.jpg)
 
 
 
