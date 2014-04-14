@@ -73,11 +73,11 @@ A few settings must be made in Feed Wordpress to work correctly with the Assignm
 ![](ds106banker/images/fwp-update-scheduling.jpg)
 Under **Updates Scheduling** in the  **Feed and Updates Feed Wordpress Settings** set the  **set to automatically check for updates after pages load** to generate the process of feed checking. This is the easiest approach that is triggered by site activity- if you understand cron scripts you can set that up as an alternative.
 
-![](ds106banker/fwp-post-settings.jpg}
+![](ds106banker/images/fwp-post-settings.jpg}
 At the bottom of the **Posts and Links Feed Wordpress Settings**  in the section for **Custom Post Types (advanced database settings)**, set the option for Custom Post Types to **Examples Done**. What this does is to associate all syndicated posts with the content type that defines the examples. 
 
 
-![](ds106banker/fwp-tag-settings.jpg}
+![](ds106banker/images/fwp-tag-settings.jpg}
 
 To the RSS feeds that Feed Wordpress syndicates, any tags or categories an incoming feed are actually associated as categories in the RSS structure. 
 
@@ -97,11 +97,11 @@ Three Wordpress pages must be set up, to create the main index of all things, an
 
 2. Create a new page to **Submit New Things** You will need this even if you do not allow visitors to add them so you can add them yourself (the page can be unlinked or have a password set on it). The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Assignments**.
 
-![](ds106banker/images/add-thing.jpg "Form to add a new thing")
+![](images/add-thing.jpg "Form to add a new thing")
 
 3. Create a new page to **Submit Examples**. This form is used to allow visitors to add examples or tutorial for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Example/Tutorial Form**
 
-![](ds106banker/images/add-example.jpg "Form to add a new example")
+![](images/add-example.jpg "Form to add a new example")
 
 
 Creating menus
