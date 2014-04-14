@@ -1,9 +1,7 @@
-ds106 Assignment Bank Wordpress Theme
-=========================
-by Alan Levine http://cogdogblog.com/
+# ds106 Assignment Bank Wordpress Theme
+by Alan Levine http://cogdog.info/ or http://cogdogblog.com/
 
-ABOUT
------
+## What is this?
 This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a collection site of any collection of assignments, tasks etc, create a categorization, and then create or like ds106 allow your community to add to the collection.  You can find a live demo running at http://bank.ds106.us/
 
 Generically I call the things inside the bank "Things" (internally you may find code references to "assignments").
@@ -14,17 +12,17 @@ A specific assignment, for example, the [Six Word Memoir(http://assignments.ds10
 
 The idea for a general version is a site where types of "things" are created by the site owner(essentially categories).  They are displayed on a main index, which can bem but does not have to be, the entrance to your site:
 
-![Front Page](images/assignment-bank-front.jpg "Assignment Bank Index")
+![](images/assignment-bank-front.jpg "Assignment Bank Index")
 
 Within each category is a collection of things
 
-![Assignment Bank Type View](images/assignment-bank-type-view.jpg "Assignment Bank Type View")
+![](images/assignment-bank-type-view.jpg "Assignment Bank Type View")
 
 So we might have a site of "Challenges", and within there you might groups of Cooking Challenges, Fitness Challenges (think of them as categories). Within each are specific challenges to do, like "Make Bread From Scratch" "Cook Ham Bone Soup", or "Do 100 Pushups"). You can allows site visitors to add their own challenges via a web form. 
 
 And each "thing" has its own page, with associated examples and tutorials:
 
-![Single Theme View](images/assignment-bank-single.jpg "Assignment Bank Single Thing View")
+![](images/assignment-bank-single.jpg "Assignment Bank Single Thing View")
 
 The site options allow people to submit their responses to a challenge via a web form, or if part of an ongoing activity or community, to aggregate them in from external blogs (as [ds106](http://ds106.us) does).
 
@@ -32,13 +30,11 @@ This ds106 Assignment Bank Theme is build as a child theme of the [Wordpress Boo
 
 Hopefully it is flexible to meet many use cases. The design allows you to create a site where the front of the site is the menu of types of things, but that could also be an internal page, and a normal blog flow can be front and center. The theme does not create any of the navigation menus for you, but you will find suggestions as to the types of things you can make available via the built in Wordpress menu editor.
 
-Requirements
-------------
-A self hosted ordpress hosted site (in other words "you cannot use this on Wordpress.com").  It can work on a multisite or as a single install. Depending on how you wish to run the site, you might install plugins below. You will also fins suggestions for Widgets that are useful for sidebars and footers.
+## Requirements
+A self hosted Wordpress hosted site (in other words "you cannot use this on Wordpress.com").  This theme can work on a multisite or as a single install. Depending on how you wish to run the site, you might install plugins below. You will also find suggestions for Widgets that are useful for sidebars and footers.
 
 
-Installing and Configuring the Theme
-----------
+## Installing and Configuring the Theme
 1. Upload the **ds106banker** and the **wp-bootstrap** directories to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links. You will have to create a zip file for each theme folder.
 2. Activate the **ds106banker** theme.
 3. Install Wp-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme.
@@ -48,8 +44,7 @@ Installing and Configuring the Theme
 7. Customize the site menus, widgets. The theme provides a few shortcodes you can use on any page or sidebar.
 8. Create some stuff
 
-(3) Setting up WP-Ratings
-----------
+### Setting up WP-Ratings
 Install the [WP-Ratings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing rating feature. Not installing the plugin (or de-activating it) removes any ratings features from the site.
 
 A few settings for the plugin are necessary. 
@@ -62,8 +57,7 @@ Set the **Post Ratings Templates**  as indicated below to reduce the clutter the
 * **Ratings Vote Text, Ratings None** Enter `%RATINGS_IMAGES_VOTE%`
 * **Ratings Voted Text, Ratings No Permission Text, Highest Rated** Enter `%RATINGS_IMAGES%`
 
-(3) Setting Up Feed Wordpress
-----------
+### Setting Up Feed Wordpress
 Install the [Feed Wordpress plugin](http://wordpress.org/plugins/feedwordpress/) if you wish to syndicate in responses to "thongs" as examples. This means that you can add blog feeds to the bank (it does the feed aggregation) or you can syndicate in from another site that is aggregating feeds (the ds 106 model). 
 
 If this is not a desired feature, the plugin is not needed. You can still allow visitors to submit their examples via a web form.
@@ -88,8 +82,7 @@ If you have no use for other tags in posts, under **Unmatched Categories** check
 If you have any use to mark all of the syndicated posts, the options at the bottom of this screen allow you to add Wordpress tags or categories to them (e.g. add a "syndicated" tag).
 
 
-Setting Up Pages
-----------
+### Setting Up Pages
 Three Wordpress pages must be set up, to create the main index of all things, another to house the form for adding a ne thing, and a third for users to add an example of a response to a thing.
 
 1. Create a new page for a  **Main Menu** This generates the index of all types of things; they will be listed in the  order specified by your theme options. The title and content of the page (which you edit) is displayed above a grid of types of things. To enable the functionality, set the page template to **Assignment Menu** If you wish this page to be the front of the site, use the **Wordpress Reading Settings** to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).
@@ -104,16 +97,104 @@ Three Wordpress pages must be set up, to create the main index of all things, an
 
 ![](images/add-example.jpg "Form to add a new example")
 
+### Assignment Bank Theme Options
+This theme has a comprehensive set of options, available via the **Assignment Bank Options## form the main admin toolbar.
 
-Creating menus
-----------
+#### Assignment Bank Options: General Settings: Things Settings
+
+![](ds106banker/images/general-thing-settings.jpg)
+
+**Define the name of things** in the bank- the name here should be singular. This is used in numerous places throughout the site; note that changing this name will revise the name of the tags used to identify them for user tagging. You should set this very early in the setup process.
+
+If you  allow users to submit new things to the site, you can set the **default status for new things** to Draft so you can moderate them. If the form will only be used by admins or i you allow new things to go directly to the site, set this option to Publish Immediately.
+
+The **display order** controls how the types of things are sequenced on the main index; by title, order created, or by the number of things in each type. This order can be switched direction via the **display order sorting**.
+
+The **excerpt length** is used to set the word length of short descriptions of examples and things on index pages (the Wordpress default is 55 words).
+
+#### Assignment Bank Options: General Settings: Captcha Settings
+
+![](ds106banker/images/captcha-settings.jpg)
+
+Spam is a sad fact of life. Enabling this option will put a [Google reCaptcha](https://www.google.com/recaptcha) on all submission forms. You can use one of the four styles of captcha. Public and private keys are needed to use the captcha and [can be obtained from the Google Recpatcha site](https://www.google.com/recaptcha/admin/create)
+
+#### Assignment Bank Options: General Settings: Media Settings
+![](ds106banker/images/media-settings.jpg)
+
+Set the width and height of thumbnail images on all index and archive pages. Any autoe-mbedded media (Youtube, vimeo, Soundcloud, flickr) will be sized to the width setting (default settings are 320px wide and 240px high)
+
+The **single item media size** is how wide an image or embedded media will display on a single thing entry (default is 500px)
+
+The **default thumbnail image** is what is used for a thing if not specified via the submission form. The image can be uploaded here to or selected from the Wordpress media library. The image should be at least larger than the default thumbnail width.
+
+
+#### Assignment Bank Options: General Settings: Creative Commons Settings
+![](ds106banker/images/creative-commons-settings.jpg)
+
+Creative commons licenses can be attached to all things on the site. Choose **Apply one license to all challenges** to place the same license on all things (a notice will be displayed on the submission form). The license uses can eb selected from the menu,
+
+Setting the Creative Commons options to **Enable users to choose license when submitting a challenge** will put the menu on the submission form so users can choose a license (or set to All Rights Reserved). At this time, the only way to reduce the number of license options is to edit `functions.php` in the template directory. Look for the function `function cc_license_select_options` and comment out the lines containing license options to hide.
+
+
+#### Assignment Bank Options: General Settings: Settings for  Examples
+![](ds106banker/images/submit-examples.jpg)
+
+By checking the first box, this  section allows you to enable a web form for site visitors to submit their examples as response to a thing (the form asks for name, email title, description, and a link).
+
+For the link to the form to work, you must have previously created a Page that uses the **Submit Example/Tutorial Form** template. The drop down menu will list all pages on the site; choose the one that should house the form. If you want to not make the form public, just avoid adding menu links to it (or put a password on te form)
+
+Finally, you can set whether a new example is published immediately or set to draft for moderation. All examples added to the site (by the form or via the syndication methods below) can be reviewed and edited via the dashboard menu for Examples Done. The most likely item to be edited is the URL for the example; it is stored in the Custom Field value for **syndication_permalink**.
+
+
+#### Assignment Bank Options: General Settings: Settings for Syndication of Examples
+![](ds106banker/images/syndication-for-examples.jpg)
+
+The last section enables the features to syndicated in examples that users post on their own blogs. If this feature is not desired, leave the default setting for ** No syndication. Examples are added only via web form (if enabled above) or only via WordPress Admin** and ignore the rest of the settings.
+
+There are two approaches to syndication, both require the [eed Wordpress plugin](http://wordpress.org/plugins/feedwordpress/) to be installed.
+
+One is to turn the Assignment Bank site into its own syndication hub Use a local install of Feed Wordpress to aggregate examples to this site). This means that RSS feeds will have to be added directly to the local install of Feed Wordpress. The rest of the settings can be ignored. For a local syndication, users will only need to provide one tag, e.g. **Assignment12** to each of their posts for this site to be able to publish the examples directly to the Thing associated with it.
+
+The second approach is the setup used for ds106; the assignment bank will rely on another set that is managing the direct syndication of user content. The local install of Feed Wordpress is used to "re-syndicate" the content to the bank. In this case, you must specify a **required tag** users should use to indicate a post is in response to something in the bank; the second tag specifies the thing it should be associated with. Finally the name and the URL for the example are used in the instruction text for each Thing.
+
+#### Adding Feeds
+![](ds106banker/images/fwp-add-feeds.jpg)
+
+At this time, all RSS feeds must be added to your site via the screen for **Feed Wordpress Syndication Sites**. The **add multiple** button opens a field where you can enter in a list of sites or feeds.
+
+For each feed, you will have to confirm or select the correct Feed URL (some sites offer several options of Feed format or the content it finds as an RSS feed.
+
+If you are using an external syndication site, you only need to add one feed- the one that corresponds to the tag entered in the **Required Tag** Assignment Bank option. If your required tag is **bank106**, than you want to bring in to this site only the posts on the syndication site that have this tag, for example:
+
+`http://www.mycoolcourse.org/webhub/tag/bank106/feed`
+
+It is recommended to test the feed first to make sure it is pulling in data and the correctly tagged content.
+
+#### Assignment Bank Options: Thing Types
+![](ds106banker/images/new-thing-types.jpg)
+
+The second tab of the theme options is where you can create and edit the categories or types of things in your collection. You can add any number of new things by listing them one per line in the **Names for new types** field.
+
+After clicking **Save Changes**, each type will now have its own editing field. They will be listed in the same display order you set in the General Settings.
+
+
+![](ds106banker/images/edit-thing-types.jpg)
+
+The title can always be edited, and you can add/edit the short description. Then, use the build in interface to the Wordpress media library, upload a thumbnail image-- it should be larger then the default place holder image, but does not have to be the exact size. Wordpress will handle the image sizing for you.
+
+Checking a type for deletion will remove it permanently upon saving.
 
 
 
+### Creating Menus
+coming soon
 
-Yes This is Incomplete
----------------------
-It's version 1 of the github code. gimme a break!
+### Shortcodes
+yep we got 'em, just have to write about 'em
+
+### Customizing CSS
+got style?
+
 
 
 
