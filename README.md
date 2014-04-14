@@ -2,13 +2,13 @@
 by Alan Levine http://cogdog.info/ or http://cogdogblog.com/
 
 ## What is this?
-This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a collection site of any collection of assignments, tasks etc, create a categorization, and then create or like ds106 allow your community to add to the collection.  You can find a live demo running at http://bank.ds106.us/
+This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a collection site of any collection of assignments, tasks etc, create a categorization, and then create or like [ds106](http://ds106.us) allow your community to add to the collection.  You can find a live demo running at http://bank.ds106.us/
 
 Generically I call the things inside the bank "Things" (internally you may find code references to "assignments").
 
-So in the ds106 site, there are types of things (Assignments) such as [Design Assignments(http://assignments.ds106.us/types/designassignments/)], [Video Assignments(http://assignments.ds106.us/types/videoassignments/)], etc. Each assignment has a crowdsource difficulty rating; any site visitor add their own vote. 
+So in the ds106 site, there are types of things (Assignments) such as [Design Assignments](http://assignments.ds106.us/types/designassignments/), [Video Assignments](http://assignments.ds106.us/types/videoassignments/), etc. Each assignment has a crowdsource difficulty rating; any site visitor add their own vote. 
 
-A specific assignment, for example, the [Six Word Memoir(http://assignments.ds106.us/assignments/six-word-memoir/)] has a linked example, an associated icon (if the example lives on flickr, YouTube, vimeo, or SoundCLoud the site automatically embeds a media player), and a description. The site generates a unique pair of tags for each assignment. When a participant who has their blog registered at ds106, writes up their assignment with the tags, through RSS syndication the post gets attached as an example.
+A specific assignment, for example, the [Six Word Memoir](http://assignments.ds106.us/assignments/six-word-memoir/)] has a linked example, an associated icon (if the example lives on flickr, YouTube, vimeo, or SoundlLoud the site automatically embeds a media player), and a description. The site generates a unique pair of tags for each assignment. When a participant who has their blog registered at ds106, writes up their assignment with the tags, through RSS syndication the post gets attached as an example.
 
 The idea for a general version is a site where types of "things" are created by the site owner(essentially categories).  They are displayed on a main index, which can bem but does not have to be, the entrance to your site:
 
@@ -209,7 +209,7 @@ These shortcodes can be used in an page, post, Widget
 
 `[thingcount]` generates a count of all "things" in the bank such as **34 challenges**
 
-`[examplecount]` generates a count of all "examples" in the bank such as **112 examples*
+`[examplecount]` generates a count of all "examples" in the bank such as **112 examples**
 
 `[feedroll]`  If Feed Wordpress is installed, this shortcode generates a list of all subscribed blogs, useful as a sidebar widget. If feeds have different tags to segment them, a specific list can be produced by `[feedroll tag="section5"]`
 
