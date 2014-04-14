@@ -24,7 +24,7 @@ So we might have a site of "Challenges", and within there you might groups of Co
 
 And each "thing" has its own page, with associated examples and tutorials:
 
-!(https://github.com/cogdog/ds106bank/blob/master/images/assignment-bank-single.jpg "Assignment Bank Single Thing View")
+![Single Theme View](images/assignment-bank-single.jpg "Assignment Bank Single Thing View")
 
 The site options allow people to submit their responses to a challenge via a web form, or if part of an ongoing activity or community, to aggregate them in from external blogs (as [ds106](http://ds106.us) does).
 
