@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
 
 	jQuery(document).on('click', '.upload_image_button', function(e){
 
-		// not sure what this does!
+		// disable defauklt behavior
 		e.preventDefault();
 
 		// Create the media frame

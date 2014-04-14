@@ -468,7 +468,7 @@ class ds106bank_Theme_Options {
 		===========================================*/
 		
 		// lets get all the existing assignment types
-		$assigntypes = get_assignment_types();
+		$assigntypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
 		$i = 0;
 		
 		foreach ( $assigntypes as $atype ) {

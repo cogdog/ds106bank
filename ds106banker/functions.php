@@ -39,8 +39,9 @@ function ds106bank_setup() {
 	// loaded from theme options()
 	define('THINGNAME', ds106bank_option('thingname') ); // the kind of things here, should be singular
 	
+	
+	
 } // function ds106bank_setup
-
 
 // -----  add allowable url parameter
 add_filter('query_vars', 'bank106_queryvars' );
@@ -515,11 +516,11 @@ function update_assignment_meta($id, $example_count, $tutorial_count) {
 
 
 /****************** FOR CREATIVE COMMONS LICENSING  **************************/	
-function cc_license_html ($license, $author='', $yr) {
+function cc_license_html ($license, $author='', $yr='') {
 	// outputs the proper license for a THINGNAME
 	// $license is abbeviation. author is from post metadatae, Yr is from post date
 	
-	if ( !isset( $license ) or $licence == '' ) return '';
+	if ( !isset( $license ) or $license == '' ) return '';
 	
 	
 	if ($license == 'copyright') {
