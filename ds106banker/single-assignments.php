@@ -48,7 +48,7 @@
 							?>
 							
 						<p class="meta">
-						<?php _e("Created", "bonestheme"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> created by <strong><?php echo $assignmentAuthor?></strong>
+						<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> created by <strong><?php echo $assignmentAuthor?></strong>
 						</p>
 												
 						</header> <!-- end article header -->
@@ -121,7 +121,7 @@
 								// only show edit button if user has permission to edit posts
 								if( $user_level > 0 ) { 
 								?>
-								<a href="<?php echo get_edit_post_link(); ?>" class="btn btn-success edit-post"><i class="icon-pencil icon-white"></i> <?php _e("Edit post","bonestheme"); ?></a>
+								<a href="<?php echo get_edit_post_link(); ?>" class="btn btn-success edit-post"><i class="icon-pencil icon-white"></i> <?php _e("Edit post","wpbootstrap"); ?></a>
 								<?php } ?>
 						
 							</footer> <!-- end article footer -->

@@ -224,7 +224,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 		<div class="col-md-5 col-md-offset-1 clearfix">
 		
 			<fieldset>
-				<label for="assignmentType"><?php _e( 'Type of ' . THINGNAME , 'bonestheme' ) ?></label>
+				<label for="assignmentType"><?php _e( 'Type of ' . THINGNAME , 'wpbootstrap' ) ?></label>
 				<select name="assignmentType" id="assignmentType" tabindex="5">
 				<option value="-1">Select <?php echo lcfirst(THINGNAME)?> type</option>
 				
@@ -244,22 +244,22 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  			</fieldset>
  
 			<fieldset>
-				<label for="assignmentTitle"><?php _e( THINGNAME . ' Title', 'bonestheme' ) ?></label>
+				<label for="assignmentTitle"><?php _e( THINGNAME . ' Title', 'wpbootstrap' ) ?></label>
 				<input type="text" name="assignmentTitle" id="assignmentTitle" class="required" value="<?php  echo $assignmentTitle; ?>" tabindex="1" />
 			</fieldset>
 			
 			<fieldset>
-					<label for="assignmentDescription"><?php _e(THINGNAME . ' Description', 'bonestheme') ?></label>
+					<label for="assignmentDescription"><?php _e(THINGNAME . ' Description', 'wpbootstrap') ?></label>
 					<textarea name="assignmentDescription" id="assignmentDescription" rows="8" cols="30" class="required" tabindex="4"><?php echo stripslashes( $assignmentDescription );?></textarea>
 			</fieldset>
 			
 			<fieldset>
-				<label for="submitterName"><?php _e( 'Your Name:', 'bonestheme' ) ?></label>
+				<label for="submitterName"><?php _e( 'Your Name:', 'wpbootstrap' ) ?></label>
 				<input type="text" name="submitterName" id="submitterName" class="required" value="<?php echo $submitterName; ?>" tabindex="3" />
 			</fieldset>
 			
 			<fieldset>
-				<label for="submitterEmail"><?php _e( 'Your Email Address', 'bonestheme' ) ?></label>
+				<label for="submitterEmail"><?php _e( 'Your Email Address', 'wpbootstrap' ) ?></label>
 				<p>Note: Your email address is never displayed, and is only used if we need to contact you about your submission.</p>
 				<input type="text" name="submitterEmail" id="submitterEmail" class="required" value="<?php echo $submitterEmail; ?>" tabindex="3" />
 			</fieldset>
@@ -270,7 +270,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				<?php if (function_exists('the_ratings') ): // use ratings input ?>
  				
  				<fieldset>
- 				<label for="assignmentRating"><?php _e( 'Difficulty Rating' , 'bonestheme' ) ?></label>
+ 				<label for="assignmentRating"><?php _e( 'Difficulty Rating' , 'wpbootstrap' ) ?></label>
  				<p>Give your assignment a difficulty rating from 1=easy to 5=difficult</p>
  				
  				<?php
@@ -301,7 +301,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				
  				
  				<fieldset>
- 				<label for="assignmentExampleOpts"><?php _e( 'Do you have an example that demonstrates this ' . lcfirst(THINGNAME) . ' ?', 'bonestheme' )?></label>
+ 				<label for="assignmentExampleOpts"><?php _e( 'Do you have an example that demonstrates this ' . lcfirst(THINGNAME) . ' ?', 'wpbootstrap' )?></label>
  				<br />
  				<input type="radio" name="assignmentExampleOpts" id="assignmentSoMeURL" value="1" <?php if ($assignmentExampleOpts == 1) echo ' checked'?> tabindex="9" />Yes, and it is from YouTube, Flickr, Vimeo, or SoundCloud<br />
  				
@@ -312,13 +312,13 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				</fieldset>
  				
  				<fieldset id="assignmentURLfield">
- 				<label for="assignmentURL"><?php _e( 'URL for Example', 'bonestheme' )?></label>
+ 				<label for="assignmentURL"><?php _e( 'URL for Example', 'wpbootstrap' )?></label>
  				<input type="text" name="assignmentURL" id="assignmentURL" class="required" value="<?php echo $assignmentURL; ?>" tabindex="13" />
  				
  				</fieldset>
  				
  				<fieldset id="uploadThumbfield">
- 				<label for="uploadThumb"><?php _e( 'Upload Thumbnail Image', 'bonestheme' )?></label>
+ 				<label for="uploadThumb"><?php _e( 'Upload Thumbnail Image', 'wpbootstrap' )?></label>
  				Your image may be cropped if its dimensions are not proportional to the display size (<?php echo THUMBW?> x <?php echo THUMBH?>)<br />
  				<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/ccc.gif" style="width: <?php echo ATHUMBW?>px;  height: <?php echo ATHUMBH?>px; border: 1px solid #666;" alt="" /><br />
  				<input type="file" name="assignmentImage" id="assignmentImage" tabindex="14" />
@@ -334,7 +334,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				
  				<?php elseif  ($my_cc_mode == 'user') :?>
 					<fieldset id="assignmentCCfield">
-					<label for="assignmentCC"><?php _e( 'License Options', 'bonestheme' )?></label>
+					<label for="assignmentCC"><?php _e( 'License Options', 'wpbootstrap' )?></label>
 					<select name="assignmentCC" id="assignmentCC" class="required">
 					<option value="--">Select...</option>
 					<?php echo cc_license_select_options($assignmentCC) ?>
@@ -353,7 +353,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				
  				
  				<fieldset id="recaptcha">
- 				<label for="recaptcha"><?php _e( 'Spam Protection', 'bonestheme' )?></label>
+ 				<label for="recaptcha"><?php _e( 'Spam Protection', 'wpbootstrap' )?></label>
  				Unfortunately, this test is necessary to keep this site safe from spammers.<br />
  				<?php echo recaptcha_get_html( ds106bank_option('captcha_pub'), $captcha_error );?>
  				</fieldset>

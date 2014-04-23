@@ -26,7 +26,7 @@
 								}
 							 ?>
 
-							<p class="meta"><?php _e("Created", "bonestheme"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "bonestheme"); ?> <?php the_author_posts_link(); ?>  <?php echo $type_str?></p>
+							<p class="meta"><?php _e("Created", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php the_author_posts_link(); ?>  <?php echo $type_str?></p>
 						
 						</header> <!-- end article header -->
 					
@@ -34,7 +34,7 @@
 							<?php the_content(); ?>
 							
 							<p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">More...</a>
-							<?php edit_post_link( __( 'Edit', 'bonestheme' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
+							<?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 
 					
 						</section> <!-- end article section -->

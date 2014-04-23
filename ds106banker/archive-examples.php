@@ -6,7 +6,7 @@
 				
 					<div class="page-header">
  						<h1 class="archive_title h2">
-					    	<span><?php _e('All ' . THINGNAME . " Examples", "bonestheme"); ?> </span>
+					    	<span><?php _e('All ' . THINGNAME . " Examples", "wpbootstrap"); ?> </span>
 					    </h1>					</div>
 
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
@@ -24,7 +24,7 @@
 							 	$assignment_str = ($aid) ? '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
 							 ?>
 
-							<p class="meta"><?php _e("Added", "bonestheme"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "bonestheme"); ?> <?php the_author_posts_link(); ?> for  <?php echo THINGNAME?>  <?php echo $assignment_str?></p>
+							<p class="meta"><?php _e("Added", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php the_author_posts_link(); ?> for  <?php echo THINGNAME?>  <?php echo $assignment_str?></p>
 						
 						</header> <!-- end article header -->
 					

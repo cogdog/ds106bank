@@ -140,7 +140,7 @@ get_header(); ?>
 						
 							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo THINGNAME?>s</a></a>
 							
-							<?php edit_post_link( __( 'Edit', 'bonestheme' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
+							<?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					
 						</section> <!-- end article section -->
 						

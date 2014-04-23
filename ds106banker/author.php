@@ -36,7 +36,7 @@
 							 	$assignment_str = ($aid) ? '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
 							 ?>
 
-							<p class="meta"><?php _e("Added", "bonestheme"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "bonestheme"); ?> <?php the_author_posts_link(); ?> for  <?php echo THINGNAME?>  <?php echo $assignment_str?></p>
+							<p class="meta"><?php _e("Added", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php the_author_posts_link(); ?> for  <?php echo THINGNAME?>  <?php echo $assignment_str?></p>
 						
 						</header> <!-- end article header -->
 					

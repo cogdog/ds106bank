@@ -159,7 +159,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 							?>
 					
 						<p class="meta">
-						<?php _e("Created", "bonestheme"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> created by <strong><?php echo $assignmentAuthor?></strong>
+						<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> created by <strong><?php echo $assignmentAuthor?></strong>
 						</p>
 						</header> <!-- end article header -->			
 				</div> <!-- //atitle -->
@@ -197,36 +197,36 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 	<div class="clearfix row">
 		<div class="col-md-10">
 			
-			<h2 class="page-title" itemprop="headline">Add <?php _e(THINGNAME . ' ' . ucfirst($sub_type), 'bonestheme' ); ?></h2></
+			<h2 class="page-title" itemprop="headline">Add <?php _e(THINGNAME . ' ' . ucfirst($sub_type), 'wpbootstrap' ); ?></h2></
 			<p>This form allows you to add your <?php echo $sub_type?> to the <strong><?php the_title(); ?></strong> <?php echo lcfirst(THINGNAME)?>.</p> 
 		</div>
 		<div class="col-md-5 clearfix">
 		
 			<fieldset>
-				<label for="exampleTitle"><?php _e( ucfirst($sub_type) . ' Title:', 'bonestheme' ) ?></label>
+				<label for="exampleTitle"><?php _e( ucfirst($sub_type) . ' Title:', 'wpbootstrap' ) ?></label>
 				<input type="text" name="exampleTitle" id="exampleTitle" class="required" value="<?php  echo $exampleTitle; ?>" tabindex="1" />
 			</fieldset>
 			
 			<fieldset id="exampleURL">
- 				<label for="exampleURL"><?php _e( 'URL for the ' . $sub_type, 'bonestheme' )?>:</label>
+ 				<label for="exampleURL"><?php _e( 'URL for the ' . $sub_type, 'wpbootstrap' )?>:</label>
  				<input type="text" name="exampleURL" id="exampleURL" class="required" value="<?php echo $exampleURL; ?>" tabindex="13" />
  				
  			</fieldset> 				
 
 			<fieldset>
-				<label for="exampleDescription"><?php _e( ucfirst($sub_type)  . ' Description:', 'bonestheme') ?></label>
+				<label for="exampleDescription"><?php _e( ucfirst($sub_type)  . ' Description:', 'wpbootstrap') ?></label>
 				<textarea name="exampleDescription" id="assignmentexampleDescriptionDescription" rows="8" cols="30" class="required" tabindex="4"><?php echo stripslashes( $exampleDescription );?></textarea>
 			</fieldset>	
 		</div> 
 			
 		<div class="col-md-5 col-md-offset-1">
   			<fieldset>
-				<label for="submitterName"><?php _e( 'Your Name:', 'bonestheme' ) ?></label>
+				<label for="submitterName"><?php _e( 'Your Name:', 'wpbootstrap' ) ?></label>
 				<input type="text" name="submitterName" id="submitterName" class="required" value="<?php echo $submitterName; ?>" tabindex="3" />
 			</fieldset>
 			
 			<fieldset>
-				<label for="submitterEmail"><?php _e( 'Your Email Address:', 'bonestheme' ) ?></label>
+				<label for="submitterEmail"><?php _e( 'Your Email Address:', 'wpbootstrap' ) ?></label>
 				<p>Note: Your email address is never displayed, and is only used if we need to contact you about your submission.</p>
 				<input type="text" name="submitterEmail" id="submitterEmail" class="required" value="<?php echo $submitterEmail; ?>" tabindex="3" />
 			</fieldset>
@@ -241,7 +241,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				 </script>
 			
 				<fieldset id="recaptcha">
-					<label for="recaptcha"><?php _e( 'Spam Protection', 'bonestheme' )?></label>
+					<label for="recaptcha"><?php _e( 'Spam Protection', 'wpbootstrap' )?></label>
 					Unfortunately, this test is necessary to keep this site safe from spammers.<br />
 					<?php echo recaptcha_get_html( ds106bank_option('captcha_pub'), $captcha_error );?>
 				</fieldset>
