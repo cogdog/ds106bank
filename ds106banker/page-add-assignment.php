@@ -124,7 +124,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				}
 				
 				// set the term for the type of assignment
-				wp_set_object_terms( $post_id, $assignmentType , 'assignmenttypes');
+				wp_set_object_terms( $post_id, $assignmentType, 'assignmenttypes');
 				
 				// update the new tags
 				update_assignment_tags( $post_id );
@@ -151,11 +151,21 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				// if we got an attachment id, then update meta data to indicate thumbnal
 				if ($newupload) update_post_meta ($post_id, '_thumbnail_id', $newupload );	
 				
-				// grab link to new assignment
-				$assignmentLink = get_permalink( $post_id );
+				if  ( ds106bank_option( 'new_thing_status' ) == 'publish' ) {
 				
-				// feedback success
-				$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . $assignmentType . ' ' . THINGNAME . ' has been created. Check out <a href="' . get_permalink( $post_id ) . '">' . $assignmentTitle . '</a> or you can <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>.</div>';  
+					// build feedback if new things are automatically published
+					
+					// grab link to new assignment
+					$assignmentLink = get_permalink( $post_id );
+				
+					// feedback success
+					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . $assignmentType . ' ' . THINGNAME . ' has been created. Check out <a href="' . get_permalink( $post_id ) . '">' . $assignmentTitle . '</a> or you can <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>.</div>';  
+					
+				} else {
+					// feedback if new things are set to draft
+					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . $assignmentType . ' ' . THINGNAME . ', "' . $assignmentTitle . '" has been created. Once it has been approved it will appear among the other <a href="' . site_url() . '/type/' . sanitize_title($assignmentType) .  '">' . $assignmentType . ' ' . THINGNAME . 's</a> . Do you want to <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>?</div>';  
+				
+				}
  
 			} else {
 			
@@ -215,7 +225,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				<?php echo $feedback_msg?>
 				</div> <!-- end #main -->
         
-			</div> <!-- end #content -->
+			
 <?php if (!$post_id) : //hide form if we had success ?>
 			
 	<form action="" id="bank106form" class="bank106form" method="post" action="" enctype="multipart/form-data">
