@@ -453,8 +453,11 @@ function is_url_embeddable( $url ) {
 function url_is_img ($url) {
 // tests urls to see if they point to an image type
 
-	$fileExtention = pathinfo ( $url, PATHINFO_EXTENSION ); // get file extension	
-	return ( in_array( strtolower( $fileExtention) ,  ['jpg', 'jpeg', 'png', 'gif']  ) );
+	$fileExtention 	= pathinfo ( $url, PATHINFO_EXTENSION ); 	// get file extension for url_is_img	
+	$allowables 	= 	array( 'jpg', 'jpeg', 'png', 'gif' ); 	// allowable file extensions
+	
+	// check the url file extension to ones we will allow
+	return ( in_array( strtolower( $fileExtention) ,  $allowables  ) );
 }
 
 
