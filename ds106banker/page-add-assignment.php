@@ -18,8 +18,24 @@ $feedback_msg = '';
 // creative commons usage mode
 $my_cc_mode = ds106bank_option( 'use_cc' ); 
 
-// set up captcha? 
-$use_captcha =  ds106bank_option('use_captcha');
+
+if ( is_user_logged_in() ) {
+	//bypass captcha for logged in users
+	$use_captcha = false;
+	
+	// set default name and email based on user profile
+	global $user_identity, $user_email;
+	get_currentuserinfo();
+	
+	$submitterName 	= $user_identity;
+	$submitterEmail = $user_email;
+	
+} else {
+	// set up captcha if set as option;
+	$use_captcha = ds106bank_option('use_captcha');
+}
+
+// include captch lib if we need to
 if ($use_captcha) require_once( get_stylesheet_directory() . '/includes/recaptchalib.php');
 
 // status for new submissions
@@ -74,7 +90,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		
  		
  		// check captcha
-		if ( $use_captcha and isset( $_POST["recaptcha_response_field"]) ) {
+		if ( $use_captcha and isset( $_POST["recaptcha_response_field"] ) ) {
 				$resp = recaptcha_check_answer ( ds106bank_option('captcha_pri'),
 												$_SERVER["REMOTE_ADDR"],
 												$_POST["recaptcha_challenge_field"],

@@ -19,9 +19,23 @@ $sub_type = ($typ == 'tut') ? 'tutorial' : 'example';
 // assignment id
 $aid = $wp_query->query_vars['aid']; 
 
-// set up captcha? 
+if ( is_user_logged_in() ) {
+	//bypass captcha for logged in users
+	$use_captcha = false;
+	
+	// set default name and email based on user profile
+	global $user_identity, $user_email;
+	get_currentuserinfo();
+	
+	$submitterName 	= $user_identity;
+	$submitterEmail = $user_email;
+	
+} else {
+	// set up captcha if set as option;
+	$use_captcha = ds106bank_option('use_captcha');
+}
 
-$use_captcha =  ds106bank_option('use_captcha');
+// include captch lib if we need to
 if ($use_captcha) require_once( get_stylesheet_directory() . '/includes/recaptchalib.php');
 
 // status for new submissions
@@ -131,15 +145,15 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 
 <?php get_header(); ?>
 			
-			<div id="content" class="clearfix row">
+<div id="content" class="clearfix row">
 			
-				<div id="main" class="col-sm-8 clearfix" role="main">
+		<div id="main" class="col-sm-8 clearfix" role="main">
 				
 				
 				<?php if ( ( isset($aid) and isset($typ) ) OR isset( $_POST['bank106_form_add_example_submitted'] ) ) :?>
 				
 					<?php // query for this post so we can display it.
-						$the_query = new WP_Query( "p=$aid&post_type=assignments" );?>
+					$the_query = new WP_Query( "p=$aid&post_type=assignments" );?>
 				
 					<?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
 							
@@ -162,64 +176,66 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 						<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> created by <strong><?php echo $assignmentAuthor?></strong>
 						</p>
 						</header> <!-- end article header -->			
-				</div> <!-- //atitle -->
-		</div> <!-- //content title row -->		
+
+		</div> <!-- //main -->		
 					
-				<div id="content2" class="clearfix row">
-					<div  class="col-md-5">
+		<div id="content2" class="clearfix row">
+			<div  class="col-md-5">
 
-						<?php get_assignment_icon ($post->ID, MEDIAW, 'medium')?>
+				<?php get_assignment_icon ($post->ID, MEDIAW, 'medium')?>
 
-					</div>
+			</div>
 					
-					<div class="col-md-4 col-md-offset-1">
+			<div class="col-md-4 col-md-offset-1">
 
-						<?php the_content(); ?>
+				<?php the_content(); ?>
+				
+				<p><a href="<?php echo site_url() . '/?p=' . $aid ?>" class="btn btn-success">Return to this <?php echo THINGNAME?></a></p>
+				
+				<footer>
+				</footer> <!-- end article footer -->
 						
-						<p><a href="<?php echo site_url() . '/?p=' . $aid ?>" class="btn btn-success">Return to this <?php echo THINGNAME?></a></p>
-						
-						<footer>
-						</footer> <!-- end article footer -->
-								
-					</div>	<!-- end content -->
-				</div>
+			</div>	<!-- end content -->
+		</div> <!-- end row -->
 					
 		</article> <!-- end article -->
 					
 					
 		<?php endwhile; ?>	
-					
-		<?php echo $feedback_msg?>	
-					
-	<?php if (!$post_id) : //hide form if we had success ?>
-	
-	<form action="" id="bank106form" class="bank106form" method="post" action="">
-	<div class="clearfix row">
-		<div class="col-md-10">
-			
-			<h2 class="page-title" itemprop="headline">Add <?php _e(THINGNAME . ' ' . ucfirst($sub_type), 'wpbootstrap' ); ?></h2></
-			<p>This form allows you to add your <?php echo $sub_type?> to the <strong><?php the_title(); ?></strong> <?php echo lcfirst(THINGNAME)?>.</p> 
-		</div>
-		<div class="col-md-5 clearfix">
 		
-			<fieldset>
-				<label for="exampleTitle"><?php _e( ucfirst($sub_type) . ' Title:', 'wpbootstrap' ) ?></label>
-				<input type="text" name="exampleTitle" id="exampleTitle" class="required" value="<?php  echo $exampleTitle; ?>" tabindex="1" />
-			</fieldset>
+		<div id="content3" class="clearfix row">	
+			<div  class="col-md-5">		
+			<?php echo $feedback_msg?>	
+			</div>
+				
+			<?php if (!$post_id) : //hide form if we had success ?>
+	
+			<form action="" id="bank106form" class="bank106form" method="post" action="">
+			<div class="col-md-10">
 			
-			<fieldset id="exampleURL">
- 				<label for="exampleURL"><?php _e( 'URL for the ' . $sub_type, 'wpbootstrap' )?>:</label>
- 				<input type="text" name="exampleURL" id="exampleURL" class="required" value="<?php echo $exampleURL; ?>" tabindex="13" />
- 				
- 			</fieldset> 				
+				<h2 class="page-title" itemprop="headline">Add <?php _e(THINGNAME . ' ' . ucfirst($sub_type), 'wpbootstrap' ); ?></h2></
+				<p>This form allows you to add your <?php echo $sub_type?> to the <strong><?php the_title(); ?></strong> <?php echo lcfirst(THINGNAME)?>.</p> 
+			</div>
+		
+			<div class="col-md-5 clearfix">
+				<fieldset>
+					<label for="exampleTitle"><?php _e( ucfirst($sub_type) . ' Title:', 'wpbootstrap' ) ?></label>
+					<input type="text" name="exampleTitle" id="exampleTitle" class="required" value="<?php  echo $exampleTitle; ?>" tabindex="1" />
+				</fieldset>
+			
+				<fieldset id="exampleURL">
+					<label for="exampleURL"><?php _e( 'URL for the ' . $sub_type, 'wpbootstrap' )?>:</label>
+					<input type="text" name="exampleURL" id="exampleURL" class="required" value="<?php echo $exampleURL; ?>" tabindex="13" />
+				
+				</fieldset> 				
 
-			<fieldset>
-				<label for="exampleDescription"><?php _e( ucfirst($sub_type)  . ' Description:', 'wpbootstrap') ?></label>
-				<textarea name="exampleDescription" id="assignmentexampleDescriptionDescription" rows="8" cols="30" class="required" tabindex="4"><?php echo stripslashes( $exampleDescription );?></textarea>
-			</fieldset>	
-		</div> 
+				<fieldset>
+					<label for="exampleDescription"><?php _e( ucfirst($sub_type)  . ' Description:', 'wpbootstrap') ?></label>
+					<textarea name="exampleDescription" id="assignmentexampleDescriptionDescription" rows="8" cols="30" class="required" tabindex="4"><?php echo stripslashes( $exampleDescription );?></textarea>
+				</fieldset>	
+			</div> 
 			
-		<div class="col-md-5 col-md-offset-1">
+			<div class="col-md-5 col-md-offset-1">
   			<fieldset>
 				<label for="submitterName"><?php _e( 'Your Name:', 'wpbootstrap' ) ?></label>
 				<input type="text" name="submitterName" id="submitterName" class="required" value="<?php echo $submitterName; ?>" tabindex="3" />
@@ -253,12 +269,14 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				<input type="submit" class="btn btn-primary" value="Add This <?php echo $sub_type?>" tabindex="40" id="submitassignment" name="submitassignment" tabindex="15">
 			</fieldset>
 
-		</div>
-	</form>
+			</div>
+		</form>
+	</div>
 	<?php endif?>
 	
 	<?php else: ?>
-	Uh oh something is missing.
+			Harrumph. This form is only activated if you follow a link from a published <?php THINGNAME?>. I need some more information passed my way.
+	</div>
 	<?php endif?>			
-			
+</div> <!--all content -->			
 <?php get_footer(); ?>
