@@ -51,6 +51,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		// grab the variables from the form
  		$assignmentTitle = 			sanitize_text_field( $_POST['assignmentTitle'] );		
  		$submitterName = 			sanitize_text_field( $_POST['submitterName'] ); 
+ 		$assignmentTags = 			sanitize_text_field( $_POST['assignmentTags'] );	
  		$submitterEmail = 			sanitize_email( $_POST['submitterEmail'] ); 
  		$assignmentDescription = 	esc_textarea( trim($_POST['assignmentDescription']) );
  		$assignmentType = 			$_POST['assignmentType'];
@@ -118,8 +119,9 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  			
  			// good enough, let's make a post! Or a custom post type
 			$assignment_information = array(
-				'post_title' => esc_attr( strip_tags( $_POST['assignmentTitle'] ) ),
-				'post_content' => esc_attr( strip_tags( $_POST['assignmentDescription'] ) ),
+				'post_title' => $assignmentTitle,
+				'post_content' => $assignmentDescription,
+				'tags_input'  => $assignmentTags,
 				'post_type' => 'assignments',
 				'post_status' => $my_new_status,			
 			);
@@ -251,7 +253,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 		
 			<fieldset>
 				<label for="assignmentType"><?php _e( 'Type of ' . THINGNAME , 'wpbootstrap' ) ?></label>
-				<select name="assignmentType" id="assignmentType" tabindex="5">
+				<select name="assignmentType" id="assignmentType" tabindex="1">
 				<option value="-1">Select <?php echo lcfirst(THINGNAME)?> type</option>
 				
 				<?php 
@@ -271,23 +273,29 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  
 			<fieldset>
 				<label for="assignmentTitle"><?php _e( THINGNAME . ' Title', 'wpbootstrap' ) ?></label>
-				<input type="text" name="assignmentTitle" id="assignmentTitle" class="required" value="<?php  echo $assignmentTitle; ?>" tabindex="1" />
+				<input type="text" name="assignmentTitle" id="assignmentTitle" class="required" value="<?php  echo $assignmentTitle; ?>" tabindex="2" />
 			</fieldset>
 			
 			<fieldset>
 					<label for="assignmentDescription"><?php _e(THINGNAME . ' Description', 'wpbootstrap') ?></label>
-					<textarea name="assignmentDescription" id="assignmentDescription" rows="8" cols="30" class="required" tabindex="4"><?php echo stripslashes( $assignmentDescription );?></textarea>
+					<textarea name="assignmentDescription" id="assignmentDescription" rows="8" cols="30" class="required" tabindex="3"><?php echo stripslashes( $assignmentDescription );?></textarea>
+			</fieldset>
+			
+			<fieldset>
+				<label for="assignmentTags"><?php _e( THINGNAME . ' Tags (optional)', 'wpbootstrap' ) ?></label>
+				<p><em>Separate tags with commas</em></p>
+				<input type="text" name="assignmentTags" id="assignmentTags" value="<?php  echo $assignmentTags; ?>" tabindex="4" />
 			</fieldset>
 			
 			<fieldset>
 				<label for="submitterName"><?php _e( 'Your Name:', 'wpbootstrap' ) ?></label>
-				<input type="text" name="submitterName" id="submitterName" class="required" value="<?php echo $submitterName; ?>" tabindex="3" />
+				<input type="text" name="submitterName" id="submitterName" class="required" value="<?php echo $submitterName; ?>" tabindex="5" />
 			</fieldset>
 			
 			<fieldset>
 				<label for="submitterEmail"><?php _e( 'Your Email Address', 'wpbootstrap' ) ?></label>
-				<p>Note: Your email address is never displayed, and is only used if we need to contact you about your submission.</p>
-				<input type="text" name="submitterEmail" id="submitterEmail" class="required" value="<?php echo $submitterEmail; ?>" tabindex="3" />
+				<p><em>Your email address is never displayed, and is only used if we need to contact you about your submission.</em></p>
+				<input type="text" name="submitterEmail" id="submitterEmail" class="required" value="<?php echo $submitterEmail; ?>" tabindex="6" />
 			</fieldset>
 			
 			</div> 
@@ -345,8 +353,8 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				
  				<fieldset id="uploadThumbfield">
  				<label for="uploadThumb"><?php _e( 'Upload Thumbnail Image', 'wpbootstrap' )?></label>
- 				Your image may be cropped if its dimensions are not proportional to the display size (<?php echo THUMBW?> x <?php echo THUMBH?>)<br />
- 				<img src="<?php echo get_stylesheet_directory_uri(); ?>/images/ccc.gif" style="width: <?php echo ATHUMBW?>px;  height: <?php echo ATHUMBH?>px; border: 1px solid #666;" alt="" /><br />
+ 				Your image will be cropped if its dimensions are not proportional to the display size:<br />
+ 				<img src="http://placehold.it/<?php echo THUMBW?>x<?php echo THUMBH?>" alt="" /><br />
  				<input type="file" name="assignmentImage" id="assignmentImage" tabindex="14" />
  				
  				</fieldset>

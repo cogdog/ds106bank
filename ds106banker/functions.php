@@ -65,8 +65,13 @@ function bank106_rewrite_flush() {
 // ----- set up author type queries for exaples
 add_action( 'pre_get_posts', 'bank106_author_examples' );
 function bank106_author_examples( $query ) {
+
     if ( $query->is_author() && $query->is_main_query() ) {
         $query->set( 'post_type', 'examples' );
+    }
+    
+    if ( $query->is_tag() && $query->is_main_query() ) {
+        $query->set( 'post_type', 'assignments' );
     }
 }
 
@@ -170,7 +175,7 @@ function post_type_assignments() {
 							'assignmenttags',
 							'tutorialtags',
 							//'category',
-							//'post-tag',
+							'post_tag',
 						),
 							
 		)
@@ -341,22 +346,22 @@ function create_assignmentbank_tax() {
 		array( 'assignments', 'examples' ), // Post Types
 		array( 
 			'labels' => array(
-						'name' => __( $singularThing . ' Tags'),
-						'singular_name' => __( $singularThing . 'Tag'),
-						'search_items'               => __( 'Search ' . $singularThing . ' Tags' ),
-						'all_items'                  => __( 'All ' . $singularThing . ' Tags' ),
-						'edit_item'                  => __( 'Edit ' . $singularThing . ' Tag' ),
-						'update_item'                => __( 'Update ' . $singularThing . ' Tag' ),
-						'add_new_item'               => __( 'Add New ' . $singularThing . ' Tag' ),
-						'new_item_name'              => __( 'New ' . $singularThing . ' Tag' ),
-						'separate_items_with_commas' => __( 'Separate ' . lcfirst($singularThing) . ' tags with commas' ),
-						'add_or_remove_items'        => __( 'Add or remove ' . lcfirst($singularThing) . ' tags' ),
-						'choose_from_most_used'      => __( 'Choose from the most used ' . lcfirst($singularThing) . ' tags' ),
-						'not_found'                  => __( 'No ' . lcfirst($singularThing) . ' tags found.' ),
+						'name' => __( $singularThing . ' IDs'),
+						'singular_name' => __( $singularThing . 'ID'),
+						'search_items'               => __( 'Search ' . $singularThing . ' IDs' ),
+						'all_items'                  => __( 'All ' . $singularThing . ' IDs' ),
+						'edit_item'                  => __( 'Edit ' . $singularThing . ' ID' ),
+						'update_item'                => __( 'Update ' . $singularThing . ' ID' ),
+						'add_new_item'               => __( 'Add New ' . $singularThing . ' ID' ),
+						'new_item_name'              => __( 'New ' . $singularThing . ' ID' ),
+						'separate_items_with_commas' => __( 'Separate ' . lcfirst($singularThing) . ' ids with commas' ),
+						'add_or_remove_items'        => __( 'Add or remove ' . lcfirst($singularThing) . ' ids' ),
+						'choose_from_most_used'      => __( 'Choose from the most used ' . lcfirst($singularThing) . ' ids' ),
+						'not_found'                  => __( 'No ' . lcfirst($singularThing) . ' ids found.' ),
 						),
 			'show_ui' => true,
 			'show_admin_column' => true,
-			'show_tagcloud' => true,
+			'show_tagcloud' => false,
 			'hierarchical' => false,
 		)
 	);
@@ -367,23 +372,23 @@ function create_assignmentbank_tax() {
 		array( 'assignments', 'examples') , // Post Types
 		array( 
 			'labels' => array(
-						'name' => __( 'Tutorial Tags'),
-						'singular_name' => __('Tutorial Tag'),
-						'search_items'               => __( 'Search Tutorial Tags' ),
-						'all_items'                  => __( 'All Tutorial Tags' ),
-						'edit_item'                  => __( 'Edit Tutorial Tag' ),
-						'update_item'                => __( 'Update Tutorial Tag' ),
-						'add_new_item'               => __( 'Add New Tutorial Tag' ),
-						'new_item_name'              => __( 'New Tutorial Tag' ),
-						'separate_items_with_commas' => __( 'Separate tutorial tags with commas' ),
-						'add_or_remove_items'        => __( 'Add or remove tutorial tags' ),
-						'choose_from_most_used'      => __( 'Choose from the most used tutorial tags' ),
-						'not_found'                  => __( 'No tutorial tags found.' ),
+						'name' => __( 'Tutorial IDs'),
+						'singular_name' => __('Tutorial ID'),
+						'search_items'               => __( 'Search Tutorial IDs' ),
+						'all_items'                  => __( 'All Tutorial IDs' ),
+						'edit_item'                  => __( 'Edit Tutorial ID' ),
+						'update_item'                => __( 'Update Tutorial ID' ),
+						'add_new_item'               => __( 'Add New Tutorial ID' ),
+						'new_item_name'              => __( 'New Tutorial ID' ),
+						'separate_items_with_commas' => __( 'Separate tutorial ids with commas' ),
+						'add_or_remove_items'        => __( 'Add or remove tutorial ids' ),
+						'choose_from_most_used'      => __( 'Choose from the most used tutorial ids' ),
+						'not_found'                  => __( 'No tutorial ids found.' ),
 
 						),
 			'show_ui' => true,
 			'show_admin_column' => true,
-			'show_tagcloud' => true,
+			'show_tagcloud' => false,
 			'hierarchical' => false,
 		)
 	);
@@ -649,9 +654,14 @@ function bank106_fwp_installed() {
 /***************************** FORM STUFF ************************************/	
 
 function ds106bank_enqueue_add_scripts() {
+
+	// Build in tag auto complete script
+    wp_enqueue_script( 'suggest' );
+
 	// custom jquery for the add assignment form
 	wp_register_script( 'bank106_add_assignment_js' , get_stylesheet_directory_uri() . '/js/jquery.add-assignment.js', array( 'jquery' ), '1.0', TRUE );
 	wp_enqueue_script( 'bank106_add_assignment_js' );
+	
 }
 
 function bank106_add_new_types( $new_types ) {

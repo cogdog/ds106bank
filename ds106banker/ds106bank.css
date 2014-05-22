@@ -37,7 +37,7 @@
   top: 0; left: 0; bottom: 0; right: 0;
 }
 
-article.thing-archive section.post_content p {
+article.thing-archive section.post_content p, article.type-assignments #content p {
 	overflow:hidden;
 	word-wrap:break-word;
 }

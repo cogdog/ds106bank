@@ -1,105 +1,24 @@
-<?php 
-
-global $wp_query; // give us query
-
-// kind of sort passed by paramaters
-$sortedby =  ( isset( $wp_query->query_vars['srt'] ) ) ? $wp_query->query_vars['srt'] : 'newest';
-
-// we are looking for a random assignment?
-if ($sortedby  == 'random') {
-
-	// set arguments for WP_Query() using taxonomy 
-	$args = array(
-		'post_type' => 'assignments',
-		'posts_per_page' => 1,
-		'orderby' => 'rand'
-	);
-
-	// get a random post from  database
-	$my_random_post = new WP_Query ( $args );
-
-	// process the database request through WP_Query
-	while ( $my_random_post->have_posts () ) {
-	  $my_random_post->the_post ();
-	  // redirect the user to the random post
-	  wp_redirect ( get_permalink () );
-	  exit;
-	}
-}
-
-get_header(); ?>
+<?php get_header(); ?>
 			
 			<div id="content" class="clearfix row">
 			
 				<div id="main" class="col-sm-8 clearfix" role="main">
-
-					<?php
-						
-					if (function_exists('the_ratings') )  {
-						$sortoptions = array('newest' => 'Newest' , 'title' => 'Title', 'ratings' => 'Difficulty', 'examples' => 'Most Examples', 'views'=>'Most Viewed', 'random' => 'Choose one Randomly');
-					} else {
-						$sortoptions = array('newest' => 'Newest' , 'title' => 'Title', 'examples' => 'Most Examples', 'views'=>'Most Viewed', 'random' => 'Choose one Randomly');
-					}
-
-					if ($sortedby != 'newest') {
-						// if not default taxonomy view, we need to adjust the query
-						global $query_string;
-	
-						switch ($sortedby) {
-							case 'title':
-								query_posts( $query_string . '&orderby=title&order=ASC' );
-								break;
-							case 'ratings':		
-								query_posts( $query_string . '&orderby=meta_value_num&meta_key=ratings_average&order=DESC' );
-								break;
-			
-							case 'examples':
-								query_posts( $query_string . '&orderby=meta_value_num&meta_key=assignment_examples&order=DESC' );
-								break;
-			
-							case 'views':
-								query_posts( $query_string . '&orderby=meta_value_num&meta_key=assignment_visits&order=DESC' );
-								break;
-		
-							default:
-								query_posts( $query_string);
-								$sortedby = 'newest';
-						}
-					} 
-
-					
-					?>
 					<div class="page-header">
-						<h1 class="archive_title">All <?php echo THINGNAME?>s</h1>
-						
-						<form action="" id="taxassignmentview" method="get" action="">
-						<p>There are <strong><?php echo $wp_query->found_posts;?></strong> <?php echo lcfirst(THINGNAME);?>s.  View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
-							<?php
-							// remove any query string from current URL
-							$base_url = strtok( $_SERVER["REQUEST_URI"], '?' );
-							
-							foreach ($sortoptions as $key => $value) {
-								$selected = ($key == $sortedby) ? ' selected' : '';
-								echo '<option value="' . $baseurl . 
-								'?srt=' .  $key . '"' . $selected . '>' . $value . '</option>';
-							}
-							?>
-							</select>
-							</p>
-							</form>			
+						<h1 class="archive_title"><?php echo THINGNAME?>s Tagged "<?php single_tag_title(); ?>"</h1>
 
 					</div>
 
 				</div> <!-- end #main -->
  			</div> <!-- end #content -->
 
-					<?php if (have_posts()) :?>
 					
 					  <?php
-						$startrow = false; // flag to start a new row
+						$startrow = false; // flag to start a new row ?>
 						
-						while (have_posts()) : the_post();
+						<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 							
+							
+							<?php
 							// get the terms for the assignment type taxonomy
 							$assignmenttype_terms = wp_get_object_terms($post->ID, 'assignmenttypes');
 
@@ -169,8 +88,8 @@ get_header(); ?>
 					<?php } else { // if it is disabled, display regular wp prev & next links ?>
 						<nav class="wp-prev-next">
 							<ul class="pager">
-								<li class="previous"><?php next_posts_link(_e('&laquo; Older Entries', "wpbootstrap")) ?></li>
-								<li class="next"><?php previous_posts_link(_e('Newer Entries &raquo;', "wpbootstrap")) ?></li>
+								<li class="previous"><?php next_posts_link(_e('&laquo; Previous ', "wpbootstrap")) ?></li>
+								<li class="next"><?php previous_posts_link(_e('Newer  &raquo;', "wpbootstrap")) ?></li>
 							</ul>
 						</nav>
 					<?php } ?>
