@@ -18,7 +18,6 @@
 	border: 8px solid #fff;
 	-moz-border-radius: 30px;
 	border-radius: 30px;
-	
 }
 
 .thing-icon {
@@ -38,25 +37,23 @@
   top: 0; left: 0; bottom: 0; right: 0;
 }
 
+article.thing-archive section.post_content p {
+	overflow:hidden;
+	word-wrap:break-word;
+}
+
 
 .assignment-header {
-	margin: 20px 0 0;
+	margin: 0 0 0.5em;
 }
 
 .assignment-selector {
-	text-align:right;
+	margin: 2em 0;
 }
 
 .hilite {
 	background-color: #ededed;
 }
-
-/* ---------------------------= Ratings =------------------------------------- */
-.post-ratings {
-	display: inline;
-
-}
-
 
 /* ----------------------------= Forms =------------------------------------- */
 
@@ -66,7 +63,6 @@
 
 #bank106form label {
 	font-weight: bold;
-
 }
 
 #bank106form fieldset  {

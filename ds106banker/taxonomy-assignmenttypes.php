@@ -128,9 +128,13 @@ get_header(); ?>
 						<!--  thing header -->
 						<header>
 							
-							<h3 class="h2"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a> <?php if (function_exists('the_ratings')) { the_ratings(); } ?></h3>
+							<h3><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 							
-							<p class="meta">Added <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> • <?php echo get_assignment_meta( $post->ID, 'assignment_visits')?> views •  <?php echo get_assignment_meta( $post->ID, 'assignment_examples')?> examples •  <?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?> tutorials</p>
+							<?php if (function_exists('the_ratings')) { the_ratings(); } ?>
+							
+							<p class="meta">
+								Added <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> • <?php echo get_assignment_meta( $post->ID, 'assignment_visits')?> views •  <?php echo get_assignment_meta( $post->ID, 'assignment_examples')?> examples •  <?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?> tutorials
+							</p>
 							
 						</header> 
 						<!-- end thing header -->

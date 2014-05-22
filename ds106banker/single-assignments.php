@@ -29,108 +29,113 @@
 ?>
 		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 			
-			<div id="content" class="clearfix row">
 			
-				<div id="assignmment-title" class="col-md-8 clearfix" role="main">				
+			<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+			
+				<div class="clearfix row">
+					<header>
 					
-					<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-						
-						<header>
-						<div class="assignment-header">
-							<h1 class="single-title" itemprop="headline"><?php the_title(); ?> <?php if(function_exists('the_ratings')) { the_ratings(); } ?></h1>
-						</div>
-						
-						<?php 
-							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
-							
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
-							?>
-							
-						<p class="meta">
-						<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> created by <strong><?php echo $assignmentAuthor?></strong>
-						</p>
-												
-						</header> <!-- end article header -->
-					</div> <!-- //atitle -->
-					
-					<div class="col-md-4 assignment-header alignright">						
-							<!-- Selector Section -->
-	  						<div class="assignment-selector">
-	  						
-							<?php 
-							// get all of the assignments of this type and make a menu selector
-							$all_assignment_query = new WP_query(
-									array(
-										'post_type' => 'assignments', 
-										'tax_query' => array(
-												array(
-													'taxonomy' => 'assignmenttypes',
-													'field' => 'slug',
-													'terms' => $my_assignment_type->slug
-												)
-											),
-										'posts_per_page' => '-1', 
-										'orderby' => 'title', 
-										'order' => 'ASC' 
-										)
-								); ?>
-								
-								
-							<?php if ($all_assignment_query->post_count > 1) : // do we have more than one assignment? ?>
-							<form name="assignment_selector" id="assignmentSelect">
-							
-								<select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
-									<option>Choose Another <?php echo $my_assignment_type->name?> <?php echo THINGNAME?></option>
-									<option value="<?php echo get_term_link( $my_assignment_type )?>?srt=random">-- Pick One Randomly --</option>
-									<?php while ($all_assignment_query->have_posts() ) : $all_assignment_query->the_post(); 
-										if (  get_permalink() == $my_permalink) continue; // skip this assignment ?>
-										
-										<option value="<?php the_permalink(); ?>"><?php the_title()?></option>
-									
-									<?php endwhile; ?>
-								</select>
-							 </form>
-							 <?php else: ?>
-							 This is the only <?php echo $my_assignment_type->name?> <?php echo THINGNAME?>
-							 
-							 <?php endif?>
-							 
-							 <?php wp_reset_query(); ?>
-							 
-							</div> <!-- end Selector Section -->
-							
-						</div>
-
-					</div> <!-- //content title row -->
-					
-					
-					<div id="content2" class="clearfix row">
 						<div  class="col-md-5">
-
+					
+						<!-- insert/embed assignmet icon -->
 						<?php get_assignment_icon ($post->ID, MEDIAW, 'medium')?>
 
 						</div>
-					
+				
 						<div class="col-md-5 col-md-offset-1" >
-							<?php the_content(); ?>
-					
-					
-							<footer>
+								
+							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title(); ?></h1>
+							
+							<?php 
+							// insert ratings if enabled
+							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
+						
+							// look for author name in Feedwordpress meta data
+							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
+							
+							// no author assigned
+							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							?>
+							
+							<p class="meta">
+							<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> made by <strong><?php echo $assignmentAuthor?></strong>
+							</p>
+							
+							
+														<!-- Selector Section -->
+	  						<div class="assignment-selector">
+	  						
 								<?php 
+								// get all of the assignments of this type and make a menu selector
+								$all_assignment_query = new WP_query(
+										array(
+											'post_type' => 'assignments', 
+											'tax_query' => array(
+													array(
+														'taxonomy' => 'assignmenttypes',
+														'field' => 'slug',
+														'terms' => $my_assignment_type->slug
+													)
+												),
+											'posts_per_page' => '-1', 
+											'orderby' => 'title', 
+											'order' => 'ASC' 
+											)
+									); ?>
+								
+								
+								<?php if ($all_assignment_query->post_count > 1) : // do we have more than one assignment? ?>
+								<form name="assignment_selector" id="assignmentSelect">
+							
+									<select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
+										<option>Choose Another <?php echo $my_assignment_type->name?> <?php echo THINGNAME?></option>
+										<option value="<?php echo get_term_link( $my_assignment_type )?>?srt=random">-- Pick One Randomly --</option>
+										<?php while ($all_assignment_query->have_posts() ) : $all_assignment_query->the_post(); 
+											if (  get_permalink() == $my_permalink) continue; // skip this assignment ?>
+										
+											<option value="<?php the_permalink(); ?>"><?php the_title()?></option>
+									
+										<?php endwhile; ?>
+									</select>
+								 </form>
+								 
+								 <?php else: ?>
+								 
+								 This is the only <?php echo $my_assignment_type->name?> <?php echo THINGNAME?>
+							 
+								 <?php endif?>
+							 
+								 <?php wp_reset_query(); ?>
+								 
+							</div> <!-- end assignment menu selector -->
+							
+							<?php 
 								// only show edit button if user has permission to edit posts
 								if( $user_level > 0 ) { 
 								?>
-								<a href="<?php echo get_edit_post_link(); ?>" class="btn btn-success edit-post"><i class="icon-pencil icon-white"></i> <?php _e("Edit post","wpbootstrap"); ?></a>
+								<a href="<?php echo get_edit_post_link(); ?>" class="btn btn-success edit-post"><i class="icon-pencil icon-white"></i> <?php _e("Edit This " . THINGNAME,"wpbootstrap"); ?></a>
 								<?php } ?>
+
+						</div>	<!-- end header content -->
+						
+					</header> <!-- end article header -->	
+				</div>	<!-- end row -->
+					
+				<div id="content" class="clearfix row">	
+						<div  class="col-md-10">
+						
+							<?php the_content(); ?>
+					
+							<footer>
 						
 							</footer> <!-- end article footer -->
-						</div>	<!-- end content -->
-					</div>
+						</div>
 					
-					</article> <!-- end article -->
+				</div>
+					
+				</article> <!-- end article -->
 
-					<div id="content3" class="clearfix row hilite">
+				<div  class="clearfix row hilite">
 						<div class="clearfix col-md-5">
 						<h3>Do this <?php echo THINGNAME?></h3>
 						<p>Once you complete this <?php echo lcfirst(THINGNAME)?>, share it! 
