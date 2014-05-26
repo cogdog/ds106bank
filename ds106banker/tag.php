@@ -35,7 +35,7 @@
 							}
 						?>
 											
-					<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
+					<article id="post-<?php the_ID(); ?>"  role="article" class="thing-archive">
 						
 						<header>
 							
@@ -47,9 +47,9 @@
 						</header> <!-- end article header -->
 
 
-						<!-- thing icon or embedded media -->
+						<!-- thing icon -->
 						<div class="thing-icon">
-						<a href="<?php the_permalink(); ?>"><?php get_assignment_icon ($post->ID, THUMBW, 'thumbnail')?></a>
+						<a href="<?php the_permalink(); ?>"><?php get_thing_icon ($post->ID, 'thumbnail', true) ?></a>
 						</div>
 						<!-- end icon or media -->
 					

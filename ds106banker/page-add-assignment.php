@@ -12,7 +12,6 @@ add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_add_scripts' );
 
 // set af default values
 $assignmentRating = 1;
-$assignmentExampleOpts = 1;
 $feedback_msg = '';
 
 // creative commons usage mode
@@ -56,7 +55,6 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		$assignmentDescription = 	esc_textarea( trim($_POST['assignmentDescription']) );
  		$assignmentType = 			$_POST['assignmentType'];
  		$assignmentRating = 		$_POST['assignmentRating'];		
- 		$assignmentExampleOpts = 	$_POST['assignmentExampleOpts'];
  		$assignmentURL = 			esc_url( trim($_POST['assignmentURL']), array('http', 'https') ); 
  		$assignmentCC = 			$_POST['assignmentCC'];
  		
@@ -76,14 +74,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		if ( strlen( $assignmentDescription ) < 50 )  $errors[] = '<strong>Description Missing or Too Short</strong>- please provide a full description that will help someone complete this ' . lcfirst(THINGNAME) . '.';
  		
  		if ( $assignmentType == -1 ) $errors[] = '<strong>Type Not Selected</strong>- select the type of ' . lcfirst(THINGNAME);
- 		
- 		// check entered URLs
- 		if ( $assignmentExampleOpts < 3 ) {
- 			if ($assignmentURL == '') {
- 				$errors[] = '<strong>Example URL Missing or not Entered Correctly</strong>- if you have an example, please enter the full URL where it can be found- it must start with "http://"';	 
- 			}
- 		} // end url CHECK
- 		
+ 		 		
  		// check selection of license option
  		if ($assignmentCC == '--')  {
  			$errors[] = '<strong>License Not Selected</strong>- Choose the license you wish to attach to thie ' . lcfirst(THINGNAME);	 
@@ -332,30 +323,19 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				?>
 				</fieldset>
  			<?php endif?>
- 				
- 				
- 				<fieldset>
- 				<label for="assignmentExampleOpts"><?php _e( 'Do you have an example that demonstrates this ' . lcfirst(THINGNAME) . ' ?', 'wpbootstrap' )?></label>
- 				<br />
- 				<input type="radio" name="assignmentExampleOpts" id="assignmentSoMeURL" value="1" <?php if ($assignmentExampleOpts == 1) echo ' checked'?> tabindex="9" />Yes, and it is from YouTube, Flickr, Vimeo, or SoundCloud<br />
- 				
- 				<input type="radio" name="assignmentExampleOpts" id="assignmentOtherURL" value="2" <?php if ($assignmentExampleOpts == 2) echo ' checked'?> tabindex="10" />Yes, but it is on another site<br />
- 				
- 				<input type="radio" name="assignmentExampleOpts" id="assignmentNoURL" value="3" <?php if ($assignmentExampleOpts == 3) echo ' checked'?> tabindex="11" />No, I really just want to write it without providing an example
-
- 				</fieldset>
- 				
+ 								
  				<fieldset id="assignmentURLfield">
- 				<label for="assignmentURL"><?php _e( 'URL for Example', 'wpbootstrap' )?></label>
+ 				<label for="assignmentURL"><?php _e( 'Example URL', 'wpbootstrap' )?></label>
+ 				<p>Enter a URL for an example that demonstrates this <?php echo lcfirst(THINGNAME)?>. If the example URL is an image or is on YouTube, vimeo, soundcloud, or flickr, then it will be embedded; other wise it will be linked.</p>
  				<input type="text" name="assignmentURL" id="assignmentURL" class="required" value="<?php echo $assignmentURL; ?>" tabindex="13" />
  				
  				</fieldset>
  				
  				<fieldset id="uploadThumbfield">
  				<label for="uploadThumb"><?php _e( 'Upload Thumbnail Image', 'wpbootstrap' )?></label>
- 				Your image will be cropped if its dimensions are not proportional to the display size:<br />
+ 				<p>Upload an image to represent your <?php echo THINGNAME?>. It can be any size larger than shown below; if it is of different proportions, it may be cropped to fit. If no image is uploaded, it will be represented by the <a href="<?php echo ds106bank_option('def_thumb')?>" target="_blank">default image</a>.<br />
  				<img src="http://placehold.it/<?php echo THUMBW?>x<?php echo THUMBH?>" alt="" /><br />
- 				<input type="file" name="assignmentImage" id="assignmentImage" tabindex="14" />
+ 				<input type="file" name="assignmentImage" id="assignmentImage" tabindex="14" /></p>
  				
  				</fieldset>
  				

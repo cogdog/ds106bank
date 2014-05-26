@@ -465,44 +465,82 @@ function url_is_img ($url) {
 	return ( in_array( strtolower( $fileExtention) ,  $allowables  ) );
 }
 
+function url_is_video ($url) {
 
-function get_assignment_icon ($pid, $width, $imgsize) {
-// output icon for assignment or embeded media if example is embeddable
+	$allowed_videos = array(
+					'youtube.com/watch?',
+					'youtu.be',
+					'vimeo.com'
+	);
+
+
+	// walk the array til we get a match
+	foreach( $allowed_videos as $fragment ) {
+  		if  (strpos( $url, $fragment ) !== false ) {
+			return ( true );
+		}
+	}	
+	
+	// no matches, no videos for you
+	return ( false );
+}
+
+
+
+
+function get_thing_icon ($pid, $imgsize, $is_menu=false) {
+// Display the thumbnail for a thing; add a link to it if we are on 
+// an archive page
+	
+	// get clean string for alt attribute
+	$title_str =  trim(strip_tags( get_the_title( $pid ) ) );
+	
+	
+	// Do we have a thumbnail defined?
+		
+	if ( '' != get_the_post_thumbnail($pid) ) {
+		the_post_thumbnail( $imgsize, array ('class'=> "thing-pic",
+	'alt'	=> $title_str) );
+	} else {
+		// Otherwise use the default image
+		echo '<img src="' . ds106bank_option('def_thumb' ) . '" class="thing-pic" alt="' . esc_attr( $title_str) . '" />';
+	} 
+} 
+
+function get_example_media ( $pid ) {
+// output link to example, display media or embeded media if example is embeddable
 
 	if ( get_post_meta( $pid, 'fwp_url', true ) ) {
 		// url for example of assignment
+		
 		$assignmentURL = get_post_meta( $pid, 'fwp_url', true );
+		
+		echo '<p class="example-url"><strong>Example for "' . get_the_title($pid) . '":</strong><br /><a href="' . $assignmentURL . '">' . $assignmentURL  . ' </a></p>';
 			
 		// try and get embed code for the linke (e.g. youtube, flickr, soundcloid)
-		$embedcode = ( is_url_embeddable($assignmentURL) ) ? wp_oembed_get( $assignmentURL, array('width'=>$width )) : false;
+		$embedcode = ( is_url_embeddable($assignmentURL) ) ? wp_oembed_get( $assignmentURL ) : false;
 		
-		// set up html for linking to example
-		$imgcode =  '<a href="' . $assignmentURL. '">'; 
+		// if example is an image, we will use that as a display media
+		if ( url_is_img( $assignmentURL ) ) $imgcode .= '<img src="' . $assignmentURL . '" alt="" />';
 		
-		if ( url_is_img( $assignmentURL ) ) $imgcode .= '<img src="' . $assignmentURL . '" width="' . $width . '" alt="" />';
-		$after_image = '</a>';
-			
-	} else {
-		$after_image = '';
-	}
-		
-	// if we are not embedding , use a thumbnail
-	if (!$embedcode) {
-		echo $imgcode;
-		
-		// Do we have a thumbnail defined?
-		if ( '' != get_the_post_thumbnail($pid) ) {
-			the_post_thumbnail($imgsize);
+		// if we are not embedding the image
+		if (!$embedcode) {
+			echo $imgcode;
+
 		} else {
-			// no, use the default image
-			echo '<img src="' . ds106bank_option('def_thumb' ) . ' " width="' . $width  .  '" alt="" />';
-		} 
-	
-		echo $after_image;
-	} else {
-		echo $embedcode;
+		
+			if ( url_is_video ($assignmentURL) ) {
+				echo '<div class="videoWrapper">' . $embedcode . '</div>';
+			} else {
+				echo $embedcode;
+			}
+		}
+
 	}
+		
 } 
+
+
 
 function update_assignment_meta($id, $example_count, $tutorial_count) {
 // update custom post meta to track the views and the number of examples done for each assignment

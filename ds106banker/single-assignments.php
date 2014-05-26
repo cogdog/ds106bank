@@ -30,19 +30,20 @@
 		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 			
 			
-			<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+			<article id="post-<?php the_ID(); ?>"  role="article">
 			
 				<div class="clearfix row">
 					<header>
-					
-						<div  class="col-md-5">
-					
-						<!-- insert/embed assignmet icon -->
-						<?php get_assignment_icon ($post->ID, MEDIAW, 'medium')?>
-
+						<div class="col-md-4">
+						
+							<div class="thing-icon-single">
+							<!-- insert/embed assignmet icon -->
+							<?php get_thing_icon ( $my_id ,'thumbnail')?>
+							</div>
 						</div>
-				
-						<div class="col-md-5 col-md-offset-1" >
+
+						<div class="col-md-6 col-md-offset-1" >
+
 								
 							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title(); ?></h1>
 							
@@ -58,14 +59,12 @@
 							?>
 							
 							<p class="meta">
-							<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> made by <strong><?php echo $assignmentAuthor?></strong><br />
-							
+							<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> made by <strong><?php echo $assignmentAuthor?></strong>
 							</p>
 							
-							<?php the_tags('<p class="tags"><span class="tags-title">' . __("Tags","wpbootstrap") . ':</span> ', ' ', '</p>'); ?>
+							<?php the_tags('<p class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ':</span> ', ' ', '</p>'); ?>
 							
-							
-														<!-- Selector Section -->
+							<!-- Selector Section -->
 	  						<div class="assignment-selector">
 	  						
 								<?php 
@@ -118,22 +117,22 @@
 								?>
 								<a href="<?php echo get_edit_post_link(); ?>" class="btn btn-success edit-post"><i class="icon-pencil icon-white"></i> <?php _e("Edit This " . THINGNAME,"wpbootstrap"); ?></a>
 								<?php } ?>
-
-						</div>	<!-- end header content -->
-						
+						</div>
 					</header> <!-- end article header -->	
 				</div>	<!-- end row -->
 					
-				<div id="content" class="clearfix row">	
-						<div  class="col-md-10">
+				<div id="thingcontent" class="clearfix row">	
+						<div class="col-md-12" \>
 						
 							<?php the_content(); ?>
 					
 							<footer>
+							
+							<?php get_example_media($my_id)?>
+							
 						
 							</footer> <!-- end article footer -->
 						</div>
-					
 				</div>
 					
 				</article> <!-- end article -->

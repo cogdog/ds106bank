@@ -37,10 +37,11 @@ if ($sortedby  == 'random') {
 }
 
 get_header(); ?>
-			
+
+<div class="container">				
 			<div id="content" class="clearfix row">
 			
-				<div id="main" class="col-sm-8 clearfix" role="main">
+				<div id="main" class="col-md-8" role="main">
 					<?php
 					
 						if (function_exists('the_ratings') )  {
@@ -141,7 +142,7 @@ get_header(); ?>
 
 						<!-- thing icon or embedded media -->
 						<div class="thing-icon">
-						<a href="<?php the_permalink(); ?>"><?php get_assignment_icon ($post->ID, THUMBW, 'thumbnail')?></a>
+						<a href="<?php the_permalink(); ?>"><?php get_thing_icon ($post->ID, 'thumbnail', true) ?></a>
 						</div>
 						<!-- end icon or media -->
 					
@@ -169,7 +170,7 @@ get_header(); ?>
 					
 					<div  class="clearfix row">
 			
-							<div id="main" class="col-sm-8">
+							<div id="main" class="col-md-8">
 							<?php if (function_exists('page_navi')) { // if expirimental feature is active ?>
 						
 								<?php page_navi(); // use the page navi function ?>
@@ -201,3 +202,5 @@ get_header(); ?>
 					</div>
 
 <?php get_footer(); ?>
+
+</div>

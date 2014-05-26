@@ -9,10 +9,11 @@ title of the page and any content are displayed above the menu.
 ?>
 
 <?php get_header(); ?>
-			
+<div class="container">	
+		
 			<div id="content" class="clearfix row">
 			
-				<div id="main" class="col-sm-8 clearfix" role="main">
+				<div id="main" class="col-md-8 clearfix" role="main">
 
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
@@ -65,7 +66,7 @@ title of the page and any content are displayed above the menu.
  				if ( count($assignmenttypes) == 0 ) {
  				
  					// warning warning if no things have yet created
- 					echo '<div class="clearfix row"><div class="col-sm-2 col-md-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . THINGNAME . 's have been set up. You can do that if you explore the Assignment Bank Options under tge <em>Types</em> tab.</p></div></div>';
+ 					echo '<div class="clearfix row"><div class="col-md-2 col-md-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . THINGNAME . 's have been set up. You can do that if you explore the Assignment Bank Options under the <em>Types</em> tab.</p></div></div>';
  					
  				} else {	
  					
@@ -79,7 +80,11 @@ title of the page and any content are displayed above the menu.
 							// start a new row? fix any wraps
 							if ($startrow)  {
 								echo '<div class="clearfix row">'; 
+								echo '<div class="col-md-5">';
+							} else {
+								echo '<div class="col-md-5 col-md-offset-1">';
 							}
+								
 						?>
 						
  						<?php
@@ -95,7 +100,7 @@ title of the page and any content are displayed above the menu.
  						$plural = ( $atype->count == 1 ) ? '' : 's';
  						
  						?>
- 						<div class="col-sm-5 col-md-offset-1">
+ 						
  						
 							<article role="article" class="thing-archive">
 								<!--  thing name header -->
@@ -133,3 +138,5 @@ title of the page and any content are displayed above the menu.
  				} // count($assignmenttypes)
  				?>
 <?php get_footer(); ?>
+
+</div>

@@ -305,14 +305,6 @@ class ds106bank_Theme_Options {
 			'section' => 'general'
 		);
 		
-		$this->settings['page_media_width'] = array(
-			'title'   => __( 'Single Item Media Size' ),
-			'desc'    => __( 'Width of images and embeds on single display pages, in pixels' ),
-			'std'     => '500',
-			'type'    => 'text',
-			'section' => 'general'
-		);
-
 		$this->settings['def_thumb'] = array(
 			'title'   => __( 'Set default ' . lcfirst(THINGNAME) . ' thumbnail image' ),
 			'desc'    => __( 'This image will be used if none is defined.' ),

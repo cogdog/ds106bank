@@ -49,13 +49,6 @@ Set the width and height of thumbnail images on all index and archive pages. Any
 
 <p>On the <strong><a href="<?php echo admin_url('admin.php?page=wp-postratings/postratings-options.php')?>">Post Rating Options</a></strong> choose the graphic style for the ratings- the suggestion is one of the stars settings with a max ratings of 5. Set the "Allow to Rate" option to <strong>Registered Users and Guests</strong> to allow any site visitor to rate.</p>
 
-<p>Set the <a href="<?php echo admin_url( 'admin.php?page=wp-postratings/postratings-templates.php')?>">Post Ratings Templates</a>  as indicated to reduce the clutter the default labels the plugin creates ("Most Rated" can be ignored).</p>
-
-<ul>
-<li><strong>Ratings Vote Text, Ratings None</strong> Enter <code>%RATINGS_IMAGES_VOTE%</code></li>
-<li><strong>Ratings Voted Text, Ratings No Permission Text, Highest Rated</strong> Enter <code>%RATINGS_IMAGES%</code></li>
-</ul>
-
 <h4>Assignment Bank Options: General Settings: Settings for  Examples</h4>
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/submit-examples.jpg" alt="" style="border:3px solid #000;" /><br />By checking the first box, this  section allows you to enable a web form for site visitors to submit their examples as response to a thing (the form asks for name, email title, description, and a link).
 
