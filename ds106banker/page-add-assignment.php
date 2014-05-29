@@ -14,6 +14,7 @@ add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_add_scripts' );
 $assignmentRating = 1;
 $feedback_msg = '';
 
+
 // creative commons usage mode
 $my_cc_mode = ds106bank_option( 'use_cc' ); 
 
@@ -73,7 +74,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		// arbitrary string length to be considered a reasonable descriptions
  		if ( strlen( $assignmentDescription ) < 50 )  $errors[] = '<strong>Description Missing or Too Short</strong>- please provide a full description that will help someone complete this ' . lcfirst(THINGNAME) . '.';
  		
- 		if ( $assignmentType == -1 ) $errors[] = '<strong>Type Not Selected</strong>- select the type of ' . lcfirst(THINGNAME);
+ 		if ( empty( $assignmentType ) ) $errors[] = '<strong>Type Not Selected</strong>- select at least one type of ' . lcfirst(THINGNAME);
  		 		
  		// check selection of license option
  		if ($assignmentCC == '--')  {
@@ -244,8 +245,8 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 		
 			<fieldset>
 				<label for="assignmentType"><?php _e( 'Type of ' . THINGNAME , 'wpbootstrap' ) ?></label>
-				<select name="assignmentType" id="assignmentType" tabindex="1">
-				<option value="-1">Select <?php echo lcfirst(THINGNAME)?> type</option>
+				<p>Choose at least one.</p>
+				
 				
 				<?php 
 					// build options based on assignment types
@@ -254,12 +255,10 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					$atypes = get_assignment_types();
 					
 					foreach ($atypes as $thetype) {
-						$aselected = ($assignmentType == $thetype->name) ? ' selected' : '';
-						
-						echo '<option value="' . $thetype->name . '"' . $aselected . '>' .  $thetype->name . '</option>';
+						$checked = ( is_array($assignmentType) and in_array( $thetype->slug, $assignmentType ) ) ? 'checked="checked"' : ''; 
+						echo '<input type="checkbox" name="assignmentType[]" value="' . $thetype->slug . '" ' . $checked .'> ' . $thetype->name . '<br />';
 					}					
 					?>			
-				</select>	
  			</fieldset>
  
 			<fieldset>

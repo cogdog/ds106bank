@@ -1,14 +1,8 @@
 <?php get_header(); ?>
 
 <?php
-	// get terms for type of assignment
-	$assignmenttype_terms = wp_get_object_terms($post->ID, 'assignmenttypes');
-
-	// we expext only 1 assignment type
-	$my_assignment_type = $assignmenttype_terms[0];
 	
 	// unique assignment/tutorial tags
-	$my_assignment_type_tag = $my_assignment_type->name . THINGNAME;
 	$my_assignment_tag = THINGNAME . $post->ID;
 	$my_tutorial_tag = 'Tutorial' . $post->ID;
 	
@@ -58,58 +52,13 @@
 							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
 							?>
 							
-							<p class="meta">
-							<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> made by <strong><?php echo $assignmentAuthor?></strong>
+							<p class="meta">This <?php echo THINGNAME?> was 
+							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong>
 							</p>
 							
+							<p><?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> </p>
+							
 							<?php the_tags('<p class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ':</span> ', ' ', '</p>'); ?>
-							
-							<!-- Selector Section -->
-	  						<div class="assignment-selector">
-	  						
-								<?php 
-								// get all of the assignments of this type and make a menu selector
-								$all_assignment_query = new WP_query(
-										array(
-											'post_type' => 'assignments', 
-											'tax_query' => array(
-													array(
-														'taxonomy' => 'assignmenttypes',
-														'field' => 'slug',
-														'terms' => $my_assignment_type->slug
-													)
-												),
-											'posts_per_page' => '-1', 
-											'orderby' => 'title', 
-											'order' => 'ASC' 
-											)
-									); ?>
-								
-								
-								<?php if ($all_assignment_query->post_count > 1) : // do we have more than one assignment? ?>
-								<form name="assignment_selector" id="assignmentSelect">
-							
-									<select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
-										<option>Choose Another <?php echo $my_assignment_type->name?> <?php echo THINGNAME?></option>
-										<option value="<?php echo get_term_link( $my_assignment_type )?>?srt=random">-- Pick One Randomly --</option>
-										<?php while ($all_assignment_query->have_posts() ) : $all_assignment_query->the_post(); 
-											if (  get_permalink() == $my_permalink) continue; // skip this assignment ?>
-										
-											<option value="<?php the_permalink(); ?>"><?php the_title()?></option>
-									
-										<?php endwhile; ?>
-									</select>
-								 </form>
-								 
-								 <?php else: ?>
-								 
-								 This is the only <?php echo $my_assignment_type->name?> <?php echo THINGNAME?>
-							 
-								 <?php endif?>
-							 
-								 <?php wp_reset_query(); ?>
-								 
-							</div> <!-- end assignment menu selector -->
 							
 							<?php 
 								// only show edit button if user has permission to edit posts

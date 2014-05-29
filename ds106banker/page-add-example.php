@@ -182,7 +182,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 		<div id="content2" class="clearfix row">
 			<div  class="col-md-5">
 
-				<?php get_assignment_icon ($post->ID, MEDIAW, 'medium')?>
+				<?php get_thing_icon ($post->ID, 'thumbnail')?>
 
 			</div>
 					
