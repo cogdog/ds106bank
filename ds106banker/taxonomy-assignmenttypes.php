@@ -131,10 +131,20 @@ get_header(); ?>
 							
 							<h3><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 							
-							<?php if (function_exists('the_ratings')) { the_ratings(); } ?>
+							<?php 
+							// insert ratings if enabled
+							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
+						
+							// look for author name in Feedwordpress meta data
+							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
+							
+							// no author assigned
+							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							?>
+							
 							
 							<p class="meta">
-								Added <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> • <?php echo get_assignment_meta( $post->ID, 'assignment_visits')?> views •  <?php echo get_assignment_meta( $post->ID, 'assignment_examples')?> examples •  <?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?> tutorials
+								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> &bull; <strong><?php echo get_assignment_meta( $post->ID, 'assignment_visits')?></strong> views &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_examples')?></strong> examples</strong> &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?></strong> tutorials
 							</p>
 							
 						</header> 

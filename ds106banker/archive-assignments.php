@@ -118,14 +118,29 @@ get_header(); ?>
 											
 					<article id="post-<?php the_ID(); ?>" role="article" class="thing-archive">
 						
+						<!--  thing header -->
 						<header>
 							
-							<h3><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a> </h3>
-							<?php if (function_exists('the_ratings')) { the_ratings(); } ?>
+							<h3><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 							
-							<p class="meta">Added <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> • <?php echo get_assignment_meta( $post->ID, 'assignment_visits')?> views •  <?php echo get_assignment_meta( $post->ID, 'assignment_examples')?> examples •  <?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?> tutorials</p>
+							<?php 
+							// insert ratings if enabled
+							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
 						
-						</header> <!-- end article header -->
+							// look for author name in Feedwordpress meta data
+							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
+							
+							// no author assigned
+							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							?>
+							
+							
+							<p class="meta">
+								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> &bull; <strong><?php echo get_assignment_meta( $post->ID, 'assignment_visits')?></strong> views &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_examples')?></strong> examples</strong> &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?></strong> tutorials
+							</p>
+							
+						</header> 
+						<!-- end thing header -->
 
 
 						<!-- thing icon or embedded media -->
