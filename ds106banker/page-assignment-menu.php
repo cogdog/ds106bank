@@ -91,13 +91,13 @@ title of the page and any content are displayed above the menu.
  						// get the term for this type of taxonomy
  						$items = get_term_by('id', $atype->term_id, 'assignmenttypes');
  						
- 						// string for start of link around icon
- 						$type_url_str = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="All ' . $atype->name . 's">';
- 						// string for start of link around 
- 						$type_url_btn = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="All ' . $atype->name . 's" class="btn btn-primary">';
- 						
  						// Add "s" if the count is 0 or more than 1
  						$plural = ( $atype->count == 1 ) ? '' : 's';
+ 						
+ 						// string for start of link around icon
+ 						$type_url_str = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="View All ' . $atype->name . ' ' . THINGNAME .  's">';
+ 						// string for start of link around 
+ 						$type_url_btn = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="View All ' .  $atype->name . ' ' . THINGNAME .  's" class="btn btn-primary">';
  						
  						?>
  						
