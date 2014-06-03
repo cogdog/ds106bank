@@ -169,11 +169,11 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					$assignmentLink = get_permalink( $post_id );
 				
 					// feedback success
-					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . $assignmentType . ' ' . THINGNAME . ' has been created. Check out <a href="' . get_permalink( $post_id ) . '">' . $assignmentTitle . '</a> or you can <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>.</div>';  
+					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . THINGNAME . ' has been created. Check out <a href="' . get_permalink( $post_id ) . '">' . $assignmentTitle . '</a> or you can <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>.</div>';  
 					
 				} else {
 					// feedback if new things are set to draft
-					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . $assignmentType . ' ' . THINGNAME . ', "' . $assignmentTitle . '" has been created. Once it has been approved it will appear among the other <a href="' . site_url() . '/type/' . sanitize_title($assignmentType) .  '">' . $assignmentType . ' ' . THINGNAME . 's</a> . Do you want to <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>?</div>';  
+					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . THINGNAME . ', "' . $assignmentTitle . '" has been created. Once it has been approved it will appear on this site. Do you want to <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>?</div>';  
 				
 				}
  
@@ -255,8 +255,8 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					$atypes = get_assignment_types();
 					
 					foreach ($atypes as $thetype) {
-						$checked = ( is_array($assignmentType) and in_array( $thetype->slug, $assignmentType ) ) ? 'checked="checked"' : ''; 
-						echo '<input type="checkbox" name="assignmentType[]" value="' . $thetype->slug . '" ' . $checked .'> ' . $thetype->name . '<br />';
+						$checked = ( is_array($assignmentType) and in_array( $thetype->term_id, $assignmentType ) ) ? 'checked="checked"' : ''; 
+						echo '<input type="checkbox" name="assignmentType[]" value="' . $thetype->term_id . '" ' . $checked .'> ' . $thetype->name . '<br />';
 					}					
 					?>			
  			</fieldset>
