@@ -294,29 +294,22 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				<?php if (function_exists('the_ratings') ): // use ratings input ?>
  				
  				<fieldset>
- 				<label for="assignmentRating"><?php _e( 'Difficulty Rating' , 'wpbootstrap' ) ?></label>
- 				<p>Give your assignment a difficulty rating from 1=easy to 5=difficult</p>
+ 				<label for="assignmentRating"><?php _e( 'Rating' , 'wpbootstrap' ) ?></label>
+ 				<p>Give your assignment an appropriate rating</p>
  				
  				<?php
- 				
- 					// ratings from 1 to 5
- 					for ( $i = 1; $i <  6; $i++ ) {
- 					
- 						// extra labels for 1 and 5
- 						switch ($i) {
- 							 case 1: 
- 								$ratingextra = ' (easy)';
- 								break;
- 							case 5: 
- 								$ratingextra = ' (hard)';
- 								break;
- 							default;
- 								$ratingextra = '';
- 						}
- 						
+ 				// get wp-ratings settings
+ 				$postratings_max = intval(get_option('postratings_max'));
+				$postratings_ratingstext = get_option('postratings_ratingstext');
+ 		
+ 					// ratings from 1 to max
+ 					for ( $i = 1; $i <= $postratings_max; $i++ ) {
+				
  						$is_checked = ( $assignmentRating == $i) ? ' checked' : '';
+ 						
+ 						$rating_label = ( empty( $postratings_ratingstext[$i-1] ) ) ? $i : $postratings_ratingstext[$i-1];
  							
- 						echo '<input type="radio" name="assignmentRating" value="' . $i . '"' . $is_checked . ' tabindex="' . (5 + $i) . '"/> ' . $i . $ratingextra . '<br />';
+ 						echo '<input type="radio" name="assignmentRating" value="' . $i . '"' . $is_checked . ' tabindex="' . (5 + $i) . '"/> '. $rating_label . '<br />';
  					}
 
  				?>
