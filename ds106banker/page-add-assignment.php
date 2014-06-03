@@ -255,8 +255,8 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					$atypes = get_assignment_types();
 					
 					foreach ($atypes as $thetype) {
-						$checked = ( is_array($assignmentType) and in_array( $thetype->term_id, $assignmentType ) ) ? 'checked="checked"' : ''; 
-						echo '<input type="checkbox" name="assignmentType[]" value="' . $thetype->term_id . '" ' . $checked .'> ' . $thetype->name . '<br />';
+						$checked = ( is_array($assignmentType) and in_array( $thetype->slug, $assignmentType ) ) ? 'checked="checked"' : ''; 
+						echo '<input type="checkbox" name="assignmentType[]" value="' . $thetype->slug . '" ' . $checked .'> ' . $thetype->name . '<br />';
 					}					
 					?>			
  			</fieldset>
