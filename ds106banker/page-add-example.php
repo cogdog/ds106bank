@@ -143,12 +143,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 }	
 ?>
 
-<?php get_header(); ?>
-			
-<div id="content" class="clearfix row">
-			
-		<div id="main" class="col-sm-8 clearfix" role="main">
-				
+<?php get_header(); ?>				
 				
 				<?php if ( ( isset($aid) and isset($typ) ) OR isset( $_POST['bank106_form_add_example_submitted'] ) ) :?>
 				
@@ -157,49 +152,60 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				
 					<?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
 							
-						<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+						<article id="post-<?php the_ID(); ?>"  role="article">
 				
-						<header>
-					
-						<div class="assignment-header">
-							<h1 class="single-title" itemprop="headline"><?php the_title(); ?> <?php if (function_exists('the_ratings')) { the_ratings(); } ?></h1>
+						<div class="clearfix row">
+					<header>
+						<div class="col-md-4">
+						
+							<div class="thing-icon-single">
+							<!-- insert/embed assignmet icon -->
+							<?php get_thing_icon ( $my_id ,'thumbnail')?>
+							</div>
 						</div>
-				
-						<?php 
+
+						<div class="col-md-6 col-md-offset-1" >
+
+								
+							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title(); ?></h1>
+							
+							<?php 
+							// insert ratings if enabled
+							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
+						
 							// look for author name in Feedwordpress meta data
 							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
-					
+							
+							// no author assigned
 							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
 							?>
-					
-						<p class="meta">
-						<?php _e("Created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> • a <a href="/type/<?php echo $my_assignment_type->slug?>"><?php echo $my_assignment_type->name?> <?php echo THINGNAME?></a> created by <strong><?php echo $assignmentAuthor?></strong>
-						</p>
-						</header> <!-- end article header -->			
-
-		</div> <!-- //main -->		
-					
-		<div id="content2" class="clearfix row">
-			<div  class="col-md-5">
-
-				<?php get_thing_icon ($post->ID, 'thumbnail')?>
-
-			</div>
-					
-			<div class="col-md-4 col-md-offset-1">
-
-				<?php the_content(); ?>
-				
-				<p><a href="<?php echo site_url() . '/?p=' . $aid ?>" class="btn btn-success">Return to this <?php echo THINGNAME?></a></p>
-				
-				<footer>
-				</footer> <!-- end article footer -->
+							
+							<p class="meta">This <?php echo THINGNAME?> was 
+							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong>
+							</p>
+							
+							<p><?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> </p>
+							
+							<?php the_tags('<p class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ':</span> ', ' ', '</p>'); ?>
+							
+							<p><a href="<?php echo site_url() . '/?p=' . $aid ?>" class="btn btn-success">Return to this <?php echo THINGNAME?></a></p>
+						</div>
+					</header> <!-- end article header -->	
+				</div>	<!-- end row -->
+<div id="thingcontent" class="clearfix row">	
+						<div class="col-md-12" \>
 						
-			</div>	<!-- end content -->
-		</div> <!-- end row -->
+							<?php the_content(); ?>
 					
-		</article> <!-- end article -->
+							<footer>
+							
+							<?php // get_example_media($aid)?>
+
+							</footer> <!-- end article footer -->
+						</div>
+				</div>
 					
+				</article> <!-- end article -->					
 					
 		<?php endwhile; ?>	
 		
@@ -278,5 +284,5 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 			Harrumph. This form is only activated if you follow a link from a published <?php THINGNAME?>. I need some more information passed my way.
 	</div>
 	<?php endif?>			
-</div> <!--all content -->			
+		
 <?php get_footer(); ?>

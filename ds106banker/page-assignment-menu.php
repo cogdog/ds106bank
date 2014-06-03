@@ -95,9 +95,9 @@ title of the page and any content are displayed above the menu.
  						$plural = ( $atype->count == 1 ) ? '' : 's';
  						
  						// string for start of link around icon
- 						$type_url_str = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="View All ' . $atype->name . ' ' . THINGNAME .  's">';
+ 						$type_url_str = '<a href="' . get_site_url() . '?type=' . $atype->slug . '" title="View All ' . $atype->name . ' ' . THINGNAME .  's">';
  						// string for start of link around 
- 						$type_url_btn = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="View All ' .  $atype->name . ' ' . THINGNAME .  's" class="btn btn-primary">';
+ 						$type_url_btn = '<a href="' . get_site_url() . '?type=' . $atype->slug . '" title="View All ' .  $atype->name . ' ' . THINGNAME .  's" class="btn btn-primary">';
  						
  						?>
  						

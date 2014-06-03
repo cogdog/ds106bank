@@ -20,7 +20,7 @@
 									// get the ID for the assignment this belongs to
 									$aid = get_assignment_id_from_terms( get_the_ID() );
 									// make a link string
-									$type_str = ($aid) ? 'for ' .  THINGNAME .  '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
+									$type_str = ($aid) ? 'for ' .  THINGNAME .  ' <a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
 								} elseif ( get_post_type( get_the_ID() ) == 'assignments' ) {
 									$type_str = ' as a ' . THINGNAME;
 								}
