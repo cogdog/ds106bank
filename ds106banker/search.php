@@ -4,7 +4,12 @@
 			
 				<div id="main" class="col col-lg-8 clearfix" role="main">
 				
-					<div class="page-header"><h1><span><?php _e("Search Results for","wpbootstrap"); ?>:</span> <?php echo esc_attr(get_search_query()); ?></h1></div>
+				<?php 
+					// if search was on post_type modify the output string
+					$thing_query = ( get_query_var('post_type') == 'assignments' ) ? THINGNAME . 's' : '';
+				?>
+				
+					<div class="page-header"><h1><span><?php _e("Search $thing_query for","wpbootstrap"); ?></span> "<?php echo esc_attr(get_search_query()); ?>"</h1></div>
 
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
@@ -33,7 +38,7 @@
 						<section class="post_content">
 							<?php the_content(); ?>
 							
-							<p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">More...</a>
+							<p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo THINGNAME?></a>
 							<?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 
 					
@@ -67,10 +72,10 @@
 					
 					<article id="post-not-found">
 					    <header>
-					    	<h1><?php _e("Not Found", "wpbootstrap"); ?></h1>
+					    	<h2><?php _e("Uh Oh, Came Up Empty", "wpbootstrap"); ?></h2>
 					    </header>
 					    <section class="post_content">
-					    	<p><?php _e("Sorry, but the requested resource was not found on this site.", "wpbootstrap"); ?></p>
+					    	<p><?php _e("Sorry, but we could not find anything for you.", "wpbootstrap"); ?></p>
 					    </section>
 					    <footer>
 					    </footer>
