@@ -59,18 +59,17 @@
 }
 
 .thing-archive {
-	background-color: #f8f8f8;
+	background-color: #ededed;
 	min-height: 500px;
 	margin:2em 0;
 	border: 8px solid #fff;
 	-moz-border-radius: 30px;
 	border-radius: 30px;
-	
 }
 
 .thing-icon {
 	text-align:center;
-	background-color: #f8f8f8;
+	background-color: #ededed;
 	padding:0;
 	min-height: 240px;
 	position: relative;
@@ -102,7 +101,7 @@ article.thing-archive section.post_content p, article.type-assignments #content 
 }
 
 .hilite {
-	background-color: #f8f8f8;
+	background-color: #ededed;
 }
 
 /* ----------------------------= Forms =------------------------------------- */
