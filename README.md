@@ -2,31 +2,50 @@
 by Alan Levine http://cogdog.info/ or http://cogdogblog.com/
 
 ## What is this?
-This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a collection site of any collection of assignments, tasks etc, create a categorization, and then create or like [ds106](http://ds106.us) allow your community to add to the collection.  You can find a live demo running at http://bank.ds106.us/
+This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  You can find a live demo of silly examples running at http://bank.ds106.us/
 
-Generically I call the things inside the bank "Things" (internally you may find code references to "assignments").
+Other known instances include:
 
-So in the ds106 site, there are types of things (Assignments) such as [Design Assignments](http://assignments.ds106.us/types/designassignments/), [Video Assignments](http://assignments.ds106.us/types/videoassignments/), etc. Each assignment has a crowdsource difficulty rating; any site visitor add their own vote. 
+* [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
+* [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
+* [All The Toys](http://www.allthetoys.org/)
 
-A specific assignment, for example, the [Six Word Memoir](http://assignments.ds106.us/assignments/six-word-memoir/) has a linked example, an associated icon (if the example lives on flickr, YouTube, vimeo, or SoundCloud the site automatically embeds a media player), and a description. The site generates a unique pair of tags for each assignment. When a participant who has their blog registered at ds106, writes up their assignment with the tags, through RSS syndication the post gets attached as an example.
+Hey, if you know more, please let me know.
 
-The idea for a general version is a site where types of "things" are created by the site owner(essentially categories).  They are displayed on a main index, which can bem but does not have to be, the entrance to your site:
+If you want more of the details behind the building see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
+
+## Terminology / Jargon
+Generically I call the things inside the bank "Things" (internally you may find code references to "assignments", one day I may clean this up).
+
+So in the ds106 site, there are types of things (Assignments) such as [Design Assignments](http://assignments.ds106.us/types/designassignments/), [Video Assignments](http://assignments.ds106.us/types/videoassignments/), etc. Each assignment has a crowdsourced difficulty rating; any site visitor add their own vote. 
+
+A specific assignment, for example, the [Six Word Memoir](http://assignments.ds106.us/assignments/six-word-memoir/) has a linked example, an associated icon, and a description. The site generates a unique pair of tags for each assignment. When a participant who has their blog registered at ds106, writes up their assignment with the tags, through RSS syndication the post gets attached as an example.
+
+The idea for a general version of this functionality is a site where types of "things" are created by the site owner (more or less categories).  They are displayed on a main index, which can be, but does not have to be, the entrance to your site:
 
 ![](images/assignment-bank-front.jpg "Assignment Bank Index")
 
-Within each category is a collection of things
+Within each "type" is a collection of "things"
 
 ![](images/assignment-bank-type-view.jpg "Assignment Bank Type View")
 
-So we might have a site of "Challenges", and within there you might groups of Cooking Challenges, Fitness Challenges (think of them as categories). Within each are specific challenges to do, like "Make Bread From Scratch" "Cook Ham Bone Soup", or "Do 100 Pushups"). You can allows site visitors to add their own challenges via a web form. 
+So we might have a site of "Challenges", and within there you might groups of Cooking Challenges, Fitness Challenges (think of them as categories). Within each are specific challenges to do, like "Make Bread From Scratch" "Cook Ham Bone Soup", or "Do 100 Pushups"). 
 
 And each "thing" has its own page, with associated examples and tutorials:
 
 ![](images/assignment-bank-single.jpg "Assignment Bank Single Thing View")
 
-The site options allow people to submit their responses to a challenge via a web form, or if part of an ongoing activity or community, to aggregate them in from external blogs (as [ds106](http://ds106.us) does).
+The site options allow people to submit their examples created in response to a thing via a web form, or if part of an ongoing activity or community, to aggregate them in from external blogs (as [ds106](http://ds106.us) does).
 
-This ds106 Assignment Bank Theme is build as a child theme of the [Wordpress Bootstrap Theme[(http://320press.com) chosen for its responsive layout and flexible grid display.
+You can allows site visitors to add their own challenges via a web form, this is [what made the DS106 assignment bank valuable](http://assignments.ds106.us/submit-an-assignment/).
+
+![](images/add-thing.jpg "Form to add a new thing")
+
+Besides descriptive information, a visitor can associate a new thing with one or more types, and can also add free form tags to better describe it.  If the ratings capability is enabled, they can assign a first seed value for the rating.
+
+## Theming
+
+This ds106 Assignment Bank Theme is build as a child theme of the [Wordpress Bootstrap Theme[(http://320press.com) chosen for its responsive layout and flexible grid display. It is pretty basic. 
 
 Hopefully it is flexible to meet many use cases. The design allows you to create a site where the front of the site is the menu of types of things, but that could also be an internal page, and a normal blog flow can be front and center. The theme does not create any of the navigation menus for you, but you will find suggestions as to the types of things you can make available via the built in Wordpress menu editor.
 
@@ -40,7 +59,7 @@ A self hosted Wordpress hosted site (in other words "you cannot use this on Word
 1. Upload the **ds106banker** and the **wp-bootstrap** directories to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links. You will have to create a zip file for each theme folder.
 2. Activate the **ds106banker** theme.
 3. Install Wp-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme.
-4. Create holding pages for the Main Index, the form to add examples, and a form for creating new "things" (see below)
+4. Create holding pages for the Main Index, the form to add examples, and a form for creating new "things" (see below). Be sure to choose the appropriate Theme Template to create the functionality for each.
 5. Set the theme options (detailed in length below). Find the **Assignment Bank Options** listed both under the **Appearance** settings in the Wordpress Dashboard, or via the admin nav bar.
 6. Customize the site menus. The theme provides a few shortcodes you can use on any page or sidebar.
 7. Other Suggested plugins
@@ -49,15 +68,27 @@ A self hosted Wordpress hosted site (in other words "you cannot use this on Word
 ### (3) Setting up WP-Ratings
 Install the [WP-Ratings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing rating feature. Not installing the plugin (or de-activating it) removes any ratings features from the site.
 
-A few settings for the plugin are necessary. 
+A few settings for the plugin are necessary.
 
-On the **Post Rating Options** choose the graphic style for the ratings- the suggestion is one of the stars settings with a max ratings of 5. Set the "Allow to Rate" option to **Registered Users and Guests** to allow any site visitor to cast a vote.
+ ![](ds106banker/images/ratings-options.jpg)
 
-Set the **Post Ratings Templates**  as indicated below to reduce the clutter the default labels the plugin creates ("Most Rated" can be ignored)
+On the **Post Rating Options** choose the graphic style for the ratings- the suggestion is one of the stars settings with a max ratings of 5 but any setting is viable. 
 
+![](ds106banker/images/ratings-text-value.jpg)
 
-* **Ratings Vote Text, Ratings None** Enter `%RATINGS_IMAGES_VOTE%`
-* **Ratings Voted Text, Ratings No Permission Text, Highest Rated** Enter `%RATINGS_IMAGES%`
+Create any labels for your scale (these are used on the form to submit new Things). Set the "Allow to Rate" option to **Registered Users and Guests** to allow any site visitor to cast a vote.
+
+Set the **Post Ratings Templates**  to customize the text displayed to show the ratings- the first two templates are used. **Ratings Vote Text:** designates how the ratings are show; **Ratings Voted Text:** is shown as feedback and adds an indicated if a visitor has already voted.
+
+![](ds106banker/images/ratings-custom-fields.jpg)
+Data for ratings are stored in three custom fields on all Things; they can be edited to adjust any rating if you can sort out the arithmetic:
+
+* **ratings_score** is the total cumulative votes submitted (in the above example, 7)
+* **ratings_users** is the number of people who voted (in the above example, 2)
+* **ratings_average** is the value that will be displayed (in the above example, 3.5)
+
+If you feel the vote of 5 by one person is too high, you might change the values to be ratings_score=2, ratings_users and ratings_average=2 to reduce the rating to 2. Changing votes is your decision
+
 
 ### (3) Setting Up Feed Wordpress
 Install the [Feed Wordpress plugin](http://wordpress.org/plugins/feedwordpress/) if you wish to syndicate in responses to "thongs" as examples. This means that you can add blog feeds to the bank (it does the feed aggregation) or you can syndicate in from another site that is aggregating feeds (the ds 106 model). 
@@ -125,9 +156,7 @@ Spam is a sad fact of life. Enabling this option will put a [Google reCaptcha](h
 #### Assignment Bank Options: General Settings: Media Settings
 ![](ds106banker/images/media-settings.jpg)
 
-Set the width and height of thumbnail images on all index and archive pages. Any autoe-mbedded media (Youtube, vimeo, Soundcloud, flickr) will be sized to the width setting (default settings are 320px wide and 240px high)
-
-The **single item media size** is how wide an image or embedded media will display on a single thing entry (default is 500px)
+Set the width and height of thumbnail images on all index and archive pages. 
 
 The **default thumbnail image** is what is used for a thing if not specified via the submission form. The image can be uploaded here to or selected from the Wordpress media library. The image should be at least larger than the default thumbnail width.
 
@@ -140,7 +169,7 @@ Creative commons licenses can be attached to all things on the site. Choose **Ap
 Setting the Creative Commons options to **Enable users to choose license when submitting a challenge** will put the menu on the submission form so users can choose a license (or set to All Rights Reserved). At this time, the only way to reduce the number of license options is to edit `functions.php` in the template directory. Look for the function `function cc_license_select_options` and comment out the lines containing license options to hide.
 
 
-#### Assignment Bank Options: General Settings: Settings for  Examples
+#### Assignment Bank Options: General Settings: Settings for Examples
 ![](ds106banker/images/submit-examples.jpg)
 
 By checking the first box, this  section allows you to enable a web form for site visitors to submit their examples as response to a thing (the form asks for name, email title, description, and a link).
@@ -228,6 +257,16 @@ The following plugins are installed on the [demo site](http://bank.ds106.us/) to
 * [List Custom Taxonomy Widget](http://wordpress.org/plugins/list-custom-taxonomy-widget/‎) provides a widget like the built in Category widget, but for custom Taxonomies (the structure used to create the types of things). This widget can list all as links, plus put the count of items Within
 
 ![](images/list-custom-taxonomy-widget.jpg)
+
+* By default, the search on the site searches all Things, if you wish to have a broader search (say for a blog attached, or for examples too, add the [Search Everything](https://wordpress.org/plugins/search-everything/) plugin. You will also have to modify `header.php` and remove or comment out this line
+
+```
+<input type="hidden" name="post_type" value="assignments" />
+```
+
+### (8) Create Some stuff
+
+Yeah, go do that.
 
 
 
