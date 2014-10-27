@@ -6,11 +6,11 @@
 <ol>
 <li>Create a new Page for your  <strong>Main Menu</strong>  This generates the index of all types of things; they will be listed the order specified by the option defined in General Settings. The title and content of the page is displayed above a two column grid of types of things. To enable the functionality for the index, set the page template to <strong>Assignment Menu</strong><br /><br/>If you wish this page to be the front of the site (<a href="http://bank.ds106.us/">like the demo</a>), use the <a href="<?php echo admin_url( 'options-reading.php')?>">Reading Settings </a> to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).<br /><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/reading-settings.jpg" alt="" style="border:3px solid #000;" /></li>
 
-<li>Create a new Page to <strong>Submit New Things</strong>; you will need this even if you do not allow visitors to add them so you can add them yourself (the page can be unlinked or have a password set on it). The title and content of the page is displayed above the input form. To enable the functionality, set the page template to <strong>Submit Assignments</strong>.<br /><br />
+<li>Create a new Page to <strong>Submit New Things</strong>; you will need this even if you do not allow visitors to add them so you can add them yourself (the page can be unlinked or have a password set on it). The title and content of the page is displayed above the input form. To enable the functionality, set the page template to <strong>Submit Things</strong>.<br /><br />
 <em>I strongly recommend creating your Things from this form, special tags and custom fields are created automatically for you. Doing it within the dashboard is an invitation for Trouble. If you are logged in to the site, the form will auto populate the name and email fields based on your Wordpress profile and will hide the captcha if it is enabled for public users.</em>
 </li>
 
-<li>Create a new Page to <strong>Submit Examples</strong>. This form is used to allow visitors to add examples for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to <strong>Submit Example/Tutorial Form</strong>.</li>
+<li>Create a new Page to <strong>Submit Responses</strong>. This form is used to allow visitors to add responses for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to <strong>Submit Response/Tutorial Form</strong>.</li>
 
 </ol>
 
@@ -25,7 +25,7 @@
 
 <p>The <strong>display order</strong> controls how the types of Things are sequenced on the main index; by title, order created, or by the number of things in each type. This order can be switched direction via the <strong>display order sorting</strong>.</p>
 
-<p>The <strong>excerpt length</strong> is used to set the word length of short descriptions of examples and things on index pages (the Wordpress default is 55 words).</p>
+<p>The <strong>excerpt length</strong> is used to set the word length of short descriptions of responses and things on index pages (the Wordpress default is 55 words).</p>
 
 <h4>Assignment Bank Options: General Settings: Captcha Settings</h4>
 
@@ -66,36 +66,36 @@ Set the width and height of thumbnail images on all index (320 x 240px should wo
 <p>If you feel the vote of 5 by one person is too high, you might change the values to be ratings_score=2, ratings_users and ratings_average=2 to reduce the rating to 2. Changing votes is your decision!</p>
 
 
-<h4>Assignment Bank Options: General Settings: Settings for  Examples</h4>
-<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/submit-examples.jpg" alt="" style="border:3px solid #000;" /><br />By checking the first box, this section enables a web form for site visitors to submit their examples and tutorials as response to a Thing (the form asks for name, email title, description, and a link). This page is only reached by following a link from a Thing, which passes it two variables to indicate the Thing, and whether it is an Example or a Tutorial.</p>
+<h4>Assignment Bank Options: General Settings: Settings for  Responses</h4>
+<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/submit-examples.jpg" alt="" style="border:3px solid #000;" /><br />By checking the first box, this section enables a web form for site visitors to submit their responses and tutorials as response to a Thing (the form asks for name, email title, description, and a link). This page is only reached by following a link from a Thing, which passes it two variables to indicate the Thing, and whether it is an Response or a Tutorial.</p>
 
-<p>For the link to the form to work, you must have previously created a Page that uses the <strong>Submit Example/Tutorial Form</strong> template. The drop down menu will list all pages on the site; choose the one that should house the form. If you do not want to make the form public, just avoid adding menu links to it (or put a password on the form).</p>
+<p>For the link to the form to work, you must have previously created a Page that uses the <strong>Submit Response/Tutorial Form</strong> template. The drop down menu will list all pages on the site; choose the one that should house the form. If you do not want to make the form public, just avoid adding menu links to it (or put a password on the form).</p>
 
-<p>Finally, you can set whether a new example is published immediately or set to draft for moderation. All examples and tutorials added to the site (by the form or via the syndication methods below) can be reviewed and edited via the <a href="<?php echo admin_url( 'edit.php?post_type=examples')?>">dashboard menu for Examples Done</a>. The most likely item to be edited is the URL for the example; it is stored in the Custom Field value for <strong>syndication_permalink</strong>.</p>
+<p>Finally, you can set whether a new response is published immediately or set to draft for moderation. All responses and tutorials added to the site (by the form or via the syndication methods below) can be reviewed and edited via the <a href="<?php echo admin_url( 'edit.php?post_type=responses')?>">dashboard menu for Responses Done</a>. The most likely item to be edited is the URL for the response; it is stored in the Custom Field value for <strong>syndication_permalink</strong>.</p>
 
 
-<h4>Assignment Bank Options: General Settings: Settings for Syndication of Examples</h4>
-<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/syndication-for-examples.jpg" alt="" style="border:3px solid #000;" /><br />The last section enables the features to syndicate in examples that users publish on their own blogs. If this feature is not desired, leave the default setting for <strong> No syndication</strong>. Examples are added only via web form (if enabled above) or only via WordPress Admin and you can ignore the rest of the settings.</p>
+<h4>Assignment Bank Options: General Settings: Settings for Syndication of Responses</h4>
+<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/syndication-for-examples.jpg" alt="" style="border:3px solid #000;" /><br />The last section enables the features to syndicate in responses that users publish on their own blogs. If this feature is not desired, leave the default setting for <strong> No syndication</strong>. Responses are added only via web form (if enabled above) or only via WordPress Admin and you can ignore the rest of the settings.</p>
 
 <p>There are two approaches to syndication, both require the <a href="http://wordpress.org/plugins/feedwordpress/">Feed Wordpress plugin</a> to be installed.</p>
 
-<p> One is to turn the Assignment Bank site into its own syndication hub (<strong> Use a local install of Feed Wordpress to aggregate examples to this site.</strong>). This means that RSS feeds will have to be added directly to the local install of Feed Wordpress. The rest of the settings can be ignored. For a local syndication, users will only need to provide one tag, e.g. <strong>Assignment12</strong> to each of their posts for this site to be able to publish the examples directly to the Thing associated with it.</p>
+<p> One is to turn the Assignment Bank site into its own syndication hub (<strong> Use a local install of Feed Wordpress to aggregate responses to this site.</strong>). This means that RSS feeds will have to be added directly to the local install of Feed Wordpress. The rest of the settings can be ignored. For a local syndication, users will only need to provide one tag, e.g. <strong>Thing12</strong> to each of their posts for this site to be able to publish the responses directly to the Thing associated with it.</p>
 
-<p>The second approach is the setup used for ds106; the assignment bank will rely on another site that is managing the direct syndication of user content. The local install of Feed Wordpress is used to "re-syndicate" the content to the bank. In this case, you must specify a <strong>required tag</strong> users should use to indicate a post is in response to something in the bank; the second tag specifies the thing it should be associated with. Finally the name and the URL for the example are used in the instruction text for each Thing.</p>
+<p>The second approach is the setup used for ds106; the assignment bank will rely on another site that is managing the direct syndication of user content. The local install of Feed Wordpress is used to "re-syndicate" the content to the bank. In this case, you must specify a <strong>required tag</strong> users should use to indicate a post is in response to something in the bank; the second tag specifies the thing it should be associated with. Finally the name and the URL for the response are used in the instruction text for each Thing.</p>
 
 <h4>Extra Settings for Feed Wordpress</h4>
-<p>These settings are suggested to enable Feed Wordpress to syndicate external posts in as examples.</p>
+<p>These settings are suggested to enable Feed Wordpress to syndicate external posts in as responses.</p>
 
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fwp-update-scheduling.jpg" alt="" style="border:3px solid #000;" /><br />
 Under <strong>Updates Scheduling</strong> in the  <a href="<?php echo admin_url( 'admin.php?page=feedwordpress/feeds-page.php')?>">Feed and Updates Feed Wordpress Settings</a> set the  <strong>set to automatically check for updates after pages load</strong> to generate the process of feed checking. This is the easiest approach that is triggered by site activity- if you understand cron scripts you can set that up as an alternative.</p>
 
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fwp-post-settings.jpg" alt="" style="border:3px solid #000;" /><br />
-At the bottom of the <a href="<?php echo  admin_url( 'admin.php?page=feedwordpress/posts-page.php')?>">Posts and Links Feed Wordpress Settings</a>  in the section for <strong>Custom Post Types (advanced database settings)</strong>, set the option for Custom Post Types to <strong>Examples Done</strong>. What this does is to associate all syndicated posts with the content type that defines the examples. </p>
+At the bottom of the <a href="<?php echo  admin_url( 'admin.php?page=feedwordpress/posts-page.php')?>">Posts and Links Feed Wordpress Settings</a>  in the section for <strong>Custom Post Types (advanced database settings)</strong>, set the option for Custom Post Types to <strong>Responses Done</strong>. What this does is to associate all syndicated posts with the content type that defines the responses. </p>
 
 
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fwp-tag-settings.jpg" alt="" style="border:3px solid #000;" /><br />To the RSS feeds that Feed Wordpress syndicates, any tags or categories an incoming feed are actually associated as categories in the RSS structure. </p>
 
-<p>In the <a href="<?php echo  admin_url( 'admin.php?page=feedwordpress/categories-page.php')?>">Feed Categories & Tags Feed Wordpress Settings</a>  check the options for <strong>Match feed categories</strong> and <strong>Match inline tags</strong> to include <strong>Thing Tags</strong> and <strong>Tutorial Tags</strong>. This will match all incoming tags to be associated with the taxonomy that organize the examples into the proper Thing types.</p>
+<p>In the <a href="<?php echo  admin_url( 'admin.php?page=feedwordpress/categories-page.php')?>">Feed Categories & Tags Feed Wordpress Settings</a>  check the options for <strong>Match feed categories</strong> and <strong>Match inline tags</strong> to include <strong>Thing Tags</strong> and <strong>Tutorial Tags</strong>. This will match all incoming tags to be associated with the taxonomy that organize the responses into the proper Thing types.</p>
 
 
 <p>If you have no use for other tags in posts, under <strong>Unmatched Categories</strong> check the option for <strong>Don't create any matching terms</strong>. This keeps the database from being filled by un-used user tags/categories.</p>

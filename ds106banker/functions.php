@@ -14,8 +14,8 @@ if ( !defined('ABSPATH')) exit;
 
 /*************** SET UP *****************/	
 
-add_action( 'init', 'create_assignmentbank_tax' );
-add_action( 'init', 'post_type_assignments' );
+add_action( 'init', 'bank106_create_tax' );
+add_action( 'init', 'bank106_make_post_types' );
 add_action( 'init', 'bank106_load_theme_options' );
 
 
@@ -49,7 +49,7 @@ add_filter('query_vars', 'bank106_queryvars' );
 
 function bank106_queryvars( $qvars ) {
 	$qvars[] = 'srt'; // sort parameters for things
-	$qvars[] = 'aid'; // assignment id for add forms
+	$qvars[] = 'aid'; // thing id for add forms
 	$qvars[] = 'typ'; // glag for adding example or tutorial
 	
 	return $qvars;
@@ -62,16 +62,16 @@ function bank106_rewrite_flush() {
     flush_rewrite_rules();  
 }
 
-// ----- set up author type queries for exaples
-add_action( 'pre_get_posts', 'bank106_author_examples' );
-function bank106_author_examples( $query ) {
+// ----- set up author type queries for responses
+add_action( 'pre_get_posts', 'bank106_author_responses' );
+function bank106_author_responses( $query ) {
 
     if ( $query->is_author() && $query->is_main_query() ) {
-        $query->set( 'post_type', 'examples' );
+        $query->set( 'post_type', 'responses' );
     }
     
     if ( $query->is_tag() && $query->is_main_query() ) {
-        $query->set( 'post_type', 'assignments' );
+        $query->set( 'post_type', 'things' );
     }
 }
 
@@ -135,11 +135,11 @@ function bank106_load_theme_options() {
 
 /*************************** CONTENT TYPES ***********************************/		
 
-function post_type_assignments() {
-	// create post type for assignments- things to do
+function bank106_make_post_types() {
+	// create post type for things to do
 	
 	register_post_type(
-		'assignments', 
+		'things', 
 		array(
 				'labels' => array(
 							'name' => __( 'Things to Do'),
@@ -154,7 +154,7 @@ function post_type_assignments() {
 							'not_found' =>  'No things to do found',
 							'not_found_in_trash' => 'No things to do found in Trash', 
 						),
-						'description' => __('Tasks, assignments, lessons in the bank'),
+						'description' => __('The things in your bank'),
 						'public' => true,
 						'show_ui' => true,
 						'menu_position' => 5,
@@ -171,8 +171,8 @@ function post_type_assignments() {
 						'has_archive' => true,
 						'rewrite',
 						'taxonomies' => array(
-							'assignmenttypes',
-							'assignmenttags',
+							'thingtypes',
+							'thingtags',
 							'tutorialtags',
 							//'category',
 							'post_tag',
@@ -181,26 +181,26 @@ function post_type_assignments() {
 		)
 	);
 	
-	// create post type for examples- what people to in response to assignments
+	// create post type for responses- what people to in response to things
 	
 	register_post_type(
-		'examples', 
+		'responses', 
 		array(
 				'labels' => array(
-						'name' => __( 'Examples Done'),
-						'singular_name' => __('Example Done'),
+						'name' => __( 'Responses Done'),
+						'singular_name' => __('Response Done'),
 						'add_new' => 'Add New',
-						'add_new_item' => 'Add New Example Done',
-						'edit_item' => 'Edit Example Done',
-						'new_item' => 'New Example Done',
-						'all_items' => 'All Examples Done',
-						'view_item' => 'View Example Done',
-						'search_items' => 'Search Examples Done',
-						'not_found' =>  'No examples done to do found',
-						'not_found_in_trash' => 'No examples done found in Trash', 
+						'add_new_item' => 'Add New Response Done',
+						'edit_item' => 'Edit Response Done',
+						'new_item' => 'New Response Done',
+						'all_items' => 'All Responses Done',
+						'view_item' => 'View Response Done',
+						'search_items' => 'Search Responses Done',
+						'not_found' =>  'No responses done to do found',
+						'not_found_in_trash' => 'No responses done found in Trash', 
 
 						),
-						'description' => __('Participant rsponses to assignments'),
+						'description' => __('Participant responses to things'),
 						'public' => true,
 						'show_ui' => true,
 						'menu_position' => 5,
@@ -216,7 +216,7 @@ function post_type_assignments() {
 						'has_archive' => true,
 						'rewrite' => true,
 						'taxonomies' => array(
-							'assignmenttags',
+							'thingtags',
 							'tutorialtags',
 							'category',
 							'post-tag',
@@ -227,12 +227,12 @@ function post_type_assignments() {
 
 
 // modify the listings to include custom columns
-add_filter( 'manage_edit-examples_columns', 'bank106_set_custom_edit_examples_columns' );
-add_action( 'manage_examples_posts_custom_column' , 'bank106_custom_examples_column', 10, 2 );
+add_filter( 'manage_edit-responses_columns', 'bank106_set_custom_edit_responses_columns' );
+add_action( 'manage_responses_posts_custom_column' , 'bank106_custom_responses_column', 10, 2 );
  
 
-function bank106_set_custom_edit_examples_columns( $columns ) {
-	// modify the admin listing for examples
+function bank106_set_custom_edit_responses_columns( $columns ) {
+	// modify the admin listing for responses
     unset($columns['categories']); //remove categories
     
     // add column for the THINGNAMEs
@@ -240,11 +240,11 @@ function bank106_set_custom_edit_examples_columns( $columns ) {
     return $columns;
 }
 
-function bank106_custom_examples_column( $column, $post_id ) {
+function bank106_custom_responses_column( $column, $post_id ) {
 	switch ( $column ) {
         case 'thing' :
-        	// get the ID for the assignment
-        	$aid = get_assignment_id_from_terms( $post_id );
+        	// get the ID for the thing
+        	$aid = get_thing_id_from_terms( $post_id );
         	
         	if ($aid) {
         		echo '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>';
@@ -256,66 +256,66 @@ function bank106_custom_examples_column( $column, $post_id ) {
         
 }
 
-// ----- set unique tags on saving an assignment 
-add_action( 'save_post', 'set_assignment_tag');
+// ----- set unique tags on saving an thing 
+add_action( 'save_post', 'set_thing_tag');
 
-function set_assignment_tag( $post_id ) {
-	// on saving an assignment make sure it is assigned  unique tags 
-	// based on type of assignment and post ID
+function set_thing_tag( $post_id ) {
+	// on saving an thing make sure it is assigned  unique tags 
+	// based on type of thing and post ID
 	// code from http://codex.wordpress.org/Plugin_API/Action_Reference/save_post
 
-	// skip if not an assignment post type or it is a revision
-	if  ( $_POST['post_type'] != 'assignments' or wp_is_post_revision( $post_id ) ) return;
+	// skip if not an thing post type or it is a revision
+	if  ( $_POST['post_type'] != 'things' or wp_is_post_revision( $post_id ) ) return;
 	
     /* Request passes all checks; update the things's taxonomy */
-	update_assignment_tags( $post_id );
+	update_thing_tags( $post_id );
 	
 }
     
-function update_assignment_tags( $post_id ) {
+function update_thing_tags( $post_id ) {
     // helper function to update the bank assignmed tags 
     
-    // get terms for type of assignment
-	$assignmenttype_terms = wp_get_object_terms($post_id, 'assignmenttypes');
+    // get terms for type of thing
+	$thingtype_terms = wp_get_object_terms($post_id, 'thingtypes');
 		
-	// make a tag for the type of assignment, assign to both taxonomies
-	// for assignment examples and tutorials
-	if ( count( $assignmenttype_terms ) ) {
-		$assignment_type = $assignmenttype_terms[0]->name . THINGNAME;
-		wp_set_object_terms( $post_id, $assignment_type , 'assignmenttags');
-		wp_set_object_terms( $post_id, $assignment_type , 'tutorialtags');
+	// make a tag for the type of thing, assign to both taxonomies
+	// for thing responses and tutorials
+	if ( count( $thingtype_terms ) ) {
+		$thing_type = $thingtype_terms[0]->name . THINGNAME;
+		wp_set_object_terms( $post_id, $thing_type , 'thingtags');
+		wp_set_object_terms( $post_id, $thing_type , 'tutorialtags');
 	}	
     
     // create unique tag names based on post ids
-    $assignment_tag = THINGNAME . $post_id; 
+    $thing_tag = THINGNAME . $post_id; 
     $tutorial_tag =  'Tutorial' . $post_id;
      
-    if ( term_exists(  $assignment_tag, 'assignments') == 0) {
-    	// check if term does not exist, then add to assignment tags
-    	wp_insert_term( $assignment_tag, 'assignmenttags' );
+    if ( term_exists(  $thing_tag, 'things') == 0) {
+    	// check if term does not exist, then add to thing tags
+    	wp_insert_term( $thing_tag, 'thingtags' );
     }
     
-    if ( term_exists(  $tutorial_tag , 'assignments') == 0) {
+    if ( term_exists(  $tutorial_tag , 'things') == 0) {
     	// check if term does not exist, then add to tutorial tags
     	wp_insert_term( $tutorial_tag , 'tutorialtags' );
     }
 
     // now assign tags, append to other terms
-    wp_set_object_terms( $post_id, $assignment_tag, 'assignmenttags', true);
+    wp_set_object_terms( $post_id, $thing_tag, 'thingtags', true);
     wp_set_object_terms( $post_id, $tutorial_tag, 'tutorialtags', true );
 }
 
 /************************** CUSTOM TAXONOMIIES *******************************/
 
-function create_assignmentbank_tax() {
+function bank106_create_tax() {
 
 	// singular name
 	$singularThing = 'Thing';
 	
-	// create taxonomy for assignment types
+	// create taxonomy for thing types
 	register_taxonomy(
-		'assignmenttypes', // Taxonomy name
-		array( 'assignments' ), // Post Types applied ro
+		'thingtypes', // Taxonomy name
+		array( 'things' ), // Post Types applied ro
 		array( 
 			'labels' => array(
 						'name' => __( $singularThing . ' Types'),
@@ -340,10 +340,10 @@ function create_assignmentbank_tax() {
 		)
 	);
 			
-	// taxonomy for assignment tags that uniquely identify them matched to examples
+	// taxonomy for thing tags that uniquely identify them matched to responses
 	register_taxonomy(
-		'assignmenttags', // Taxonomy name
-		array( 'assignments', 'examples' ), // Post Types
+		'thingtags', // Taxonomy name
+		array( 'things', 'responses' ), // Post Types
 		array( 
 			'labels' => array(
 						'name' => __( $singularThing . ' IDs'),
@@ -369,7 +369,7 @@ function create_assignmentbank_tax() {
 	// taxonomy for tutorial tags
 	register_taxonomy(
 		'tutorialtags', // Taxonomy name
-		array( 'assignments', 'examples') , // Post Types
+		array( 'things', 'responses') , // Post Types
 		array( 
 			'labels' => array(
 						'name' => __( 'Tutorial IDs'),
@@ -398,8 +398,8 @@ function create_assignmentbank_tax() {
 function bank106_update_tax ( $oldthingname, $newthingname ) {
 	// Updates the taxonomies if the name of the Things changes...
 
-	// first process the assignment tags
-	$allterms = get_terms( 'assignmenttags', 'hide_empty=0');
+	// first process the thing tags
+	$allterms = get_terms( 'thingtags', 'hide_empty=0');
 			
 	// check each term		
 	foreach ($allterms as $term) {
@@ -409,7 +409,7 @@ function bank106_update_tax ( $oldthingname, $newthingname ) {
 				
 		if ($count > 0 ) {
 			// update the terms if we find 
-			wp_update_term( $term->term_id, 'assignmenttags', array( 'name' => $newtag, 'slug' => sanitize_title( $newtag ) ) );			
+			wp_update_term( $term->term_id, 'thingtags', array( 'name' => $newtag, 'slug' => sanitize_title( $newtag ) ) );			
 		}
 	}
 	
@@ -430,7 +430,7 @@ function bank106_update_tax ( $oldthingname, $newthingname ) {
 	}
 }
 
-/************************** FOR ASSIGNMENTS  *********************************/	
+/************************** FOR THINGS  *********************************/	
 
 function is_url_embeddable( $url ) {
 // test if URL matches the ones that Wordpress can do oembed on
@@ -511,17 +511,17 @@ function get_example_media ( $pid ) {
 // output link to example, display media or embeded media if example is embeddable
 
 	if ( get_post_meta( $pid, 'fwp_url', true ) ) {
-		// url for example of assignment
+		// url for example of thing
 		
-		$assignmentURL = get_post_meta( $pid, 'fwp_url', true );
+		$thingURL = get_post_meta( $pid, 'fwp_url', true );
 		
-		echo '<p class="example-url"><strong>Example for "' . get_the_title($pid) . '":</strong><br /><a href="' . $assignmentURL . '">' . $assignmentURL  . ' </a></p>';
+		echo '<p class="example-url"><strong>Response for "' . get_the_title($pid) . '":</strong><br /><a href="' . $thingURL . '">' . $thingURL  . ' </a></p>';
 			
 		// try and get embed code for the linke (e.g. youtube, flickr, soundcloid)
-		$embedcode = ( is_url_embeddable($assignmentURL) ) ? wp_oembed_get( $assignmentURL ) : false;
+		$embedcode = ( is_url_embeddable($thingURL) ) ? wp_oembed_get( $thingURL ) : false;
 		
 		// if example is an image, we will use that as a display media
-		if ( url_is_img( $assignmentURL ) ) $imgcode .= '<img src="' . $assignmentURL . '" alt="" />';
+		if ( url_is_img( $thingURL ) ) $imgcode .= '<img src="' . $thingURL . '" alt="" />';
 		
 		// if we are not embedding the image
 		if (!$embedcode) {
@@ -529,7 +529,7 @@ function get_example_media ( $pid ) {
 
 		} else {
 		
-			if ( url_is_video ($assignmentURL) ) {
+			if ( url_is_video ($thingURL) ) {
 				echo '<div class="videoWrapper">' . $embedcode . '</div>';
 			} else {
 				echo $embedcode;
@@ -542,22 +542,22 @@ function get_example_media ( $pid ) {
 
 
 
-function update_assignment_meta($id, $example_count, $tutorial_count) {
-// update custom post meta to track the views and the number of examples done for each assignment
-// called on each view of an assignment
+function update_thing_meta($id, $example_count, $tutorial_count) {
+// update custom post meta to track the views and the number of responses done for each thing
+// called on each view of an thing
 
 	// get current value, if it does nto exist, then 0
-	$visit_count = ( get_post_meta($id, 'assignment_visits', true) ) ? get_post_meta($id, 'assignment_visits', true) : 0; 
+	$visit_count = ( get_post_meta($id, 'thing_visits', true) ) ? get_post_meta($id, 'thing_visits', true) : 0; 
 	$visit_count++;
 	
 	//update visit counts
-	update_post_meta($id,  'assignment_visits', $visit_count);
+	update_post_meta($id,  'thing_visits', $visit_count);
 	
-	// now update the number of examples
-	update_post_meta($id,  'assignment_examples', $example_count);
+	// now update the number of responses
+	update_post_meta($id,  'thing_responses', $example_count);
 	
 	// now update the number of tutorials
-	update_post_meta($id,  'assignment_tutorials', $tutorial_count);
+	update_post_meta($id,  'thing_tutorials', $tutorial_count);
 }
 
 
@@ -630,9 +630,9 @@ function get_id_from_tag( $input ) {
 	return $input == '' ? '1' : $input;
 }
 
-function get_assignment_id_from_terms($postid) {
-	// for a given example post ID, get the terms from either the assignment tag or tutorial tag
-	$all_the_terms = wp_get_object_terms( $postid, array('assignmenttags', 'tutorialtags') );
+function get_thing_id_from_terms($postid) {
+	// for a given example post ID, get the terms from either the thing tag or tutorial tag
+	$all_the_terms = wp_get_object_terms( $postid, array('thingtags', 'tutorialtags') );
 
 	if ( !empty( $all_the_terms ) ) {	  
 		if ( !is_wp_error( $all_the_terms ) ) {
@@ -647,15 +647,15 @@ function get_assignment_id_from_terms($postid) {
 	return (0);
 }
 
-function get_assignment_meta( $pid, $metadname, $default=0 ) {
+function get_thing_meta( $pid, $metadname, $default=0 ) {
 // return post metadata
 	return( ( get_post_meta($pid, $metadname, true ) ) ? get_post_meta( $pid,  $metadname, true)  : $default );
 }
 
 
-function get_assignment_types( $orderby='name', $order ='ASC' ) {
-// get all assignment types from terms in the taxonomy, basically all the types of THINGS
-	$atypes = get_terms( 'assignmenttypes', 
+function get_thing_types( $orderby='name', $order ='ASC' ) {
+// get all thing types from terms in the taxonomy, basically all the types of THINGS
+	$atypes = get_terms( 'thingtypes', 
 		array(
 			'orderby'	=>  $orderby,
 			'order'		=>  $order,
@@ -664,6 +664,19 @@ function get_assignment_types( $orderby='name', $order ='ASC' ) {
 	);
 
 	return( $atypes );
+}
+
+
+if ( false === function_exists( 'lcfirst' ) ) {
+/*
+ * Make a string's first character lowercase need for older PHP versions w/o function
+ * hat tip Matt Croslin 
+*/
+ 
+    function lcfirst( $str ) {
+        $str[0] = strtolower($str[0]);
+        return (string)$str;
+    }
 }
 
 
@@ -684,7 +697,7 @@ function bank106_fwp_installed() {
 	if ( function_exists('is_syndicated' ) ) {
 		return ('Feed Wordpress <strong>is installed</strong>.'); 
 	} else {
-		return ('Feed Wordpress <strong>is NOT installed</strong>. To enable syndication of examples to this site, install the <a href="http://wordpress.org/plugins/feedwordpress/" target="_blank">Feed Wordpress plugin</a> via the Add New Plugin interface. Check the documentation tab for proper Feed Wordpress settings.'); 
+		return ('Feed Wordpress <strong>is NOT installed</strong>. To enable syndication of responses to this site, install the <a href="http://wordpress.org/plugins/feedwordpress/" target="_blank">Feed Wordpress plugin</a> via the Add New Plugin interface. Check the documentation tab for proper Feed Wordpress settings.'); 
 	}
 }
 
@@ -696,9 +709,9 @@ function ds106bank_enqueue_add_scripts() {
 	// Build in tag auto complete script
     wp_enqueue_script( 'suggest' );
 
-	// custom jquery for the add assignment form
-	wp_register_script( 'bank106_add_assignment_js' , get_stylesheet_directory_uri() . '/js/jquery.add-assignment.js', array( 'jquery' ), '1.0', TRUE );
-	wp_enqueue_script( 'bank106_add_assignment_js' );
+	// custom jquery for the add thing form
+	wp_register_script( 'bank106_add_thing_js' , get_stylesheet_directory_uri() . '/js/jquery.add-thing.js', array( 'jquery' ), '1.0', TRUE );
+	wp_enqueue_script( 'bank106_add_thing_js' );
 	
 }
 
@@ -709,17 +722,17 @@ function bank106_add_new_types( $new_types ) {
 	$new_types = explode( "\n", str_replace( "\r", "", $new_types ) );
 	
 	foreach ( $new_types as $item) {
-		if ( $item != '' AND term_exists(  $item, 'assignmenttypes') == 0) {
+		if ( $item != '' AND term_exists(  $item, 'thingtypes') == 0) {
 		
-    		// check if term does not exist (or is blank), then add to assignment type teaxonomy
-    		wp_insert_term( $item, 'assignmenttypes' );
+    		// check if term does not exist (or is blank), then add to thing type teaxonomy
+    		wp_insert_term( $item, 'thingtypes' );
     	}
     }
 }
 
 
 function bank106_insert_attachment( $file_handler, $post_id) {
-	// used for uploading images from  the add assignment submission forms
+	// used for uploading images from  the add thing submission forms
 	if ($_FILES[$file_handler]['error'] !== UPLOAD_ERR_OK) __return_false();
 
 	require_once( ABSPATH . "wp-admin" . '/includes/image.php' );
@@ -737,18 +750,18 @@ function bank106_insert_attachment( $file_handler, $post_id) {
 
 /****************************** SHORT CODES **********************************/	
 
-// ----- short code for number of assignments in the bank
+// ----- short code for number of things in the bank
 add_shortcode('thingcount', 'getThingCount');
 
 function getThingCount() {
-	return wp_count_posts('assignments')->publish  . ' ' . THINGNAME . 's';
+	return wp_count_posts('things')->publish  . ' ' . THINGNAME . 's';
 }
 
-// ----- short code for number of examples in the bank
-add_shortcode('examplecount', 'getExampleCount');
+// ----- short code for number of responses in the bank
+add_shortcode('examplecount', 'getResponseCount');
 
-function getExampleCount() {
-	return wp_count_posts('examples')->publish . ' examples';
+function getResponseCount() {
+	return wp_count_posts('responses')->publish . ' responses';
 }
 
 // ----- short code to create a list of Feedwordpress subscribed feeds

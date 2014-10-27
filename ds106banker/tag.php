@@ -19,19 +19,19 @@
 							
 							
 							<?php
-							// get the terms for the assignment type taxonomy
-							$assignmenttype_terms = wp_get_object_terms($post->ID, 'assignmenttypes');
+							// get the terms for the thing type taxonomy
+							$thingtype_terms = wp_get_object_terms($post->ID, 'thingtypes');
 
-							// we expext only 1 assignment type
-							$my_assignment_type = $assignmenttype_terms[0];
+							// we expext only 1 thing type
+							$my_thing_type = $thingtype_terms[0];
 
 							$startrow = !$startrow;
 							
 							// start a new row?
 							if ($startrow)  {
-								echo '<div class="clearfix row"><div class="col-md-5 assignment_listing">'; 
+								echo '<div class="clearfix row"><div class="col-md-5 thing_listing">'; 
 							} else {
-								echo '<div class="col-md-5 col-md-offset-1 assignment_listing">';
+								echo '<div class="col-md-5 col-md-offset-1 thing_listing">';
 							}
 						?>
 											
@@ -47,15 +47,15 @@
 							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
 						
 							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
+							$thingAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
 							
 							// no author assigned
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							if ( !$thingAuthor) $thingAuthor = 'Anonymous';
 							?>
 							
 							
 							<p class="meta">
-								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> &bull; <strong><?php echo get_assignment_meta( $post->ID, 'assignment_visits')?></strong> views &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_examples')?></strong> examples</strong> &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?></strong> tutorials
+								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $thingAuthor?></strong> &bull; <strong><?php echo get_thing_meta( $post->ID, 'thing_visits')?></strong> views &bull;  <strong><?php echo get_thing_meta( $post->ID, 'thing_responses')?></strong> responses</strong> &bull;  <strong><?php echo get_thing_meta( $post->ID, 'thing_tutorials')?></strong> tutorials
 							</p>
 							
 						</header> 
@@ -86,7 +86,7 @@
 					</article> <!-- end article -->
 
 
-			</div> <!-- end assignment listing -->
+			</div> <!-- end thing listing -->
 					
 					<?php if (!$startrow) echo '</div>'; // end of row?>
 										

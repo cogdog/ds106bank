@@ -21,7 +21,7 @@
 							
 							
 							<?php 
-								if ( get_post_type( get_the_ID() ) == 'examples' ) {
+								if ( get_post_type( get_the_ID() ) == 'things' ) {
 									// get the ID for the assignment this belongs to
 									$aid = get_assignment_id_from_terms( get_the_ID() );
 									// make a link string

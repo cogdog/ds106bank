@@ -178,7 +178,7 @@ class ds106bank_Theme_Options {
 		$this->settings['thingname'] = array(
 			'title'   => __( 'Name for Things in the Bank' ),
 			'desc'    => __( 'What is the name for the kind of thing banked here? Assignment? Challenge? Task? Must be singular and should not contain an numbers (0-9).' ),
-			'std'     => 'Assignment',
+			'std'     => 'Thing',
 			'type'    => 'text',
 			'section' => 'general'
 		);
@@ -361,19 +361,19 @@ class ds106bank_Theme_Options {
 		);
 
 
-		// ------- example setup options
-		$this->settings['examples_heading'] = array(
+		// ------- response setup options
+		$this->settings['responses_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => 'Settings for ' . THINGNAME . ' Examples',
+			'desc'	 => 'Settings for ' . THINGNAME . ' Responses',
 			'std'    => '',
 			'type'    => 'heading'
 		);
 		
-		$this->settings['example_via_form'] = array(
+		$this->settings['response_via_form'] = array(
 			'section' => 'general',
-			'title'   => __( 'Submit examples directly' ),
-			'desc'    => __( 'Allow visitors to submit examples via web form' ),
+			'title'   => __( 'Submit responses directly' ),
+			'desc'    => __( 'Allow visitors to submit responses via web form' ),
 			'type'    => 'checkbox',
 			'std'     => 1 // Set to 1 to be checked by default, 0 to be unchecked by default.
 		);
@@ -387,20 +387,20 @@ class ds106bank_Theme_Options {
   			$page_options[$item->post_name] =  $item->post_title;
   		}
  
-		$this->settings['example_form_page'] = array(
+		$this->settings['response_form_page'] = array(
 			'section' => 'general',
-			'title'   => __( 'Page for Adding Examples/Tutorials'),
-			'desc'    => __( 'Existing page for form to add new examples; one using <strong>Submit Example/Tutorial Form</strong> as template' ),
+			'title'   => __( 'Page for Adding Responses/Tutorials'),
+			'desc'    => __( 'Existing page for form to add new responses; one using <strong>Submit Response/Tutorial Form</strong> as template' ),
 			'type'    => 'select',
 			'std'     => '--',
 			'choices' => $page_options
 		);	
 
 
-		$this->settings['new_example_status'] = array(
+		$this->settings['new_response_status'] = array(
 			'section' => 'general',
-			'title'   => __( 'Status For New Examples' ),
-			'desc'    => __( 'How new examples added are processed when submitted via a form' ),
+			'title'   => __( 'Status For New Responses' ),
+			'desc'    => __( 'How new responses added are processed when submitted via a form' ),
 			'type'    => 'radio',
 			'std'     => 'draft',
 			'choices' => array(
@@ -413,8 +413,8 @@ class ds106bank_Theme_Options {
 		$this->settings['syndication_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => 'Syndication for Examples',
-			'std'    => 'Choose how/if to use Feed WordPress to aggregate examples from either an internal aggregator on this site or from an external source.',
+			'desc'	 => 'Syndication for Responses',
+			'std'    => 'Choose how/if to use Feed WordPress to aggregate responses from either an internal aggregator on this site or from an external source.',
 			'type'    => 'heading'
 		);
 			
@@ -425,8 +425,8 @@ class ds106bank_Theme_Options {
 			'type'    => 'radio',
 			'std'     => 'none',
 			'choices' => array(
-				'none' => 'No syndication. Examples are added only via web form (if enabled above) or only via WordPress Admin.',
-				'internal' => 'Use a local install of Feed Wordpress to aggregate examples to this site.',
+				'none' => 'No syndication. Responses are added only via web form (if enabled above) or only via WordPress Admin.',
+				'internal' => 'Use a local install of Feed Wordpress to aggregate responses to this site.',
 				'external' => 'Syndicate from an external site that is already aggregating participant content.', 
 			)
 		);
@@ -434,7 +434,7 @@ class ds106bank_Theme_Options {
 		// settings only if external syndication mode 	
 		$this->settings['extra_tag'] = array(
 			'title'   => __( 'Required Tag' ),
-			'desc'    => __( 'Only used for external syndication option. Tag for examples to be externally syndicated. This will be displayed on each assignment and will also define the feed that needs to be added to local install of Feed WordPress.' ),
+			'desc'    => __( 'Only used for external syndication option. Tag for responses to be externally syndicated. This will be displayed on each thing and will also define the feed that needs to be added to local install of Feed WordPress.' ),
 			'std'     => 'bank106',
 			'type'    => 'text',
 			'section' => 'general'
@@ -459,8 +459,8 @@ class ds106bank_Theme_Options {
 		/* Types of Things Settings
 		===========================================*/
 		
-		// lets get all the existing assignment types
-		$assigntypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
+		// lets get all the existing thing types
+		$assigntypes = get_thing_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
 		$i = 0;
 		
 		foreach ( $assigntypes as $atype ) {
@@ -532,7 +532,7 @@ class ds106bank_Theme_Options {
 			'type'    => 'checkbox',
 			'std'     => 0,
 			'class'   => 'warning', // Custom class for CSS
-			'desc'    => __( 'Check this box and click "Save Changes" below to reset assignment bank options to their defaults.' )
+			'desc'    => __( 'Check this box and click "Save Changes" below to reset bank options to their defaults.' )
 		);
 
 		
@@ -778,7 +778,7 @@ class ds106bank_Theme_Options {
 			}
 			
 			// check for types to be deleted
-			$assigntypes = get_assignment_types();
+			$assigntypes = get_thing_types();
 			
 			// updates for thing types
 			foreach ( $assigntypes as $atype ) {
@@ -787,10 +787,10 @@ class ds106bank_Theme_Options {
 								
 				if ( $input['del_' . $setting_name] == 1 ) {
 					// delete term if box is checked
-					wp_delete_term( $atype->term_id, 'assignmenttypes');
+					wp_delete_term( $atype->term_id, 'thingtypes');
 				} else {
 					// update terms (whether changed or not, sigh, this seems easier)
-					wp_update_term( $atype->term_id, 'assignmenttypes', array(
+					wp_update_term( $atype->term_id, 'thingtypes', array(
 					  'name' => $input[$setting_name],
 					  'slug' => sanitize_title( $input[$setting_name]),
 					  'description' => $input[$setting_name . '_descrip']

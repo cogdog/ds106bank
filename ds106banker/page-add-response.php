@@ -1,8 +1,8 @@
 <?php
 /*
-Template Name: Submit Example/Tutorial Form
+Template Name: Submit Response/Tutorial Form
 
-Lets visitors add a new example or tutorial for an assignment via a web form.
+Lets visitors add a new response or tutorial for an thing via a web form.
 Needs quite a bit of error checking to catch all the crazy things people might
 pop into a form. Now with reCaptcha.
 */
@@ -14,9 +14,9 @@ $feedback_msg = '';
 $typ = $wp_query->query_vars['typ']; 
 				
 // keep track of the kind fof submission
-$sub_type = ($typ == 'tut') ? 'tutorial' : 'example';
+$sub_type = ($typ == 'tut') ? 'tutorial' : 'response';
 
-// assignment id
+// thing id
 $aid = $wp_query->query_vars['aid']; 
 
 if ( is_user_logged_in() ) {
@@ -39,19 +39,19 @@ if ( is_user_logged_in() ) {
 if ($use_captcha) require_once( get_stylesheet_directory() . '/includes/recaptchalib.php');
 
 // status for new submissions
-$my_new_status = ds106bank_option( 'new_example_status' );
+$my_new_status = ds106bank_option( 'new_response_status' );
 
 // verify that a  form was submitted and it passes the nonce check
-if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $_POST['bank106_form_add_example_submitted'], 'bank106_form_add_example' ) ) {
+if ( isset( $_POST['bank106_form_add_response_submitted'] ) && wp_verify_nonce( $_POST['bank106_form_add_response_submitted'], 'bank106_form_add_response' ) ) {
  
  		// grab the variables from the form
- 		$exampleTitle = 			sanitize_text_field( $_POST['exampleTitle'] );		
+ 		$responseTitle = 			sanitize_text_field( $_POST['responseTitle'] );		
  		$submitterName = 			sanitize_text_field( $_POST['submitterName'] ); 
  		$submitterEmail = 			sanitize_email( $_POST['submitterEmail'] ); 
- 		$exampleDescription = 		esc_textarea( trim($_POST['exampleDescription']) );
- 		$exampleURL = 				esc_url( trim($_POST['exampleURL']), array('http', 'https') ); 
+ 		$responseDescription = 		esc_textarea( trim($_POST['responseDescription']) );
+ 		$responseURL = 				esc_url( trim($_POST['responseURL']), array('http', 'https') ); 
  		
- 		$my_assignment_tag = THINGNAME . $aid;
+ 		$my_thing_tag = THINGNAME . $aid;
 		$my_tutorial_tag = 'Tutorial' . $aid;
 
  		
@@ -59,7 +59,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
  		// let's do some validation, story an error message for each problem found
  		$errors = array();
  		
- 		if ( $exampleTitle == '' ) $errors[] = '<strong>Title Missing</strong> - please enter a descriptive title.';
+ 		if ( $responseTitle == '' ) $errors[] = '<strong>Title Missing</strong> - please enter a descriptive title.';
  		if ( $submitterName == '' ) $errors[] = '<strong>Name Missing</strong>- enter your name so we can give you credit';
  		if ( $submitterEmail == '' ) {
  			$errors[] = '<strong>Email Address Missing</strong>- Enter your email in case we have to contact you. If it is one associated with <a href="http://gravatar.com/" target="_blank">gravatar</a> we can list your icon as well.';
@@ -68,9 +68,9 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
  		}
  		
  		// arbitrary string length to be considered a reasonable descriptions
- 		if ( strlen( $exampleDescription ) < 50 )  $errors[] = '<strong>Description Missing or Too Short</strong>- please provide a full description that describes this ' . $sub_type. '.';
+ 		if ( strlen( $responseDescription ) < 50 )  $errors[] = '<strong>Description Missing or Too Short</strong>- please provide a full description that describes this ' . $sub_type. '.';
  		 		
- 		if ($exampleURL == '') {
+ 		if ($responseURL == '') {
  				$errors[] = '<strong>URL Missing or not Entered Correctly</strong>-  please enter the full URL where this ' . $sub_type . ' can be found- it must start with "http://"';	 
  		} // end url CHECK
  		
@@ -102,15 +102,15 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
  		} else {
  			
  			// good enough, let's make a post! Or a custom post type
-			$example_information = array(
-				'post_title' => esc_attr( strip_tags( $_POST['exampleTitle'] ) ),
-				'post_content' => esc_attr( strip_tags( $_POST['exampleDescription'] ) ),
-				'post_type' => 'examples',
+			$response_information = array(
+				'post_title' => esc_attr( strip_tags( $_POST['responseTitle'] ) ),
+				'post_content' => esc_attr( strip_tags( $_POST['responseDescription'] ) ),
+				'post_type' => 'responses',
 				'post_status' => $my_new_status,			
 			);
 
 			// insert as a post type
-			$post_id = wp_insert_post( $example_information );
+			$post_id = wp_insert_post( $response_information );
 		
 			// check for success
 			if ( $post_id ) {
@@ -118,11 +118,11 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				// set metadata, will use same custom fields as FWP
 				update_post_meta( $post_id, 'syndication_source', esc_attr( $submitterName  ) );
 				update_post_meta( $post_id, 'submitter_email', esc_attr( $submitterEmail  ) );
-				update_post_meta( $post_id, 'syndication_permalink', esc_url_raw( $_POST['exampleURL'] ) );
+				update_post_meta( $post_id, 'syndication_permalink', esc_url_raw( $_POST['responseURL'] ) );
 				
-				if ($sub_type == 'example') {
+				if ($sub_type == 'response') {
 					// set the tags for exmaple
-					wp_set_object_terms( $post_id, $my_assignment_tag, 'assignmenttags');
+					wp_set_object_terms( $post_id, $my_thing_tag, 'thingtags');
 				} else {
 					// set the tags for tutorial
 					wp_set_object_terms( $post_id, $my_tutorial_tag, 'tutorialtags');	
@@ -130,9 +130,9 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 									
 				// feedback success
 				
-				$pending_msg = ( ds106bank_option('new_example_status') == 'draft' ) ? ', pending moderation. ' : '. ';
+				$pending_msg = ( ds106bank_option('new_response_status') == 'draft' ) ? ', pending moderation. ' : '. ';
 				
-				$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . $sub_type . ' example has been added' . $pending_msg .  '<a href=" ' . site_url() . '/?p=' . $aid . '">Return</a> and verify that it now  appears there.</div>';  
+				$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . $sub_type . ' response has been added' . $pending_msg .  '<a href=" ' . site_url() . '/?p=' . $aid . '">Return</a> and verify that it now  appears there.</div>';  
  
 			} else {
 			
@@ -145,10 +145,10 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 
 <?php get_header(); ?>				
 				
-				<?php if ( ( isset($aid) and isset($typ) ) OR isset( $_POST['bank106_form_add_example_submitted'] ) ) :?>
+				<?php if ( ( isset($aid) and isset($typ) ) OR isset( $_POST['bank106_form_add_response_submitted'] ) ) :?>
 				
 					<?php // query for this post so we can display it.
-					$the_query = new WP_Query( "p=$aid&post_type=assignments" );?>
+					$the_query = new WP_Query( "p=$aid&post_type=things" );?>
 				
 					<?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
 							
@@ -167,24 +167,24 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 						<div class="col-md-6 col-md-offset-1" >
 
 								
-							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title(); ?></h1>
+							<h1 class="single-title thing-header" itemprop="headline"><?php the_title(); ?></h1>
 							
 							<?php 
 							// insert ratings if enabled
 							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
 						
 							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
+							$thingAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
 							
 							// no author assigned
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							if ( !$thingAuthor) $thingAuthor = 'Anonymous';
 							?>
 							
 							<p class="meta">This <?php echo THINGNAME?> was 
-							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong>
+							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $thingAuthor?></strong>
 							</p>
 							
-							<p><?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> </p>
+							<p><?php echo get_the_term_list( $post->ID, 'thingtypes', 'Type: ', ', ', '' ); ?> </p>
 							
 							<?php the_tags('<p class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ':</span> ', ' ', '</p>'); ?>
 							
@@ -199,7 +199,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					
 							<footer>
 							
-							<?php // get_example_media($aid)?>
+							<?php // get_response_media($aid)?>
 
 							</footer> <!-- end article footer -->
 						</div>
@@ -225,19 +225,19 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 		
 			<div class="col-md-5 clearfix">
 				<fieldset>
-					<label for="exampleTitle"><?php _e( ucfirst($sub_type) . ' Title:', 'wpbootstrap' ) ?></label>
-					<input type="text" name="exampleTitle" id="exampleTitle" class="required" value="<?php  echo $exampleTitle; ?>" tabindex="1" />
+					<label for="responseTitle"><?php _e( ucfirst($sub_type) . ' Title:', 'wpbootstrap' ) ?></label>
+					<input type="text" name="responseTitle" id="responseTitle" class="required" value="<?php  echo $responseTitle; ?>" tabindex="1" />
 				</fieldset>
 			
-				<fieldset id="exampleURL">
-					<label for="exampleURL"><?php _e( 'URL for the ' . $sub_type, 'wpbootstrap' )?>:</label>
-					<input type="text" name="exampleURL" id="exampleURL" class="required" value="<?php echo $exampleURL; ?>" tabindex="13" />
+				<fieldset id="responseURL">
+					<label for="responseURL"><?php _e( 'URL for the ' . $sub_type, 'wpbootstrap' )?>:</label>
+					<input type="text" name="responseURL" id="responseURL" class="required" value="<?php echo $responseURL; ?>" tabindex="13" />
 				
 				</fieldset> 				
 
 				<fieldset>
-					<label for="exampleDescription"><?php _e( ucfirst($sub_type)  . ' Description:', 'wpbootstrap') ?></label>
-					<textarea name="exampleDescription" id="assignmentexampleDescriptionDescription" rows="8" cols="30" class="required" tabindex="4"><?php echo stripslashes( $exampleDescription );?></textarea>
+					<label for="responseDescription"><?php _e( ucfirst($sub_type)  . ' Description:', 'wpbootstrap') ?></label>
+					<textarea name="responseDescription" id="thingresponseDescriptionDescription" rows="8" cols="30" class="required" tabindex="4"><?php echo stripslashes( $responseDescription );?></textarea>
 				</fieldset>	
 			</div> 
 			
@@ -270,9 +270,9 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 			<?php endif?>
  				
 			<fieldset>
-				<?php wp_nonce_field( 'bank106_form_add_example', 'bank106_form_add_example_submitted' ); ?>
+				<?php wp_nonce_field( 'bank106_form_add_response', 'bank106_form_add_response_submitted' ); ?>
 
-				<input type="submit" class="btn btn-primary" value="Add This <?php echo $sub_type?>" tabindex="40" id="submitassignment" name="submitassignment" tabindex="15">
+				<input type="submit" class="btn btn-primary" value="Add This <?php echo $sub_type?>" tabindex="40" id="submitthing" name="submitthing" tabindex="15">
 			</fieldset>
 
 			</div>

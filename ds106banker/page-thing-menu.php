@@ -1,9 +1,9 @@
 <?php
 /*
-Template Name: Assignment Menu
+Template Name: Thing Menu
 
 This formats the main menu for the types of things, linking each to the page that lists all
-assignments within.  A Wordpress Page should be created and set to use this template. the
+things within.  A Wordpress Page should be created and set to use this template. the
 title of the page and any content are displayed above the menu.
 */
 ?>
@@ -61,18 +61,18 @@ title of the page and any content are displayed above the menu.
 				// Generate the menu of "things"
 								
 				// get all the terms for the custom post type for things, in sort order specified in settings
-				$assignmenttypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
+				$thingtypes = get_thing_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
 
- 				if ( count($assignmenttypes) == 0 ) {
+ 				if ( count($thingtypes) == 0 ) {
  				
  					// warning warning if no things have yet created
- 					echo '<div class="clearfix row"><div class="col-md-2 col-md-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . THINGNAME . 's have been set up. You can do that if you explore the Assignment Bank Options under the <em>Types</em> tab.</p></div></div>';
+ 					echo '<div class="clearfix row"><div class="col-md-2 col-md-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . THINGNAME . 's have been set up. You can do that if you explore the Bank Options under the <em>Types</em> tab.</p></div></div>';
  					
  				} else {	
  					
  					$startrow = false; // status for beginning of row
  					
- 					foreach ($assignmenttypes as $atype) {
+ 					foreach ($thingtypes as $atype) {
  								
  							// toggle row flag signal				
  							$startrow = !$startrow;
@@ -89,7 +89,7 @@ title of the page and any content are displayed above the menu.
 						
  						<?php
  						// get the term for this type of taxonomy
- 						$items = get_term_by('id', $atype->term_id, 'assignmenttypes');
+ 						$items = get_term_by('id', $atype->term_id, 'thingtypes');
  						
  						// Add "s" if the count is 0 or more than 1
  						$plural = ( $atype->count == 1 ) ? '' : 's';
@@ -112,7 +112,7 @@ title of the page and any content are displayed above the menu.
 								<!-- thing icon -->
 								<div class="thing-icon">
 								
-								<?php echo $type_url_str . '<img src="' . ds106bank_option( 'thing_type_' . $atype->term_id . '_thumb') . '" alt="' . $atype->name . ' assignments" /></a>'; ?>
+								<?php echo $type_url_str . '<img src="' . ds106bank_option( 'thing_type_' . $atype->term_id . '_thumb') . '" alt="' . $atype->name . ' things" /></a>'; ?>
 								</div>
 								<!-- end icon or media -->
 					
@@ -135,7 +135,7 @@ title of the page and any content are displayed above the menu.
  					
  					if ($startrow) echo '</div>'; // ended with in-complete tow?
  					
- 				} // count($assignmenttypes)
+ 				} // count($thingtypes)
  				?>
 <?php get_footer(); ?>
 

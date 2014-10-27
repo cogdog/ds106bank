@@ -2,14 +2,14 @@
 
 <?php
 	
-	// unique assignment/tutorial tags
-	$my_assignment_tag = THINGNAME . $post->ID;
+	// unique thing/tutorial tags
+	$my_thing_tag = THINGNAME . $post->ID;
 	$my_tutorial_tag = 'Tutorial' . $post->ID;
 	
-	//options for example/tutorial syndication
+	//options for response/tutorial syndication
 	
 	$my_fwp_mode = ds106bank_option( 'use_fwp'); // Syndication mode = none, intenal, external
-	$my_use_example_form = ds106bank_option( 'example_via_form' ); // allow form additions of examples, tutorials
+	$my_use_response_form = ds106bank_option( 'response_via_form' ); // allow form additions of responses, tutorials
 	
 	$my_hub_site = ds106bank_option('syndication_site_name'); // external syndication site
 	$my_hub_url =  ds106bank_option('syndication_site_url'); // external syndication url
@@ -17,7 +17,7 @@
 	
 	$my_cc_mode = ds106bank_option( 'use_cc' ); // creative commons usage mode
 
-	// store assignment link for later use
+	// store thing link for later use
 	$my_permalink = get_permalink();
 	$my_id = $post->ID;
 ?>
@@ -39,24 +39,24 @@
 						<div class="col-md-6 col-md-offset-1" >
 
 								
-							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title(); ?></h1>
+							<h1 class="single-title thing-header" itemprop="headline"><?php the_title(); ?></h1>
 							
 							<?php 
 							// insert ratings if enabled
 							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
 						
 							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
+							$thingAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
 							
 							// no author assigned
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							if ( !$thingAuthor) $thingAuthor = 'Anonymous';
 							?>
 							
 							<p class="meta">This <?php echo THINGNAME?> was 
-							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong>
+							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $thingAuthor?></strong>
 							</p>
 							
-							<p><?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> </p>
+							<p><?php echo get_the_term_list( $post->ID, 'thingtypes', 'Type: ', ', ', '' ); ?> </p>
 							
 							<?php the_tags('<p class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ':</span> ', ' ', '</p>'); ?>
 							
@@ -77,7 +77,7 @@
 					
 							<footer>
 							
-							<?php get_example_media($my_id)?>
+							<?php get_response_media($my_id)?>
 							
 						
 							</footer> <!-- end article footer -->
@@ -92,17 +92,17 @@
 						<p>Once you complete this <?php echo lcfirst(THINGNAME)?>, share it! 
 												
 						<?php if ( $my_fwp_mode == 'internal' ):?>
-						If you are writing to a blog connected to this site just use the tag <strong><?php echo $my_assignment_tag;?></strong> when writing a post on your own blog. Then your example will be added to the list below. <br /><br />Or if 
+						If you are writing to a blog connected to this site just use the tag <strong><?php echo $my_thing_tag;?></strong> when writing a post on your own blog. Then your response will be added to the list below. <br /><br />Or if 
 						
 						<?php elseif ( $my_fwp_mode == 'external' ):?>
-						If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags when writing a post on your own blog. (You must use BOTH tags!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_assignment_tag;?></strong> Then your example will be added to the list below. <br /><br />Or if 
+						If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags when writing a post on your own blog. (You must use BOTH tags!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_thing_tag;?></strong> Then your response will be added to the list below. <br /><br />Or if 
 						
 						<?php else:?>
 						If 
 						<?php endif?>
 						
-						<?php if ( $my_use_example_form):?>
-						your example exists elsewhere at a public URL <a href="<?php echo site_url(); ?>/<?php echo ds106bank_option( 'example_form_page' )?>/?aid=<?php echo $my_id?>&typ=ex">add your example directly</a><?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (pending moderator approval)'?>.
+						<?php if ( $my_use_response_form):?>
+						your response exists elsewhere at a public URL <a href="<?php echo site_url(); ?>/<?php echo ds106bank_option( 'response_form_page' )?>/?aid=<?php echo $my_id?>&typ=ex">add your response directly</a><?php if ( ds106bank_option( 'new_response_status' ) == 'draft') echo ' (pending moderator approval)'?>.
 						<?php endif?>
 			
 						</p>
@@ -122,8 +122,8 @@
 								If 
 								<?php endif?>
 						
-								<?php if ( $my_use_example_form):?>
-								your tutorial exists elsewhere at a public URL <a href="<?php echo site_url(); ?>/<?php echo ds106bank_option( 'example_form_page' )?>/?aid=<?php echo $my_id?>&typ=tut">add your tutorial directly</a><?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (pending moderator approval)'?>.
+								<?php if ( $my_use_response_form):?>
+								your tutorial exists elsewhere at a public URL <a href="<?php echo site_url(); ?>/<?php echo ds106bank_option( 'response_form_page' )?>/?aid=<?php echo $my_id?>&typ=tut">add your tutorial directly</a><?php if ( ds106bank_option( 'new_response_status' ) == 'draft') echo ' (pending moderator approval)'?>.
 								<?php endif?>
 			
 								</p>
@@ -133,27 +133,27 @@
 					<div id="content4" class="clearfix row">	
 						<div class="col-md-5">
 							<?php
-							// find all examples done for this assignment
-							$examples_done_query = new WP_Query( 
+							// find all responses done for this thing
+							$responses_done_query = new WP_Query( 
 								array(
 									'posts_per_page' =>'-1', 
-									'post_type' => 'examples',
-									'assignmenttags'=> $my_assignment_tag, 
+									'post_type' => 'responses',
+									'thingtags'=> $my_thing_tag, 
 								
 								)
 							);
 						
-							$example_count = $examples_done_query->post_count;
-							$plural = ( $example_count == 1) ? '' : 's';
+							$response_count = $responses_done_query->post_count;
+							$plural = ( $response_count == 1) ? '' : 's';
 						
 							?>
 		
-							<h3><?php echo $example_count?> Example<?php echo $plural?> Completed for this <?php echo THINGNAME?></h3>
+							<h3><?php echo $response_count?> Response<?php echo $plural?> Completed for this <?php echo THINGNAME?></h3>
 							<ol>
 							<?php 
 	
 			
-							while ( $examples_done_query->have_posts() ) : $examples_done_query->the_post();
+							while ( $responses_done_query->have_posts() ) : $responses_done_query->the_post();
 									
 								// get link
 								if (get_post_meta($post->ID, 'syndication_permalink')) {
@@ -174,12 +174,12 @@
 
 					
 						<?php 
-						// now get all tutorials done for this assignment
+						// now get all tutorials done for this thing
 	
 							$tutorials_done_query = new WP_Query( 
 								array(
 									'posts_per_page' =>'-1', 
-									'post_type' => 'examples',
+									'post_type' => 'responses',
 									'tutorialtags'=> $my_tutorial_tag, 	
 								)
 							);
@@ -217,7 +217,7 @@
 							
 								// get the license code, either define for site or post meta for user assigned						
 								$cc_code = ( $my_cc_mode == 'site') ? ds106bank_option( 'cc_site' ) : get_post_meta($post->ID, 'cc', true);
-								echo cc_license_html($cc_code, $assignmentAuthor, get_the_time( "Y", $my_id ));
+								echo cc_license_html($cc_code, $thingAuthor, get_the_time( "Y", $my_id ));
 							}
 							?>						
 						
@@ -236,8 +236,8 @@
 					<?php endwhile; ?>	
 					
 					<?php
-					// let's update meta data for this assignment (count of exmaples done, bump visit count)
-					update_assignment_meta($post->ID, $example_count, $tutorial_count);		
+					// let's update meta data for this thing (count of exmaples done, bump visit count)
+					update_thing_meta($post->ID, $response_count, $tutorial_count);		
 					?>
 							
 					

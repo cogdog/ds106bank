@@ -5,12 +5,12 @@ global $wp_query; // give us query
 // kind of sort passed by paramaters
 $sortedby =  ( isset( $wp_query->query_vars['srt'] ) ) ? $wp_query->query_vars['srt'] : 'newest';
 
-// we are looking for a random assignment?
+// we are looking for a random thing?
 if ($sortedby  == 'random') {
 
 	// set arguments for WP_Query() using taxonomy 
 	$args = array(
-		'post_type' => 'assignments',
+		'post_type' => 'things',
 		'posts_per_page' => 1,
 		'orderby' => 'rand'
 	);
@@ -36,9 +36,9 @@ get_header(); ?>
 					<?php
 						
 					if (function_exists('the_ratings') )  {
-						$sortoptions = array('newest' => 'Newest' , 'title' => 'Title', 'ratings' => 'Difficulty', 'examples' => 'Most Examples', 'views'=>'Most Viewed', 'random' => 'Choose one Randomly');
+						$sortoptions = array('newest' => 'Newest' , 'title' => 'Title', 'ratings' => 'Difficulty', 'responses' => 'Most Responses', 'views'=>'Most Viewed', 'random' => 'Choose one Randomly');
 					} else {
-						$sortoptions = array('newest' => 'Newest' , 'title' => 'Title', 'examples' => 'Most Examples', 'views'=>'Most Viewed', 'random' => 'Choose one Randomly');
+						$sortoptions = array('newest' => 'Newest' , 'title' => 'Title', 'responses' => 'Most Responses', 'views'=>'Most Viewed', 'random' => 'Choose one Randomly');
 					}
 
 					if ($sortedby != 'newest') {
@@ -53,12 +53,12 @@ get_header(); ?>
 								query_posts( $query_string . '&orderby=meta_value_num&meta_key=ratings_average&order=DESC' );
 								break;
 			
-							case 'examples':
-								query_posts( $query_string . '&orderby=meta_value_num&meta_key=assignment_examples&order=DESC' );
+							case 'responses':
+								query_posts( $query_string . '&orderby=meta_value_num&meta_key=thing_responses&order=DESC' );
 								break;
 			
 							case 'views':
-								query_posts( $query_string . '&orderby=meta_value_num&meta_key=assignment_visits&order=DESC' );
+								query_posts( $query_string . '&orderby=meta_value_num&meta_key=thing_visits&order=DESC' );
 								break;
 		
 							default:
@@ -72,8 +72,8 @@ get_header(); ?>
 					<div class="page-header">
 						<h1 class="archive_title">All <?php echo THINGNAME?>s</h1>
 						
-						<form action="" id="taxassignmentview" method="get" action="">
-						<p>There are <strong><?php echo $wp_query->found_posts;?></strong> <?php echo lcfirst(THINGNAME);?>s.  View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
+						<form action="" id="taxthingview" method="get" action="">
+						<p>There are <strong><?php echo $wp_query->found_posts;?></strong> <?php echo lcfirst(THINGNAME);?>s.  View sorted by <select name="goto" id="thingList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
 							<?php
 							// remove any query string from current URL
 							$base_url = strtok( $_SERVER["REQUEST_URI"], '?' );
@@ -100,19 +100,19 @@ get_header(); ?>
 						
 						while (have_posts()) : the_post();
 							
-							// get the terms for the assignment type taxonomy
-							$assignmenttype_terms = wp_get_object_terms($post->ID, 'assignmenttypes');
+							// get the terms for the thing type taxonomy
+							$thingtype_terms = wp_get_object_terms($post->ID, 'thingtypes');
 
-							// we expext only 1 assignment type
-							$my_assignment_type = $assignmenttype_terms[0];
+							// we expext only 1 thing type
+							$my_thing_type = $thingtype_terms[0];
 
 							$startrow = !$startrow;
 							
 							// start a new row?
 							if ($startrow)  {
-								echo '<div class="clearfix row"><div class="col-md-5 assignment_listing">'; 
+								echo '<div class="clearfix row"><div class="col-md-5 thing_listing">'; 
 							} else {
-								echo '<div class="col-md-5 col-md-offset-1 assignment_listing">';
+								echo '<div class="col-md-5 col-md-offset-1 thing_listing">';
 							}
 						?>
 											
@@ -128,15 +128,15 @@ get_header(); ?>
 							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
 						
 							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
+							$thingAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
 							
 							// no author assigned
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							if ( !$thingAuthor) $thingAuthor = 'Anonymous';
 							?>
 							
 							
 							<p class="meta">
-								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> &bull; <strong><?php echo get_assignment_meta( $post->ID, 'assignment_visits')?></strong> views &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_examples')?></strong> examples</strong> &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?></strong> tutorials
+								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $thingAuthor?></strong> &bull; <strong><?php echo get_thing_meta( $post->ID, 'thing_visits')?></strong> views &bull;  <strong><?php echo get_thing_meta( $post->ID, 'thing_responses')?></strong> responses</strong> &bull;  <strong><?php echo get_thing_meta( $post->ID, 'thing_tutorials')?></strong> tutorials
 							</p>
 							
 						</header> 
@@ -167,7 +167,7 @@ get_header(); ?>
 					</article> <!-- end article -->
 
 
-			</div> <!-- end assignment listing -->
+			</div> <!-- end thing listing -->
 					
 					<?php if (!$startrow) echo '</div>'; // end of row?>
 										

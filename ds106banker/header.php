@@ -58,8 +58,8 @@
 						<form class="navbar-form navbar-right" role="search" method="get" id="searchform" action="<?php echo home_url( '/' ); ?>">
 							<div class="form-group">
 								<input name="s" id="s" type="text" class="search-query form-control" autocomplete="off" placeholder="<?php _e('Search ' . THINGNAME . 's' ,'wpbootstrap'); ?>" data-provide="typeahead" data-items="4" data-source='<?php echo $typeahead_data; ?>'>
-								<!-- use post_type to restrict search to things/assignments -->
-								<input type="hidden" name="post_type" value="assignments" />
+								<!-- use post_type to restrict search to things-->
+								<input type="hidden" name="post_type" value="things" />
 							</div>
 						</form>
 						<?php //} ?>

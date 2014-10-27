@@ -53,7 +53,7 @@
 }
 
 
-/* -----------------------= Assignment type index =------------------------- */
+/* -----------------------= Thing type index =------------------------- */
 .thing-archive header, .thing-archive section {
 	padding: 1em;
 }
@@ -87,17 +87,17 @@
 }
 
 
-article.thing-archive section.post_content p, article.type-assignments #content p, #thingcontent p {
+article.thing-archive section.post_content p, article.type-things #content p, #thingcontent p {
 	overflow:hidden;
 	word-wrap:break-word;
 }
 
 
-.assignment-header {
+.thing-header {
 	margin: 0 0 0.5em;
 }
 
-.assignment-selector {
+.thing-selector {
 	margin: 1em 0;
 }
 

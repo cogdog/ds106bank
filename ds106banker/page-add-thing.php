@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Submit Assignment Form
+Template Name: Submit Thing Form
 
 Creates a new assignment for a ds106 bank like site form user input via web form.
 Needs quite a bit of error checking to catch all the crazy things people might
@@ -129,7 +129,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				update_post_meta( $post_id, 'submitter_email', esc_attr( $submitterEmail  ) );
 				
 				// set url if provided in form
-				if ( $assignmentExampleOpts < 3) {
+				if ( $assignmentResponseOpts < 3) {
 					update_post_meta( $post_id, 'fwp_url', esc_url_raw( $_POST['assignmentURL'] ) );
 				}
 				
@@ -165,15 +165,15 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				
 					// build feedback if new things are automatically published
 					
-					// grab link to new assignment
-					$assignmentLink = get_permalink( $post_id );
+					// grab link to new thing
+					$thingLink = get_permalink( $post_id );
 				
 					// feedback success
-					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . THINGNAME . ' has been created. Check out <a href="' . get_permalink( $post_id ) . '">' . $assignmentTitle . '</a> or you can <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>.</div>';  
+					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . THINGNAME . ' has been created. Check out <a href="' . get_permalink( $post_id ) . '">' . $thingTitle . '</a> or you can <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>.</div>';  
 					
 				} else {
 					// feedback if new things are set to draft
-					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . THINGNAME . ', "' . $assignmentTitle . '" has been created. Once it has been approved it will appear on this site. Do you want to <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>?</div>';  
+					$feedback_msg = '<div class="fade in alert alert-alert-info">Your new ' . THINGNAME . ', "' . $thingTitle . '" has been created. Once it has been approved it will appear on this site. Do you want to <a href="' . get_permalink( $current_ID ) .'">create another ' . lcfirst(THINGNAME) . '</a>?</div>';  
 				
 				}
  
@@ -244,37 +244,37 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 		<div class="col-md-5 col-md-offset-1 clearfix">
 		
 			<fieldset>
-				<label for="assignmentType"><?php _e( 'Type of ' . THINGNAME , 'wpbootstrap' ) ?></label>
+				<label for="thingType"><?php _e( 'Type of ' . THINGNAME , 'wpbootstrap' ) ?></label>
 				<p>Choose at least one.</p>
 				
 				
 				<?php 
-					// build options based on assignment types
+					// build options based on thing types
 					// yes this might have been done with wp_dropdown_categories
 					
-					$atypes = get_assignment_types();
+					$atypes = get_thing_types();
 					
 					foreach ($atypes as $thetype) {
-						$checked = ( is_array($assignmentType) and in_array( $thetype->slug, $assignmentType ) ) ? 'checked="checked"' : ''; 
-						echo '<input type="checkbox" name="assignmentType[]" value="' . $thetype->slug . '" ' . $checked .'> ' . $thetype->name . '<br />';
+						$checked = ( is_array($thingType) and in_array( $thetype->slug, $thingType ) ) ? 'checked="checked"' : ''; 
+						echo '<input type="checkbox" name="thingType[]" value="' . $thetype->slug . '" ' . $checked .'> ' . $thetype->name . '<br />';
 					}					
 					?>			
  			</fieldset>
  
 			<fieldset>
-				<label for="assignmentTitle"><?php _e( THINGNAME . ' Title', 'wpbootstrap' ) ?></label>
-				<input type="text" name="assignmentTitle" id="assignmentTitle" class="required" value="<?php  echo $assignmentTitle; ?>" tabindex="2" />
+				<label for="thingTitle"><?php _e( THINGNAME . ' Title', 'wpbootstrap' ) ?></label>
+				<input type="text" name="thingTitle" id="thingTitle" class="required" value="<?php  echo $thingTitle; ?>" tabindex="2" />
 			</fieldset>
 			
 			<fieldset>
-					<label for="assignmentDescription"><?php _e(THINGNAME . ' Description', 'wpbootstrap') ?></label>
-					<textarea name="assignmentDescription" id="assignmentDescription" rows="8" cols="30" class="required" tabindex="3"><?php echo stripslashes( $assignmentDescription );?></textarea>
+					<label for="thingDescription"><?php _e(THINGNAME . ' Description', 'wpbootstrap') ?></label>
+					<textarea name="thingDescription" id="thingDescription" rows="8" cols="30" class="required" tabindex="3"><?php echo stripslashes( $thingDescription );?></textarea>
 			</fieldset>
 			
 			<fieldset>
-				<label for="assignmentTags"><?php _e( THINGNAME . ' Tags (optional)', 'wpbootstrap' ) ?></label>
+				<label for="thingTags"><?php _e( THINGNAME . ' Tags (optional)', 'wpbootstrap' ) ?></label>
 				<p><em>Separate tags with commas</em></p>
-				<input type="text" name="assignmentTags" id="assignmentTags" value="<?php  echo $assignmentTags; ?>" tabindex="4" />
+				<input type="text" name="thingTags" id="thingTags" value="<?php  echo $thingTags; ?>" tabindex="4" />
 			</fieldset>
 			
 			<fieldset>
@@ -294,8 +294,8 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				<?php if (function_exists('the_ratings') ): // use ratings input ?>
  				
  				<fieldset>
- 				<label for="assignmentRating"><?php _e( 'Rating' , 'wpbootstrap' ) ?></label>
- 				<p>Give your assignment an appropriate rating</p>
+ 				<label for="thingRating"><?php _e( 'Rating' , 'wpbootstrap' ) ?></label>
+ 				<p>Give your thing an appropriate rating</p>
  				
  				<?php
  				// get wp-ratings settings
@@ -305,21 +305,21 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  					// ratings from 1 to max
  					for ( $i = 1; $i <= $postratings_max; $i++ ) {
 				
- 						$is_checked = ( $assignmentRating == $i) ? ' checked' : '';
+ 						$is_checked = ( $thingRating == $i) ? ' checked' : '';
  						
  						$rating_label = ( empty( $postratings_ratingstext[$i-1] ) ) ? $i : $postratings_ratingstext[$i-1];
  							
- 						echo '<input type="radio" name="assignmentRating" value="' . $i . '"' . $is_checked . ' tabindex="' . (5 + $i) . '"/> '. $rating_label . '<br />';
+ 						echo '<input type="radio" name="thingRating" value="' . $i . '"' . $is_checked . ' tabindex="' . (5 + $i) . '"/> '. $rating_label . '<br />';
  					}
 
  				?>
 				</fieldset>
  			<?php endif?>
  								
- 				<fieldset id="assignmentURLfield">
- 				<label for="assignmentURL"><?php _e( 'Example URL', 'wpbootstrap' )?></label>
- 				<p>Enter a URL for an example that demonstrates this <?php echo lcfirst(THINGNAME)?>. If the example URL is an image or is on YouTube, vimeo, soundcloud, or flickr, then it will be embedded; other wise it will be linked.</p>
- 				<input type="text" name="assignmentURL" id="assignmentURL" class="required" value="<?php echo $assignmentURL; ?>" tabindex="13" />
+ 				<fieldset id="thingURLfield">
+ 				<label for="thingURL"><?php _e( 'Response URL', 'wpbootstrap' )?></label>
+ 				<p>Enter a URL for an response that demonstrates this <?php echo lcfirst(THINGNAME)?>. If the response URL is an image or is on YouTube, vimeo, soundcloud, or flickr, then it will be embedded; other wise it will be linked.</p>
+ 				<input type="text" name="thingURL" id="thingURL" class="required" value="<?php echo $thingURL; ?>" tabindex="13" />
  				
  				</fieldset>
  				
@@ -327,7 +327,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				<label for="uploadThumb"><?php _e( 'Upload Thumbnail Image', 'wpbootstrap' )?></label>
  				<p>Upload an image to represent your <?php echo THINGNAME?>. It can be any size larger than shown below; if it is of different proportions, it may be cropped to fit. If no image is uploaded, it will be represented by the <a href="<?php echo ds106bank_option('def_thumb')?>" target="_blank">default image</a>.<br />
  				<img src="http://placehold.it/<?php echo THUMBW?>x<?php echo THUMBH?>" alt="" /><br />
- 				<input type="file" name="assignmentImage" id="assignmentImage" tabindex="14" /></p>
+ 				<input type="file" name="thingImage" id="thingImage" tabindex="14" /></p>
  				
  				</fieldset>
  				
@@ -339,11 +339,11 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				</p>
  				
  				<?php elseif  ($my_cc_mode == 'user') :?>
-					<fieldset id="assignmentCCfield">
-					<label for="assignmentCC"><?php _e( 'License Options', 'wpbootstrap' )?></label>
-					<select name="assignmentCC" id="assignmentCC" class="required">
+					<fieldset id="thingCCfield">
+					<label for="thingCC"><?php _e( 'License Options', 'wpbootstrap' )?></label>
+					<select name="thingCC" id="thingCC" class="required">
 					<option value="--">Select...</option>
-					<?php echo cc_license_select_options($assignmentCC) ?>
+					<?php echo cc_license_select_options($thingCC) ?>
 					</select>				
 					</fieldset>
  				<?php endif?>
@@ -366,9 +366,9 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  				<?php endif?>
  				
  				<fieldset>
-				<?php wp_nonce_field( 'bank106_form_add_assignment', 'bank106_form_add_assignment_submitted' ); ?>
+				<?php wp_nonce_field( 'bank106_form_add_thing', 'bank106_form_add_thing_submitted' ); ?>
 	
-				<input type="submit" class="btn btn-primary" value="Add This <?php echo THINGNAME?>" tabindex="40" id="submitassignment" name="submitassignment" tabindex="15">
+				<input type="submit" class="btn btn-primary" value="Add This <?php echo THINGNAME?>" tabindex="40" id="submitthing" name="submitthing" tabindex="15">
 			</fieldset>
 
 		</div>
