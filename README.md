@@ -9,7 +9,7 @@ Other known instances include:
 * [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
 * [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
 * [All The Toys](http://www.allthetoys.org/)
-* [Badges For Real](http://www.natbaseratlarande.se/)
+* [Badges For Real](http://badges4real.se/)
 
 Hey, if you know more, please let me know.
 
