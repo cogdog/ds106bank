@@ -1,0 +1,164 @@
+/* Style sheet to fully override any other bootstrap CSS, will be called
+   last in the chain since bootstrap wants to load themes last. Take that!
+                                                                           */
+
+/* ---------------------------= General STUFF =---------------------------- */
+.more-link {
+	text-align: right;
+}
+
+p.meta, .post-ratings {
+  font-size: small;
+}
+
+p.attribution {
+	width:100%;
+
+}
+
+/* ---------------------------= Single Thing =----------------------------- */
+
+
+.thing-icon-single {
+	margin: 0 auto 20px;
+	padding:0;
+	overflow: hidden;
+}
+
+.thing-icon-single img {	
+	border: 8px solid #fff;
+	width: 100%;
+    height: auto;
+	-moz-border-radius: 30px;
+	border-radius: 30px;	
+}
+
+.videoWrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+}
+
+.videoWrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#examplemedia img {
+	max-width: 100%;
+	height: auto;
+	
+}
+
+#examplemedia {
+	background-color: #f8f8f8;
+	padding: 2em;
+	border: 8px solid #fff;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	word-wrap: break-word;
+	overflow: hidden;
+}
+
+
+/* -----------------------= Assignment type index =------------------------- */
+.thing-archive header, .thing-archive section {
+	padding: 1em;
+}
+
+.thing-archive {
+	background-color: #f8f8f8;
+	min-height: 500px;
+	margin:2em 0;
+	border: 8px solid #fff;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	
+}
+
+.thing-icon {
+	text-align:center;
+	background-color: #f8f8f8;
+	padding:0;
+	min-height: 240px;
+	position: relative;
+	overflow: hidden;
+}
+
+.thing-icon img {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+
+article.thing-archive section.post_content p, article.type-assignments #content p, #thingcontent p {
+	overflow:hidden;
+	word-wrap:break-word;
+}
+
+.assignment-header {
+	margin: 0 0 0.5em;
+}
+
+.assignment-selector {
+	margin: 1em 0;
+}
+
+.hilite {
+	background-color: #f8f8f8;
+}
+
+.page-header {
+  border-bottom: none;
+}
+
+
+/* ----------------------------= Forms =------------------------------------- */
+
+#bank106form {
+	margin:4em 0;
+	background-color: #f8f8f8;
+	padding: 2em;
+	border: 8px solid #fff;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+}
+
+#bank106form  .help-block {
+  line-height: 1.1;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+#bank106form label {
+	font-variant: small-caps;
+	font-size: large;
+	text-transform: lowercase;
+}
+
+.group-span-filestyle .buttonText {
+  font-size: 14px;
+  font-variant: normal;
+  text-transform: lowercase;
+}
+
+#bank106form fieldset  {
+	margin: 0 0 20px 0;
+}
+
+
+#commentform textarea {
+	width: 60%;
+	height: 150px;
+}
+
+
+
