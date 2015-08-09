@@ -126,7 +126,9 @@ If you have any use to mark all of the syndicated posts, the options at the bott
 
 
 ### Setting Up Pages
-Three Wordpress pages will be created on theme activation, to create the main index of all things, another to house the form for adding a new thing, and a third for users to add an example of a response to a thing.
+A few Wordpress pages should be created on theme activation, to create the main index of all things, another to house the form for adding a new thing,one  for users to add an example of a response or a tutorial to a thing, and yet one more to set up a help system.
+
+If the pages are *not* created for you on theme activation...
 
 1. Create a new page for a  **Main Menu** This generates the index of all types of things; they will be listed in the  order specified by your theme options. The title and content of the page (which you edit) is displayed above a grid of types of things. To enable the functionality, set the page template to **Assignment Menu** If you wish this page to be the front of the site, use the **Wordpress Reading Settings** to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).
 
@@ -139,6 +141,8 @@ Three Wordpress pages will be created on theme activation, to create the main in
 3. Create a new page to **Submit Examples**. This form is used to allow visitors to add examples or tutorial for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Example/Tutorial Form**
 
 ![](images/add-example.jpg "Form to add a new example")
+
+4. Create a new page to manage the  **Help** pages for submission forms (this one must have a permalink/slug of **help**). The title and content of the page is displayed above the help content (specific for the type of content being created). 
 
 
 ----------

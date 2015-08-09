@@ -23,7 +23,7 @@ if 	($typ == 'tut') {
 	add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_simpletext_scripts' );
 
 	$sub_type = strtolower( ds106bank_option('helpthingname') );
-	$feedback_msg = '<div class="alert alert-info" role="alert">Enter all of information below to describe a' . $sub_type . ' that would be helpful to someone else who responds to this '  . THINGNAME . '. It must be something available on the web at a public URL.</div>';
+	$feedback_msg = '<div class="alert alert-info" role="alert">Enter all of information below to describe a' . $sub_type . ' that would be helpful to someone else who responds to this '  . THINGNAME . '. It must be something available on the web at a public URL. ';
 
 
 } else {
@@ -39,7 +39,7 @@ if 	($typ == 'tut') {
 		add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_simpletext_scripts' );
 
 		// simple editor and instructions
-		$feedback_msg = '<div class="alert alert-info" role="alert">Enter all information in the form below to share your response to this ' . THINGNAME . '. Then <a href="#" class="btn btn-primary btn-xs disabled">update</a> the information to  verify that is entered correctly. Once entered, <a href="#" class="btn btn-success btn-xs disabled">submit</a> so it will be saved as an example for others to see.</div>';
+		$feedback_msg = '<div class="alert alert-info" role="alert">Enter all information in the form below to share your response to this ' . THINGNAME . '. Then <a href="#" class="btn btn-primary btn-xs disabled">update</a> the information to  verify that is entered correctly. Once entered, <a href="#" class="btn btn-success btn-xs disabled">submit</a> so it will be saved as an example for others to see.';
 
 	} else {
 		
@@ -49,10 +49,13 @@ if 	($typ == 'tut') {
 		// flag to use rich text editor and full preview features
 		$use_full_editor = true;
 	
-		$feedback_msg = '<div class="alert alert-info" role="alert">Enter all information in the form below and <a href="#" class="btn btn-primary btn-xs disabled">update</a> to verify that is entered correctly. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to finalize the entry. When satisfied, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form  and it will be saved to this site.</div>';
+		$feedback_msg = '<div class="alert alert-info" role="alert">Enter all information in the form below and <a href="#" class="btn btn-primary btn-xs disabled">update</a> to verify that is entered correctly. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to finalize the entry. When satisfied, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form  and it will be saved to this site.';
 		
 	}
 }
+
+$feedback_msg .= '<br /><br /><a href="' . site_url() . '/help/?typ=' . $typ . '" target="_blank" class="alert-link">Help for using this form is standing by</a> (link opens in a new window).</div>';
+
 
 // disable buttons
 $previewBtnState = ' disabled';
@@ -318,7 +321,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					<div class="form-group<?php if (array_key_exists("exampleURL",$errors)) echo ' has-error ';?>">
 							<label for="exampleURL"><?php _e( 'Web address for this ' . $sub_type, 'wpbootstrap' )?> <a href="<?php echo $exampleURL?>" class="btn btn-xs btn-warning" id="testURL" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Test Link</a></label>
 							<input type="text" name="exampleURL" id="exampleURL" class="form-control" value="<?php echo $exampleURL; ?>" tabindex="2" placeholder="http://" aria-describedby="urlHelpBlock"/> 
-							<span id="urlHelpBlock" class="help-block">Enter the URL for the <?php echo $sub_type?> you are describing, make sure to test the link to make sure it works. If there is no URL, then enter <strong>#</strong></span>
+							<span id="urlHelpBlock" class="help-block">Enter the URL for the <?php echo $sub_type?> you are describing, make sure to test the link to make sure it works. <?php if ( $use_full_editor ) echo 'If there is no relevant site to link to then enter <strong>#</strong> to indicate a link is not appropriate'?></span>
 					</div>				
 				</div>
 				

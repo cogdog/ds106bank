@@ -195,8 +195,8 @@ get_header(); ?>
 					
 					
 					
-					<div  class="clearfix row">
-							<div id="main" class="col-sm-8" text-center>
+					
+					<div class="col-sm-12 text-center">
 					<?php if (function_exists('wp_bootstrap_page_navi')) { // if expirimental feature is active ?>
 						
 						<?php wp_bootstrap_page_navi(); // use the page navi function ?>
@@ -225,7 +225,6 @@ get_header(); ?>
 													
 							<?php endif; ?>
 						</div>
-					</div>
 
 <?php get_footer(); ?>
 

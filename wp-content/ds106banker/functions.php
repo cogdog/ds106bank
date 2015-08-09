@@ -88,7 +88,7 @@ function ds106bank_setup() {
 		$page_data = array(
 			'post_title' 	=>  THINGNAME . ' Bank',
 			'post_content'	=> 'Insert welcome info here.',
-			'post_name'		=> 'ssignment-menu',
+			'post_name'		=> 'assignment-menu',
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
 			'post_author' 	=> 1,
@@ -99,6 +99,24 @@ function ds106bank_setup() {
 		wp_insert_post( $page_data );
 	}
 	
+	if (! page_with_template_exists( 'page-help.php' ) ) {
+  
+		// create the Write page if it does not exist
+		$page_data = array(
+			'post_title' 	=>  'Help for ' . THINGNAME . ' Bank',
+			'post_content'	=> 'Insert pithy greeting.',
+			'post_name'		=> 'help',
+			'post_status'	=> 'publish',
+			'post_type'		=> 'page',
+			'post_author' 	=> 1,
+			'post_date' 	=> date('Y-m-d H:i:s'),
+			'page_template'	=> 'page-help.php',
+		);
+	
+		wp_insert_post( $page_data );
+	}
+	
+	
 } // function ds106bank_setup
 
 // -----  add allowable url parameter
@@ -108,7 +126,7 @@ add_filter('query_vars', 'bank106_queryvars' );
 function bank106_queryvars( $qvars ) {
 	$qvars[] = 'srt'; // sort parameters for things
 	$qvars[] = 'aid'; // assignment id for add forms
-	$qvars[] = 'typ'; // glag for adding example or tutorial
+	$qvars[] = 'typ'; // flag for adding example or tutorial
 	
 	return $qvars;
 }   
@@ -576,6 +594,7 @@ function is_url_embeddable( $url ) {
 					'outube.com/watch?',
 					'outu.be',
 					'lickr.com/photos',
+					'flic.kr',
 					'imeo.com', 
 					'oundcloud.com',
 					'nstagram.com',
@@ -655,7 +674,8 @@ function get_example_media ( $pid, $metafieldname='fwp_url' ) {
 		$assignmentURL = get_post_meta( $pid, $metafieldname, true );
 		
 		// case to handle an example with no URL, return empty string
-		if ($assignmentURL == "#") return ('');
+		// Just check the first character because people seem to think this is a hash tag!
+		if ($assignmentURL[0] == "#") return ('');
 		
 		
 		if ( url_is_type( $assignmentURL, array( 'mp3' ) ) ) {
