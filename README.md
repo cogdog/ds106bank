@@ -7,6 +7,8 @@ This Wordpress Theme allows you to create and customize a site that has all of t
 Other known instances include:
 
 * [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
+* [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank)
+* [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/)
 * [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
 * [All The Toys](http://www.allthetoys.org/)
 * [Badges For Real](http://www.natbaseratlarande.se/)
@@ -16,9 +18,9 @@ Hey, if you know more, please let me know.
 If you want more of the details behind the building see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
 
 ## Terminology / Jargon
-Generically I call the things inside the bank "Things" (internally you may find code references to "assignments", one day I may clean this up).
+Generically I call the things inside the bank "Things" (internally you may find code references to "assignments", legacy of the first iteration of code).
 
-So in the ds106 site, there are types of things (Assignments) such as [Design Assignments](http://assignments.ds106.us/types/designassignments/), [Video Assignments](http://assignments.ds106.us/types/videoassignments/), etc. Each assignment has a crowdsourced difficulty rating; any site visitor add their own vote. 
+So in the ds106 site there are types of things (Assignments) such as [Design Assignments](http://assignments.ds106.us/types/designassignments/), [Video Assignments](http://assignments.ds106.us/types/videoassignments/), etc. Each assignment has a crowdsourced difficulty rating; any site visitor add their own vote. 
 
 A specific assignment, for example, the [Six Word Memoir](http://assignments.ds106.us/assignments/six-word-memoir/) has a linked example, an associated icon, and a description. The site generates a unique pair of tags for each assignment. When a participant who has their blog registered at ds106, writes up their assignment with the tags, through RSS syndication the post gets attached as an example.
 
@@ -46,9 +48,9 @@ Besides descriptive information, a visitor can associate a new thing with one or
 
 ## Theming
 
-This ds106 Assignment Bank Theme is build as a child theme of the [Wordpress Bootstrap Theme[(http://320press.com) chosen for its responsive layout and flexible grid display. It is pretty basic. 
+This ds106 Assignment Bank Theme is build as a child theme of the [Wordpress Bootstrap Theme[(https://github.com/320press/wordpress-bootstrap) chosen for its responsive layout and flexible grid display (and sadly no longer being supported). 
 
-Hopefully it is flexible to meet many use cases. The design allows you to create a site where the front of the site is the menu of types of things, but that could also be an internal page, and a normal blog flow can be front and center. The theme does not create any of the navigation menus for you, but you will find suggestions as to the types of things you can make available via the built in Wordpress menu editor.
+It is pretty basic on design, but hopefully flexible to your use cases. The design allows you to create a site where the front of the site is the menu of types of things, but that could also be an internal page, and a normal blog flow can be front and center. The theme does not create any of the navigation menus for you, but you will find suggestions as to the types of things you can make available via the built in Wordpress menu editor.
 
 ## Requirements
 A self hosted Wordpress hosted site (in other words "you cannot use this on Wordpress.com").  This theme can work on a multisite or as a single install. Depending on how you wish to run the site, you might install plugins below. You will also find suggestions for Widgets that are useful for sidebars and footers.
@@ -57,17 +59,17 @@ A self hosted Wordpress hosted site (in other words "you cannot use this on Word
 ## Installing and Configuring the Theme
 (see headings below with the same number for more detail, there's a boat load of detail...)
 
-1. Upload the **ds106banker** and the **wp-bootstrap** directories to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links. You will have to create a zip file for each theme folder.
+1. Upload the **ds106banker** and the **wp-bootstrap** directories (from wp-content/ on this distro) to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links. You will have to create a zip file for each theme folder. *If you upload the .zip that you downloaded from github, failure will rain all over your soul.*
 2. Activate the **ds106banker** theme.
-3. Install Wp-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme.
+3. Install WP-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme.
 4. Create holding pages for the Main Index, the form to add examples, and a form for creating new "things" (see below). Be sure to choose the appropriate Theme Template to create the functionality for each.
 5. Set the theme options (detailed in length below). Find the **Assignment Bank Options** listed both under the **Appearance** settings in the Wordpress Dashboard, or via the admin nav bar.
 6. Customize the site menus. The theme provides a few shortcodes you can use on any page or sidebar.
 7. Other Suggested plugins
 8. Create some stuff
 
-### (3) Setting up WP-Ratings
-Install the [WP-Ratings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing rating feature. Not installing the plugin (or de-activating it) removes any ratings features from the site.
+### Setting up WP-Ratings for Popularity Ratings
+Install the [WP-Ratings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing popularity rating feature. Not installing the plugin (or de-activating it) removes the feature from the site. the purpose here is to allow visitors to rate Things, and provide sorting of things based on said ratings.
 
 A few settings for the plugin are necessary.
 
@@ -90,8 +92,15 @@ Data for ratings are stored in three custom fields on all Things; they can be ed
 
 If you feel the vote of 5 by one person is too high, you might change the values to be ratings_score=2, ratings_users and ratings_average=2 to reduce the rating to 2. Changing votes is your decision
 
+### Author Challenge Ratings
 
-### (3) Setting Up Feed Wordpress
+![](ds106banker/images/challenge-ratings.jpg)
+
+Enable this option to allow creators of new things to define their own rating of difficulty; this is completely separate from user popularity rating
+
+
+
+### Setting Up Feed Wordpress
 Install the [Feed Wordpress plugin](http://wordpress.org/plugins/feedwordpress/) if you wish to syndicate in responses to "thongs" as examples. This means that you can add blog feeds to the bank (it does the feed aggregation) or you can syndicate in from another site that is aggregating feeds (the ds 106 model). 
 
 If this is not a desired feature, the plugin is not needed. You can still allow visitors to submit their examples via a web form.
@@ -116,8 +125,10 @@ If you have no use for other tags in posts, under **Unmatched Categories** check
 If you have any use to mark all of the syndicated posts, the options at the bottom of this screen allow you to add Wordpress tags or categories to them (e.g. add a "syndicated" tag).
 
 
-### (4) Setting Up Pages
-Three Wordpress pages must be set up, to create the main index of all things, another to house the form for adding a ne thing, and a third for users to add an example of a response to a thing.
+### Setting Up Pages
+A few Wordpress pages should be created on theme activation, to create the main index of all things, another to house the form for adding a new thing,one  for users to add an example of a response or a tutorial to a thing, and yet one more to set up a help system.
+
+If the pages are *not* created for you on theme activation...
 
 1. Create a new page for a  **Main Menu** This generates the index of all types of things; they will be listed in the  order specified by your theme options. The title and content of the page (which you edit) is displayed above a grid of types of things. To enable the functionality, set the page template to **Assignment Menu** If you wish this page to be the front of the site, use the **Wordpress Reading Settings** to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).
 
@@ -131,9 +142,11 @@ Three Wordpress pages must be set up, to create the main index of all things, an
 
 ![](images/add-example.jpg "Form to add a new example")
 
+4. Create a new page to manage the  **Help** pages for submission forms (this one must have a permalink/slug of **help**). The title and content of the page is displayed above the help content (specific for the type of content being created). 
+
 
 ----------
-### (5) Assignment Bank Theme Options
+### Assignment Bank Theme Options
 This theme has a comprehensive set of options, available via the **Assignment Bank Options## form the main admin toolbar.
 
 #### Assignment Bank Options: General Settings: Things Settings
@@ -147,6 +160,15 @@ If you  allow users to submit new things to the site, you can set the **default 
 The **display order** controls how the types of things are sequenced on the main index; by title, order created, or by the number of things in each type. This order can be switched direction via the **display order sorting**.
 
 The **excerpt length** is used to set the word length of short descriptions of examples and things on index pages (the Wordpress default is 55 words).
+
+#### Assignment Bank Options: General Settings: Twitter Settings
+
+![](ds106banker/images/twitter-options.jpg)
+
+**Use twitter name on submission forms?** provides an option to include a twitter user name on form submission, and whether to make entry optional or not. When enabled, the twitter names are added to each item as a tag. This allows for tracking of work using twitter name as a marker and enabling of leaderboard options
+
+**Twitter Hashtags** can be added to output for twitter buttons added to challenges and examples. More than one can be added if separated by commas.
+
 
 #### Assignment Bank Options: General Settings: Captcha Settings
 
@@ -170,14 +192,24 @@ Creative commons licenses can be attached to all things on the site. Choose **Ap
 Setting the Creative Commons options to **Enable users to choose license when submitting a challenge** will put the menu on the submission form so users can choose a license (or set to All Rights Reserved). At this time, the only way to reduce the number of license options is to edit `functions.php` in the template directory. Look for the function `function cc_license_select_options` and comment out the lines containing license options to hide.
 
 
-#### Assignment Bank Options: General Settings: Settings for Examples
+#### Assignment Bank Options: General Settings: Settings for Responses to Things
 ![](ds106banker/images/submit-examples.jpg)
 
-By checking the first box, this  section allows you to enable a web form for site visitors to submit their examples as response to a thing (the form asks for name, email title, description, and a link).
+By checking the first box, this section enables a web form for site visitors to submit their examples and support materials as response to a Thing (the form asks for name, email title, description, and a link). This page is only reached by following a link from a Thing, which passes it two variables to indicate the Thing, and whether it is an Example or a Tutorial.
 
-For the link to the form to work, you must have previously created a Page that uses the **Submit Example/Tutorial Form** template. The drop down menu will list all pages on the site; choose the one that should house the form. If you want to not make the form public, just avoid adding menu links to it (or put a password on te form)
+If the expectation of the site is that users will be linking to their work as stored elsewhere (e.g. blogs or other user maintained site) check the option for **Link to Form Submitted Examples** to be **No, links go to example URL**.
 
-Finally, you can set whether a new example is published immediately or set to draft for moderation. All examples added to the site (by the form or via the syndication methods below) can be reviewed and edited via the dashboard menu for Examples Done. The most likely item to be edited is the URL for the example; it is stored in the Custom Field value for **syndication_permalink**.
+On the other hand, setting this option to be **Yes, links go to entry on the bank site** sets the site up to house all submitted responses. A form will be presented with a rich text editor, that allows the users to preview and review their work before final submission. The rich text editor supports wordpress autoembeds.
+
+
+![](ds106banker/images/response-form.jpg)
+
+
+For the link to the submission form to work, you must have previously created a Page that uses the **Submit Example/Tutorial Form** template. The drop down menu will list all pages on the site; choose the one that should house the form. If you want to not make the form public, just avoid adding menu links to it (or put a password on te form)
+
+You can set whether a new example is published immediately or set to draft for moderation. All examples added to the site (by the form or via the syndication methods below) can be reviewed and edited via the dashboard menu for Examples Done. The most likely item to be edited is the URL for the example; it is stored in the Custom Field value for **syndication_permalink**.
+
+Finally, the items added to the right side can be Resources, Tutorials, Extra links- and you can use **Name for Support Things** to define how they are labeled. The submission form for these offer a place for a title, URL, and a short description.
 
 
 #### Assignment Bank Options: General Settings: Settings for Syndication of Examples
@@ -235,7 +267,7 @@ A few special URLs are available, for say a site set up on `/bank.yourdomain.org
 
 
 ### (6) Shortcodes
-These shortcodes can be used in an page, post, Widget
+These shortcodes can be used in an page, post, widget
 
 `[thingcount]` generates a count of all "things" in the bank such as **34 challenges**
 
@@ -243,12 +275,33 @@ These shortcodes can be used in an page, post, Widget
 
 `[feedroll]`  If Feed Wordpress is installed, this shortcode generates a list of all subscribed blogs, useful as a sidebar widget. If feeds have different tags to segment them, a specific list can be produced by `[feedroll tag="section5"]`
 
+#### Leaderboard Shortcodes
+These codes can be used in posts or widgets to list the most active participants if the option is enabled to track submissions by twitter name
+
+List all respondents in order of most active to least
+
+	[bankleaders]
+
+List the top 10 respondents
+
+	[bankleaders number="10"]
+
+List the top 10 respondents and exclude the ones identified in the hashtag taxonomy as ids 8 and 10
+
+	[bankleaders number="10" exclude="8,10"]
+
+List all the twitter names that have contributed new Things via the submission form 
+
+	[bankleaders type="contributors"]
+
+
+
 ### (6) Customizing CSS
 Most of the theme's design is managed by the parent WP-Bootstrap theme. You do not to never edit that, right?
 
 Because of the way styles are loaded, the typical child theme for the Assignment Bank [style.css](ds106banker/style.css) is blank except for the information needed to establish the relationship to the parent theme. Any custom style over-rides should be added to [style.css](ds106banker/ds106bank.css)
 
-### (7) Other Suggested plugins
+### Other Suggested plugins
 The following plugins are installed on the [demo site](http://bank.ds106.us/) to create useful sidebar/footer Widgets
 
 * [Flexible Post Widget](http://wordpress.org/plugins/flexible-posts-widget/‎) provides a widget that can list the custom post types used in the theme; as used in the footer of the demo site, it can provide a  widget listing of randomly ordered "things" and "examples"
@@ -265,9 +318,7 @@ The following plugins are installed on the [demo site](http://bank.ds106.us/) to
 <input type="hidden" name="post_type" value="assignments" />
 ```
 
-### (8) Create Some stuff
 
-Yeah, go do that.
 
 
 
