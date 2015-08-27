@@ -298,6 +298,7 @@ function wp_bootstrap_my_widget_tag_cloud_args( $args ) {
 
 // filter tag clould output so that it can be styled by CSS
 function wp_bootstrap_add_tag_class( $taglinks ) {
+	if (!is_array($taglinks) ) {
     $tags = explode('</a>', $taglinks);
     $regex = "#(.*tag-link[-])(.*)(' title.*)#e";
 
@@ -308,6 +309,7 @@ function wp_bootstrap_add_tag_class( $taglinks ) {
     $taglinks = implode('</a>', $tagn);
 
     return $taglinks;
+    }
 }
 
 add_action( 'wp_tag_cloud', 'wp_bootstrap_add_tag_class' );
@@ -335,9 +337,10 @@ function wp_bootstrap_remove_more_jump_link( $link ) {
 }
 add_filter( 'the_content_more_link', 'wp_bootstrap_remove_more_jump_link' );
 
+// ---- removing the removers, this strips out [caption] tags 
 // Remove height/width attributes on images so they can be responsive
-add_filter( 'post_thumbnail_html', 'wp_bootstrap_remove_thumbnail_dimensions', 10 );
-add_filter( 'image_send_to_editor', 'wp_bootstrap_remove_thumbnail_dimensions', 10 );
+// add_filter( 'post_thumbnail_html', 'wp_bootstrap_remove_thumbnail_dimensions', 10 );
+// add_filter( 'image_send_to_editor', 'wp_bootstrap_remove_thumbnail_dimensions', 10 );
 
 function wp_bootstrap_remove_thumbnail_dimensions( $html ) {
     $html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
