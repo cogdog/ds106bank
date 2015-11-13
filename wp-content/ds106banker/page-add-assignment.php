@@ -24,9 +24,6 @@ $use_twitter_name = ds106bank_option( 'use_twitter_name' );
 // use evil captchas?
 $use_captcha = ds106bank_option('use_captcha');
 
-
-
-
 // ----- set defaults ---------------------
 // set af default rating values
 $assignmentRating = 3;    	// default public rating

@@ -17,6 +17,9 @@ $typ = $wp_query->query_vars['typ'];
 // flag to NOT use rich text editor and full preview features (default)	
 $use_full_editor = false;
 
+// holder for boo-boos
+$errors = array();
+
 // keep track of the kind of submission		
 if 	($typ == 'tut') {
 	// enqueue jquery for simple text editor and preview
@@ -110,7 +113,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 		$my_tutorial_tag = 'Tutorial' . $aid;
 			
  		// let's do some validation, story an error message for each problem found
- 		$errors = array();
+
  		
  		if ( $exampleTitle == '' ) $errors['exampleTitle'] = '<span class="label label-danger">Title Missing</span> - please enter a descriptive title.';
  		if ( $submitterName == '' ) $errors['submitterName'] = '<span class="label label-danger">Name Missing</span>- enter your name so we can give you credit';
@@ -303,7 +306,6 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				</div>
 
       	<?php if (!$post_id) : //hide form if we had success ?>
-				
 				<form action="" id="bank106form" class="abank106form" method="post" action="">
 				
 				<div class="clearfix row">

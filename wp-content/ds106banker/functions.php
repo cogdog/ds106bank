@@ -98,7 +98,9 @@ function ds106bank_setup() {
 	
 		wp_insert_post( $page_data );
 	}
-	
+
+
+/*	
 	if (! page_with_template_exists( 'page-help.php' ) ) {
   
 		// create the Write page if it does not exist
@@ -115,6 +117,7 @@ function ds106bank_setup() {
 	
 		wp_insert_post( $page_data );
 	}
+*/
 	
 	
 } // function ds106bank_setup
@@ -983,6 +986,9 @@ function cleanTags( $str ) {
 
 function ds106bank_enqueue_add_thing_scripts() {
 
+	// Build in tag auto complete script
+	wp_enqueue_script( 'suggest' );
+
     // custom jquery for the add thing/assignment form
 	wp_register_script( 'bank106_add_thing_js' , get_stylesheet_directory_uri() . '/js/jquery.add-thing.js', array( 'jquery' ), '1.0', TRUE );
 	wp_enqueue_script( 'bank106_add_thing_js' );
@@ -1015,8 +1021,11 @@ function ds106bank_enqueue_add_thing_scripts() {
 
 function ds106bank_enqueue_add_ex_scripts() {
 
+	// Build in tag auto complete script
+	wp_enqueue_script( 'suggest' );
+
     // custom jquery for the example form
-	wp_register_script( 'bank106_add_example_js' , get_stylesheet_directory_uri() . '/js/jquery.add-example.js', array( 'jquery' ), '1.0', TRUE );
+	wp_register_script( 'bank106_add_example_js' , get_stylesheet_directory_uri() . '/js/jquery.add-example.js', array( 'jquery' ), '1.1', TRUE );
 	wp_enqueue_script( 'bank106_add_example_js' );
 
 	// add scripts for fancybox (used for previews of submitted examples) 
