@@ -11,6 +11,7 @@ Other known instances include:
 * [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/)
 * [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
 * [All The Toys](http://www.allthetoys.org/)
+* [Badges For Real](http://badges4real.se/)
 
 Hey, if you know more, please let me know.
 
