@@ -306,7 +306,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				</div>
 
       	<?php if (!$post_id) : //hide form if we had success ?>
-				<form action="" id="bank106form" class="abank106form" method="post" action="">
+				<form action="" id="bank106form" class="abank106form" method="post" action="" autocomplete="on">
 				
 				<div class="clearfix row">
 		
@@ -385,7 +385,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 
 					<div class="form-group<?php if (array_key_exists("submitterTwitter",$errors)) echo ' has-error ';?>">
 						<label for="submitterTwitter"><?php _e( 'Your Twitter username ', 'wpbootstrap' ) ?> <?php if ($use_twitter_name == 1) { echo '(optional)'; } else { echo '(required)';}?></label>
-						<input type="text" name="submitterTwitter" class="form-control" id="submitterTwitter" value="<?php echo $submitterTwitter; ?>" tabindex="7" placeholder="@" aria-describedby="twitterHelpBlock" />
+						<input type="text" name="submitterTwitter" class="form-control" id="submitterTwitter" value="<?php echo $submitterTwitter; ?>" tabindex="7" placeholder="@"  aria-describedby="twitterHelpBlock" />
 						<span id="twitterHelpBlock" class="help-block">Enter the twitter name (including the "@" symbol) of the person authoring this form so the site can keep track of all your shared <?php echo $sub_type?>s. If you wish to credit other people, add their twitter name to the "Tags" field. </span>
 					</div>	
 			

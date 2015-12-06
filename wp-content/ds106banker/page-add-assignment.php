@@ -288,7 +288,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 			
 			<?php if (!$post_id) : //hide form if we had success ?>
 			
-				<form action="" id="bank106form" class="bank106form" method="post" action="" enctype="multipart/form-data">
+				<form action="" id="bank106form" class="bank106form" method="post" action="" autocomplete="on" enctype="multipart/form-data">
 	
 				<div class="clearfix row">
 		
