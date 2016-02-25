@@ -16,7 +16,6 @@ class ds106bank_Theme_Options {
 		$this->checkboxes = array();
 		$this->settings = array();
 		
-		//$this->bank106_init();
 		$this->get_settings();
 		
 		$this->sections['general'] = __( 'General Settings' );
@@ -38,9 +37,6 @@ class ds106bank_Theme_Options {
 	public function add_pages() {
 		$admin_page = add_theme_page( 'Assignment Bank Options', 'Assignment Bank Options', 'manage_options', 'ds106bank-options', array( &$this, 'display_page' ) );
 		
-		// give us javascript for this page
-		add_action( 'admin_print_scripts-' . $admin_page, array( &$this, 'scripts' ) );
-		
 		// and some pretty styling
 		add_action( 'admin_print_styles-' . $admin_page, array( &$this, 'styles' ) );
 	}
@@ -53,112 +49,28 @@ class ds106bank_Theme_Options {
 		
 		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == true )
 			echo '<div class="updated fade"><p>' . __( 'Theme options updated.' ) . '</p></div>';
-				
-		echo '<form action="options.php" method="post" enctype="multipart/form-data">';
+			echo '<h2 class="nav-tab-wrapper">';
+
+			// active tab?
+		 	if ( isset( $_GET[ 'tab' ] ) )  $active_tab = $_GET[ 'tab' ];
+		    
+		    $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'general';		    
+		 
+			foreach ( $this->sections as $section_slug => $section ) {
+				$active_tab_class = ( $section_slug == $active_tab ) ? ' nav-tab-active' : '';
+				echo '<a href="?page=dailyblank_options&tab=' . $section_slug . '" class="nav-tab' . $active_tab_class . '">' . $section . '</a>';
+			}
+			echo '</h2>';
+			
+			echo '<form action="options.php" method="post" enctype="multipart/form-data">';
 
 			settings_fields( 'ds106banker_options' );
-			echo '<div class="ui-tabs">
-				<ul class="ui-tabs-nav">';
-
-			foreach ( $this->sections as $section_slug => $section )
-				echo '<li><a href="#' . $section_slug . '">' . $section . '</a></li>';
-
-			echo '</ul>';
 			do_settings_sections( $_GET['page'] );
 
-			echo '</div>
-			<p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . __( 'Save Changes' ) . '" /></p>
-
-		</form>';
-		echo '<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			var sections = [];';
-			
-			foreach ( $this->sections as $section_slug => $section )
-				echo "sections['$section'] = '$section_slug';";
-			
-			echo 'var wrapped = $(".wrap h3").wrap("<div class=\"ui-tabs-panel\">");
-			wrapped.each(function() {
-				$(this).parent().append($(this).parent().nextUntil("div.ui-tabs-panel"));
-			});
-			$(".ui-tabs-panel").each(function(index) {
-				$(this).attr("id", sections[$(this).children("h3").text()]);
-				if (index > 0)
-					$(this).addClass("ui-tabs-hide");
-			});
-			$(".ui-tabs").tabs({
-				fx: { opacity: "toggle", duration: "fast" }
-			});
-			
-			$("input[type=text], textarea").each(function() {
-				if ($(this).val() == $(this).attr("placeholder") || $(this).val() == "")
-					$(this).css("color", "#999");
-			});
-			
-			$("input[type=text], textarea").focus(function() {
-				if ($(this).val() == $(this).attr("placeholder") || $(this).val() == "") {
-					$(this).val("");
-					$(this).css("color", "#000");
-				}
-			}).blur(function() {
-				if ($(this).val() == "" || $(this).val() == $(this).attr("placeholder")) {
-					$(this).val($(this).attr("placeholder"));
-					$(this).css("color", "#999");
-				}
-			});
-			
-			$(".wrap h3, .wrap table").show();
-			
-			// This will make the "warning" checkbox class really stand out when checked.
-			// I use it here for the Reset checkbox.
-			$(".warning").change(function() {
-				if ($(this).is(":checked"))
-					$(this).parent().css("background", "#c00").css("color", "#fff").css("fontWeight", "bold");
-				else
-					$(this).parent().css("background", "none").css("color", "inherit").css("fontWeight", "normal");
-			});
-			
-			// Browser compatibility
-			if ($.browser.mozilla) 
-			         $("form").attr("autocomplete", "off");
-			         
-		
-				//  via http://stackoverflow.com/a/14467706/2418186
+			echo '<p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . __( 'Save Changes' ) . '" /></p>
+		</form>
+		</div>';
 	
-				//  jQueryUI 1.10 and HTML5 ready
-				//      http://jqueryui.com/upgrade-guide/1.10/#removed-cookie-option 
-				//  Documentation
-				//      http://api.jqueryui.com/tabs/#option-active
-				//      http://api.jqueryui.com/tabs/#event-activate
-				//      http://balaarjunan.wordpress.com/2010/11/10/html5-session-storage-key-things-to-consider/
-				//
-				//  Define friendly index name
-				var index = "key";
-				//  Define friendly data store name
-				var dataStore = window.sessionStorage;
-				//  Start magic!
-				try {
-					// getter: Fetch previous value
-					var oldIndex = dataStore.getItem(index);
-				} catch(e) {
-					// getter: Always default to first tab in error state
-					var oldIndex = 0;
-				}
-				$(".ui-tabs").tabs({
-					// The zero-based index of the panel that is active (open)
-					active : oldIndex,
-					// Triggered after a tab has been activated
-					activate : function( event, ui ){
-						//  Get future value
-						var newIndex = ui.newTab.parent().children().index(ui.newTab);
-						//  Set future value
-						dataStore.setItem( index, newIndex ) 
-					}
-				}); 
-					 
-			});
-	</script>
-</div>';	
 	}
 			
 		/* Insert custom CSS */
@@ -793,12 +705,7 @@ class ds106bank_Theme_Options {
 
 	}
 	
-	
-	/* jQuery Tabs */
-	public function scripts() {
-		wp_print_scripts( 'jquery-ui-tabs' );
-	}
-	
+		
 	public function validate_settings( $input ) {
 		
 		if ( ! isset( $input['reset_theme'] ) ) {
