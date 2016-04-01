@@ -6,13 +6,14 @@ This Wordpress Theme allows you to create and customize a site that has all of t
 
 Other known instances include:
 
-* [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
+* [UBC Open Resources Challenge](http://openlearning.sites.olt.ubc.ca/open-resources-assignments/)
 * [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank)
 * [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/)
+* [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
 * [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
 * [All The Toys](http://www.allthetoys.org/)
 
-Hey, if you know more, please let me know.
+Hey, if you know more,  let me know-- or DIY please pull and add more!
 
 If you want more of the details behind the building see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
 
