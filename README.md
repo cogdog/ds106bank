@@ -12,6 +12,7 @@ Other known instances include:
 * [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
 * [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
 * [All The Toys](http://www.allthetoys.org/)
+* [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
 
 Hey, if you know more,  let me know-- or DIY please pull and add more!
 
