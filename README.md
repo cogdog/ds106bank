@@ -8,13 +8,14 @@ This Wordpress Theme allows you to create and customize a site that has all of t
 
 Other known instances include:
 
-* [UBC Open Resources Challenge](http://openlearning.sites.olt.ubc.ca/open-resources-assignments/)
-* [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank)
-* [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/)
+* [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
+* [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
+* [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
 * [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
 * [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
 * [All The Toys](http://www.allthetoys.org/)
 * [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
+* [Instructional Technology Assignments](http://tcoffman.org/INDT/) INDT501 at University of Mary Washington
 
 Hey, if you know more,  let me know-- or DIY please pull and add more!
 
