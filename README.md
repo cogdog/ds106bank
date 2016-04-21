@@ -1,6 +1,8 @@
 # ds106 Assignment Bank Wordpress Theme
 by Alan Levine http://cog.dog/ or http://cogdogblog.com/
 
+Got a question? Suggestion? Problem? Please (send them my way via  GutHub Issues)[https://github.com/cogdog/ds106bank/issues]
+
 ## What is this?
 This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  You can find a live demo of silly examples running at http://bank.ds106.us/
 
