@@ -64,7 +64,7 @@ p.wp-caption-text {
 .videoWrapper {
 	position: relative;
 	padding-bottom: 56.25%; /* 16:9 */
-	padding-top: 25px;
+	/* padding-top: 25px; */
 	height: 0;
 }
 

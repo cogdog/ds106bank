@@ -35,8 +35,8 @@
 						<div class="col-sm-3">
 						
 							<div class="thing-icon-single">
-							<!-- insert/embed assignmet icon -->
-							<?php get_thing_icon ( $my_id ,'thumbnail')?>
+							<!-- insert/embed assignment icon -->
+							<?php echo get_thing_icon ( $my_id ,'thumbnail')?>
 							</div>
 						</div>
 

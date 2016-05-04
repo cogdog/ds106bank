@@ -80,7 +80,7 @@
 
 						<!-- thing icon -->
 						<div class="thing-icon">
-						<a href="<?php the_permalink(); ?>"><?php get_thing_icon ($post->ID, 'thumbnail', true) ?></a>
+						<a href="<?php the_permalink(); ?>"><?php get_thing_icon ($post->ID, 'thumbnail', 'thing_archive') ?></a>
 						</div>
 						<!-- end icon or media -->
 					

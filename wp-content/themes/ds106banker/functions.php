@@ -646,22 +646,35 @@ function url_is_video ($url) {
 
 
 
-function get_thing_icon ($pid, $imgsize, $imgclass="thing-pic") {
-// Display the thumbnail for a thing; add a link to it if we are on 
-// an archive page
+function get_thing_icon ($pid, $imgsize, $imgclass = "thing-pic") {
+// Display the thumbnail for a thing; assume by default it's for a single assignment (class= 'thing-pic')
+// For an archive view ($imgclass = 'thing-archive') we will use embedded media as icon (if option set)
 	
+	
+	if ( $imgclass == "thing-archive" AND ds106bank_option('media_icon')) {
+		// try to use example media as icon if its embeddable and option set to look for embeddable icon
+			
+		// do we have an example URL as meta data
+		if ( get_post_meta( $pid, 'fwp_url' , true ) ) {
+			$check_for_embed =  get_media_embedded (  get_post_meta( $pid, 'fwp_url' , true) );
+			
+			// if we got some embed code, return it
+			if ( $check_for_embed != '') return ( $check_for_embed );
+		}
+	}
+	
+	// Let's just to the regular thumbnail route...
+	// Do we have a thumbnail defined?
+
 	// get clean string for alt attribute
 	$title_str =  trim(strip_tags( get_the_title( $pid ) ) );
-	
-	
-	// Do we have a thumbnail defined?
-		
+
 	if ( '' != get_the_post_thumbnail($pid) ) {
 		the_post_thumbnail( $imgsize, array ('class'=> $imgclass,
 	'alt'	=> $title_str) );
 	} else {
 		// Otherwise use the default image
-		echo '<img src="' . ds106bank_option('def_thumb' ) . '" $imgclass alt="' . esc_attr( $title_str) . '" />';
+		return '<img src="' . ds106bank_option('def_thumb' ) . '" $imgclass alt="' . esc_attr( $title_str) . '" />';
 	} 
 } 
 
@@ -704,13 +717,14 @@ function get_media_embedded ( $url ) {
 	if ($url == '') return ('-1');
 
 	$str = ''; // hold output
+	$display_code = ''; // hold display code
 			
 	if ( url_is_type( $url, array( 'mp3' ) ) ) {
 		// see if the URL points to an embeddable audio type, display code set for mp3
 		$display_code = '<audio controls="controls" class="audio-player"><source src="' . $url . '" /> </audio>';
 	}
 		
-	// try and get embed code for the linke (e.g. youtube, flickr, soundcloud)
+	// try and get embed code for the link (e.g. youtube, flickr, soundcloud)
 	$embedcode = ( is_url_embeddable($url) ) ? wp_oembed_get( $url ) : false;
 	
 	// if example is an image, we will use that as a display code
