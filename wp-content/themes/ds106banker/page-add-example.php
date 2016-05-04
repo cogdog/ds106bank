@@ -287,7 +287,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 			
 						<div class="thing-icon-single">
 						<!-- insert/embed assignmet icon -->
-						<a href="<?php echo get_permalink( $aid);?>"><?php get_thing_icon ( $aid ,'thumbnail')?></a>
+						<a href="<?php echo get_permalink( $aid);?>"><?php echo get_thing_icon ( $aid ,'thumbnail')?></a>
 						</div>
 					</div>
 

@@ -148,7 +148,7 @@ get_header(); ?>
 
 						<!-- thing icon or embedded media -->
 						<div class="thing-icon">
-						<a href="<?php the_permalink(); ?>"><?php get_thing_icon ($post->ID, 'thumbnail', true) ?></a>
+						<a href="<?php the_permalink(); ?>"><?php echo get_thing_icon ($post->ID, 'thumbnail', 'thing-archive') ?></a>
 						</div>
 						<!-- end icon or media -->
 					

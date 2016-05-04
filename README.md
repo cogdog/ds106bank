@@ -6,7 +6,7 @@ Got a question? Suggestion? Problem? Please (send them my way via  GutHub Issues
 ## What is this?
 This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  You can find a live demo of silly examples running at http://bank.ds106.us/
 
-Other known instances include:
+Other known instances (with real content) include:
 
 * [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
 * [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
@@ -17,9 +17,14 @@ Other known instances include:
 * [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
 * [Instructional Technology Assignments](http://tcoffman.org/INDT/) INDT501 at University of Mary Washington
 
-Hey, if you know more,  let me know-- or DIY please pull and add more!
+Hey, if you know more...  let me know-- or better yet, DIY; please fork this in GitHub, add your example, and submit a pull request.
 
-If you want more of the details behind the building see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
+For more details behind how this thing came to be see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
+
+## What's New?
+
+* May 3, 2016: New theme option to allow for archive views of assignments to use the embed-able media of it's example as an icon (e.g. YouTube video) rather than the thumbnail.
+* May 30, 2015: Major updates for UDG Agora project- vastly improved submission forms with previews, options to track users by twitter handle, improved single layout, leaderboard.
 
 ## Terminology / Jargon
 Generically I call the things inside the bank "Things" (internally you may find code references to "assignments", legacy of the first iteration of code).
@@ -187,6 +192,10 @@ Set the width and height of thumbnail images on all index and archive pages.
 
 The **default thumbnail image** is what is used for a thing if not specified via the submission form. The image can be uploaded here to or selected from the Wordpress media library. The image should be at least larger than the default thumbnail width.
 
+
+![](wp-content/themes/ds106banker/images/embed-media-icon.jpg)
+
+Activating **Embed Media Icon** will use an assignments example media as an icon on archive listings (instead of the thumbnail) if the example URL can be embedded (e.g. YouTube video, SoundCloud audio, a tweet). The default is "no" or off.
 
 #### Assignment Bank Options: General Settings: Creative Commons Settings
 ![](wp-content/themes/ds106banker/images/creative-commons-settings.jpg)
