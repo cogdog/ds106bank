@@ -159,7 +159,7 @@
 							?>
 		
 							<h3><?php echo $example_count?> Response<?php echo $plural?> Completed for this <?php echo THINGNAME?></h3>
-							<ol>
+							<ul>
 							<?php 
 	
 			
@@ -178,7 +178,7 @@
 						
 							<?php endwhile; ?>
 						
-							</ol>
+							</ul>
 						</div>
 						
 						<div class="col-sm-5  col-sm-offset-1">
@@ -201,7 +201,7 @@
 					
 					
 							<h3><?php echo $tutorial_count . ' ' . $helpthing . $plural?> for this <?php echo THINGNAME?></h3>	
-							<ol>
+							<ul>
 							<?php 
 
 							while ( $tutorials_done_query->have_posts() ) : $tutorials_done_query->the_post();
@@ -217,7 +217,7 @@
 						
 							<?php endwhile; ?>
 						
-							</ol>
+							</ul>
 							 <?php wp_reset_query(); ?>
 						</div>
 						<div class="col-sm-12 hilite clearfix">
