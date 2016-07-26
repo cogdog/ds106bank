@@ -17,7 +17,7 @@ The DS106 Assignment Bank Theme is a Wordpress Theme allows you to create and cu
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Got a question? Suggestion? Problem? Please (send them my way via [GitHub Issues](https://github.com/cogdog/ds106bank/issues) or directly to cogdogblog@gmail.com
+Got a question? Suggestion? Feature Requests? Problem? A surplus of money? Please (send them my way via [GitHub Issues](https://github.com/cogdog/ds106bank/issues) or directly to cogdogblog@gmail.com
 
 ## What Can You Build With This?
 This Wordpress Theme is modeled after the original [DS106 Open Assignment Bank](http://assignments.ds106.us/) developed for the open digital storytelling course [DS106](http://ds106.us).
@@ -39,6 +39,7 @@ For more details behind how this thing came to be see [related posts on CogDogBl
 
 ## What's New?
 
+* July 16, 2016: Finally revamped the Options interface to overcome a bug in the broken tabbed display of sections. All settings are now on one long scrolling tab, a second one is used for documentation. Also added a new feature by request of Jim Luke for options to suppress the section of tutorials and/or examples on the single Thing display 
 * May 3, 2016: New theme option to allow for archive views of assignments to use the embed-able media of it's example as an icon (e.g. YouTube video) rather than the thumbnail.
 * May 30, 2015: Major updates for UDG Agora project- vastly improved submission forms with previews, options to track users by twitter handle, improved single layout, leaderboard.
 
@@ -100,16 +101,41 @@ A few settings for the plugin are necessary.
 
  ![](wp-content/themes/ds106banker/images/ratings-options.jpg)
 
-On the **Post Rating Options** choose the graphic style for the ratings- the suggestion is one of the stars settings with a max ratings of 5 but any setting is viable. 
+On the **Post Rating Options** choose the graphic style for the ratings- the suggestion is one of the stars settings with a max ratings of 5 but any setting is viable. The suggested set up mode is to use the ratings as a measure of popularity, so the default `1 Star`, `2 Stars`, etc can be used. On the other hand, the original DS106 Assignment Bank was a crowd sourced measured of difficulty, so the labels could be customized as follows
 
 ![](wp-content/themes/ds106banker/images/ratings-text-value.jpg)
 
 Create any labels for your scale (these are used on the form to submit new Things). Set the "Allow to Rate" option to **Registered Users and Guests** to allow any site visitor to cast a vote.
 
-Set the **Post Ratings Templates**  to customize the text displayed to show the ratings- the first two templates are used. **Ratings Vote Text:** designates how the ratings are show; **Ratings Voted Text:** is shown as feedback and adds an indicated if a visitor has already voted.
+Set the **Post Ratings Templates**  to customize the text displayed to show the ratings- the first two templates are used. **Ratings Vote Text:** designates how the ratings are shows; **Ratings Voted Text:** is shown as feedback and adds an indicated if a visitor has already voted; **Ratings None:** is shown for an item that has not been rated yet.
 
-![](wp-content/themes/ds106banker/images/ratings-custom-fields.jpg)
-Data for ratings are stored in three custom fields on all Things; they can be edited to adjust any rating if you can sort out the arithmetic:
+These templates are generally not used by Bank sites but certainly could be used: **Ratings No Permission Text:**, **Highest Rated:**, and **Most Rated:**
+
+
+For a setup as a popularity voting, the **Ratings Vote Text** template might be:
+
+```
+Popularity: %RATINGS_IMAGES_VOTE% (<strong>%RATINGS_USERS%</strong> votes, average:
+<strong>%RATINGS_AVERAGE%</strong> out of <strong>%RATINGS_MAX%</strong>)
+<br />%RATINGS_TEXT%
+```
+
+For **Ratings Voted Text**:
+
+```
+Popularity: %RATINGS_IMAGES% (<em><strong>%RATINGS_USERS%</strong> votes, average:
+<strong>%RATINGS_AVERAGE%</strong> out of <strong>%RATINGS_MAX%</strong>; 
+you have rated this</em>)
+```
+
+Finally, for **Ratings None**:
+
+```
+Popularity:  %RATINGS_IMAGES_VOTE% (No Ratings Yet)<br />%RATINGS_TEXT%
+```
+
+
+FYI the data for ratings are stored in three custom fields on all Things; they can be edited to adjust any rating if you can sort out the arithmetic:
 
 * **ratings_score** is the total cumulative votes submitted (in the above example, 7)
 * **ratings_users** is the number of people who voted (in the above example, 2)
@@ -221,7 +247,15 @@ Creative commons licenses can be attached to all things on the site. Choose **Ap
 Setting the Creative Commons options to **Enable users to choose license when submitting a challenge** will put the menu on the submission form so users can choose a license (or set to All Rights Reserved). At this time, the only way to reduce the number of license options is to edit `functions.php` in the template directory. Look for the function `function cc_license_select_options` and comment out the lines containing license options to hide.
 
 
-#### Assignment Bank Options: General Settings: Settings for Responses to Things
+#### Assignment Bank Options: General Settings: Settings for Responses to / Tutorials for Things
+
+![](wp-content/themes/ds106banker/images/display-single-options.jpg)
+
+For some implementations, the display of a thing might not need examples, or tutorials or either listed. This new options allows you to set what is shown. If set to `both` they are displayed in two columns (default). If either is selected to display, it is shown as a single centered column, a bit wider. And by setting this option to `Neither` the listings of examples and tutorials is supressed.
+
+Note that if not shown, you can still choose to have a form where either or both are added to the site.
+
+
 ![](wp-content/themes/ds106banker/images/submit-examples.jpg)
 
 By checking the first box, this section enables a web form for site visitors to submit their examples and support materials as response to a Thing (the form asks for name, email title, description, and a link). This page is only reached by following a link from a Thing, which passes it two variables to indicate the Thing, and whether it is an Example or a Tutorial.
