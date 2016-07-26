@@ -46,11 +46,13 @@ function ds106bank_setup() {
 	// loaded from theme options()
 	define('THINGNAME', ds106bank_option('thingname') ); // the kind of things here, should be singular
 	
-	// look for existence of pages with the approproate template, if not found
+	// look for existence of pages with the appropriate template, if not found
 	// make 'em
 	if (! page_with_template_exists( 'page-add-assignment.php' ) ) {
   
 		// create the add a thing page if it does not exist
+		// backdate creation date 2 days just to make sure they do not end up future dated
+		
 		$page_data = array(
 			'post_title' 	=> 'Add a New ' . THINGNAME,
 			'post_content'	=> 'Use this form to add a new ' . THINGNAME,
@@ -58,7 +60,7 @@ function ds106bank_setup() {
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
 			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s'),
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
 			'page_template'	=> 'page-add-assignment.php',
 		);
 	
@@ -75,7 +77,7 @@ function ds106bank_setup() {
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
 			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s'),
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
 			'page_template'	=> 'page-add-example.php',
 		);
   	
@@ -92,33 +94,12 @@ function ds106bank_setup() {
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
 			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s'),
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
 			'page_template'	=> 'page-assignment-menu.php',
 		);
 	
 		wp_insert_post( $page_data );
 	}
-
-
-/*	
-	if (! page_with_template_exists( 'page-help.php' ) ) {
-  
-		// create the Write page if it does not exist
-		$page_data = array(
-			'post_title' 	=>  'Help for ' . THINGNAME . ' Bank',
-			'post_content'	=> 'Insert pithy greeting.',
-			'post_name'		=> 'help',
-			'post_status'	=> 'publish',
-			'post_type'		=> 'page',
-			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s'),
-			'page_template'	=> 'page-help.php',
-		);
-	
-		wp_insert_post( $page_data );
-	}
-*/
-	
 	
 } // function ds106bank_setup
 
@@ -272,6 +253,7 @@ function post_type_assignments() {
 						'supports'  => array(
 									'title',
 									'editor',
+									'author',
 									'custom-fields',
 									'revisions',
 									'thumbnail',
@@ -318,6 +300,7 @@ function post_type_assignments() {
 						'supports'  => array(
 									'title',
 									'editor',
+									'author',
 									'custom-fields',
 									'revisions',
 									'comments',
@@ -1235,6 +1218,4 @@ function oembed_filter( $str ) {
 
 	return $str;
 }
-
-
 ?>
