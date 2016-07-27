@@ -24,6 +24,7 @@ This Wordpress Theme is modeled after the original [DS106 Open Assignment Bank](
 
 Other known instances that have used include:
 
+* [Foodworks Assignment Bank](http://foodworks.middcreate.net/assignments/) Middlebury College
 * [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
 * [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
 * [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
