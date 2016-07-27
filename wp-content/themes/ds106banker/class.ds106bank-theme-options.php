@@ -1,7 +1,7 @@
 <?php
 // manages all of the theme options
 // heavy lifting via http://alisothegeek.com/2011/01/wordpress-settings-api-tutorial-1/
-// Revision July 26, 2016 as jQuery update killed TAB UI
+// Revision July 26, 2016 by @cogdog as jQuery update killed TAB UI
 
 class ds106bank_Theme_Options {
 
@@ -17,27 +17,31 @@ class ds106bank_Theme_Options {
 		$this->checkboxes = array();
 		$this->settings = array();
 		
+		// go get ;em
 		$this->get_settings();
 		
+		// Sections for the options, always have General and Reset
 		$this->sections['general'] = __( 'General Settings' );
 		$this->sections['types']   = __( ds106bank_option( 'thingname' ) . ' Types' );
 		$this->sections['reset']   = __( 'Reset Options to Defaults' );
 		
 
-		// create a colllection of callbacks for each section heading
+		// Create a colllection of callbacks for each section heading
 		foreach ( $this->sections as $slug => $title ) {
 			$this->section_callbacks[$slug] = 'display_' . $slug;
 		}
 		
-		// enqueue scripts for media uploader
+		// enqueue scripts for media uploader, get 'em in queueu
         add_action( 'admin_enqueue_scripts', 'ds106bank_enqueue_options_scripts' );
 		
+		// Do the rest of the set up stuff, Clyde
 		add_action( 'admin_menu', array( &$this, 'add_pages' ) );
 		add_action( 'admin_init', array( &$this, 'register_settings' ) );
 		
 		if ( ! get_option( 'ds106banker_options' ) )
 			$this->initialize_settings();
 	}
+	
 
 	/* Add page(s) to the admin menu */
 	public function add_pages() {
@@ -62,18 +66,23 @@ class ds106bank_Theme_Options {
 		
 		echo '<form action="options.php" method="post" enctype="multipart/form-data">';
 		
+		// set up thr settings
 		settings_fields( 'ds106banker_options' );
 		
+		// tabbed navigation stuff
 		echo  '<h2 class="nav-tab-wrapper"><a class="nav-tab nav-tab-active" href="?page=ds106bank-options">Settings</a>
 		<a class="nav-tab" href="?page=ds106bank-docs">Documentation</a></h2>';
 
+		// generates all the form stuff, it's like MAGIC
 		do_settings_sections( $_GET['page'] );
 		
+		// do not forget a button!
 		echo  '<p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . __( 'Save Changes' ) . '" /></p>
 		</form>
-		</div>
+		</div>';
 		
-		<script type="text/javascript">
+		// some extra jQuery suff to make the forms even more spiffier
+		echo '<script type="text/javascript">
 		jQuery(document).ready(function($) {
 			
 			$("input[type=text], textarea").each(function() {
@@ -105,7 +114,7 @@ class ds106bank_Theme_Options {
 		</script>';
     }
 
-	/*  display documentation in a tab */
+	/*  Display documentation in a tab */
 	public function display_docs() {	
 		// This displays on the "Documentation" tab. 
 		
@@ -115,6 +124,7 @@ class ds106bank_Theme_Options {
 		<a class="nav-tab" href="?page=ds106bank-options">Settings</a>
 		<a class="nav-tab nav-tab-active" href="?page=ds106bank-docs">Documentation</a></h2>';
 		
+		// suck in a whack of HTML
 		include( get_stylesheet_directory() . '/includes/ds106bank-theme-options-docs.php');
 		
 		echo '</div>';		
@@ -303,7 +313,6 @@ class ds106bank_Theme_Options {
 			'std'     => 0 // Set to 1 to be checked by default, 0 to be unchecked by default.
 		);
 
-
 		// ------- example setup options
 		$this->settings['examples_heading'] = array(
 			'section' => 'general',
@@ -327,9 +336,6 @@ class ds106bank_Theme_Options {
 			)
 		);
 
-
-
-		
 		$this->settings['example_via_form'] = array(
 			'section' => 'general',
 			'title'   => __( 'Submit examples directly' ),
@@ -350,7 +356,6 @@ class ds106bank_Theme_Options {
 					)
 		);
 
-		
  		// Build array to hold options for select, an array of published pages on the site
 	  	$page_options = array( '--' => 'Select Page');
 
@@ -368,7 +373,6 @@ class ds106bank_Theme_Options {
 			'std'     => '--',
 			'choices' => $page_options
 		);	
-
 
 		$this->settings['new_example_status'] = array(
 			'section' => 'general',
@@ -437,8 +441,7 @@ class ds106bank_Theme_Options {
 			'section' => 'general'
 		);
 		
-		
-		// ------- captcha options
+		// ------- captcha options, if we need 'em
 		
 		$this->settings['captcha_heading'] = array(
 		'section' => 'general',
@@ -456,7 +459,6 @@ class ds106bank_Theme_Options {
 			'std'     => 0 // Set to 1 to be checked by default, 0 to be unchecked by default.
 		);
 		
-		
 		$this->settings['captcha_style'] = array(
 		'section' => 'general',
 		'title'   => __( 'Captcha Style' ),
@@ -471,7 +473,6 @@ class ds106bank_Theme_Options {
 		)
 	);
 	
-		
 		$this->settings['captcha_pub'] = array(
 			'title'   => __( 'reCaptcha Public Key' ),
 			'desc'    => __( '' ),
@@ -492,7 +493,6 @@ class ds106bank_Theme_Options {
 				
 		/* Types of Things Settings
 		===========================================*/
-
 		
 		// lets get all the existing assignment types
 		$assigntypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
@@ -555,10 +555,8 @@ class ds106bank_Theme_Options {
 			'type'    => 'textarea',
 			'section' => 'types'
 	);
-
-
 			
-		/* Reset
+		/* Reset checkbox
 		===========================================*/
 		
 		$this->settings['reset_theme'] = array(
@@ -569,14 +567,10 @@ class ds106bank_Theme_Options {
 			'class'   => 'warning', // Custom class for CSS
 			'desc'    => __( 'Check this box and click "Save Changes" below to reset options to their defaults.' )
 		);
-
-		
 	}
-
 
 	public function display_general() {
 		// section heading for general setttings
-	
 		echo '<p>These settings manaage the behavior and appearance of your bank. There are quite a few of them!</p>';		
 	}
 
@@ -587,13 +581,11 @@ class ds106bank_Theme_Options {
 
 	}
 
-	
 	public function display_reset() {
-		// section heading for reset section setttings
+		// section heading for reset section setttings, none needed
 	}
 
-	
-	
+
 
 	/* HTML output for individual settings */
 	public function display_setting( $args = array() ) {
@@ -650,8 +642,6 @@ class ds106bank_Theme_Options {
 						echo '<br />';
 					$i++;
 				}
-
-				
 					
 				break;
 
@@ -724,6 +714,7 @@ class ds106bank_Theme_Options {
 
 		register_setting( 'ds106banker_options', 'ds106banker_options', array ( &$this, 'validate_settings' ) );
 
+		// Add all the sections, with appropriate callback functions
 		foreach ( $this->sections as $slug => $title ) {
 			add_settings_section( $slug, $title, array( &$this, $this->section_callbacks[$slug] ), 'ds106bank-options' );
 		}
@@ -773,7 +764,6 @@ class ds106bank_Theme_Options {
 	}
 	
 	
-	
 	public function validate_settings( $input ) {
 		
 		if ( ! isset( $input['reset_theme'] ) ) {
@@ -781,8 +771,6 @@ class ds106bank_Theme_Options {
 				
 			// has the thing name changed? If so we need to update the taxonmy terms
 			if ( $input['thingname'] !=  THINGNAME  ) {
-						
-			// return ( substr( $thing, 0, -1 ) );
 				bank106_update_tax( THINGNAME, $input['thingname'] );
 			}
 			
@@ -836,9 +824,7 @@ class ds106bank_Theme_Options {
 			return $input;
 		}
 		
-		return false;
-		
-		
+		return false;	
 	}
  }
  
@@ -852,7 +838,4 @@ function ds106bank_option( $option ) {
 	else
 		return false;
 }
-
- 
-
 ?>
