@@ -576,18 +576,21 @@ function is_url_embeddable( $url ) {
 // test if URL matches the ones that Wordpress can do oembed on
 // test by by string matching
 	
+	// keep 'em lower case, ace
+	$url = strtolower($url);
+	
 	$allowed_embeds = array(
-					'outube.com/watch?',
-					'outu.be',
-					'lickr.com/photos',
+					'youtube.com/watch?',
+					'youtu.be',
+					'flickr.com/photos',
 					'flic.kr',
-					'imeo.com', 
-					'oundcloud.com',
-					'nstagram.com',
-					'witter.com',
-					'ine.co',
-					'mgur.com',
-					'nimoto.com'
+					'vimeo.com', 
+					'soundcloud.com',
+					'instagram.com',
+					'twitter.com',
+					'vine.co',
+					'imgur.com',
+					'animoto.com'
 	);
 	
 	// walk the array til we get a match
@@ -604,6 +607,10 @@ function is_url_embeddable( $url ) {
 function url_is_video ($url) {
 // tests if URl is for a potentially media site so we can wrap with
 // boostrap resppnsive tags
+
+	// keep 'em lower case, ace
+	$url = strtolower($url);
+
 	$allowed_videos = array(
 					'youtube.com/watch?',
 					'youtu.be',

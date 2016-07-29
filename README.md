@@ -24,15 +24,16 @@ This Wordpress Theme is modeled after the original [DS106 Open Assignment Bank](
 
 Other known instances that have used include:
 
-* [Foodworks Assignment Bank](http://foodworks.middcreate.net/assignments/) Middlebury College
-* [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
-* [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
-* [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
-* [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
-* [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
 * [All The Toys](http://www.allthetoys.org/)
+* [Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
+* [Foodworks Assignment Bank](http://foodworks.middcreate.net/assignments/) Middlebury College
 * [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
 * [Instructional Technology Assignments](http://tcoffman.org/INDT/) INDT501 at University of Mary Washington
+* [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
+* [OER's for Transitional Learning](http://ctl.openlcc.net/oer/) Lansing Community College
+* [Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
+* [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
+* [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
 
 Hey, if you know more...  let me know-- or better yet, DIY; please fork this in GitHub, add your example, and submit a pull request.
 
