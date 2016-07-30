@@ -85,15 +85,18 @@ A self hosted Wordpress hosted site (in other words "you cannot use this on Word
 
 
 ## Installing and Configuring the Theme
-(see headings below with the same number for more detail, there's a boat load of detail...)
+*(see headings below for more detail, there's a boat load of detail...)*
 
-1. Upload the **ds106banker** and the **wp-bootstrap** directories (from wp-content/ on this distro) to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links. You will have to create a zip file for each theme folder. *If you upload the .zip that you downloaded from github, failure will rain all over your soul.*
-2. Activate the **ds106banker** theme.
-3. Install WP-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme.
-4. Create holding pages for the Main Index, the form to add examples, and a form for creating new "things" (see below). Be sure to choose the appropriate Theme Template to create the functionality for each.
+Note: Do not upload the zip for this GitHub repo to install the themes. It won't work!
+
+1. Upload the **ds106banker** and the **wp-bootstrap** directories (from wp-content/ on this distro) to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links.  A zip of both themes is included with this repo, or you can download directly [installable-ds106banker.zip](https://github.com/cogdog/ds106bank/blob/master/installable-ds106banker.zip) and  [installable-wp-bootstrap.zip](https://github.com/cogdog/ds106bank/blob/master/installable-wp-bootstrap.zip) 
+
+2. Activate the **ds106banker** theme (you do not have to activate the wp-bootstrap theme)
+3. Install WP-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme (see below).
+4. Create /modify as needed pages for the Main Index, the page with a form to add examples, and a form for creating new "things" (see below).  The theme *should* create these for you, but if not you can create them and set the appropriate template as described below.
 5. Set the theme options (detailed in length below). Find the **Assignment Bank Options** listed both under the **Appearance** settings in the Wordpress Dashboard, or via the admin nav bar.
 6. Customize the site menus. The theme provides a few shortcodes you can use on any page or sidebar.
-7. Other Suggested plugins
+7. See other suggested plugins
 8. Create some stuff
 
 ### Setting up WP-Ratings for Popularity Ratings
@@ -360,11 +363,12 @@ List all the twitter names that have contributed new Things via the submission f
 	[bankleaders type="contributors"]
 
 
-
 ### (6) Customizing CSS
-Most of the theme's design is managed by the parent WP-Bootstrap theme. You do not to never edit that, right?
+Most of the theme's design is managed by the parent WP-Bootstrap theme. You do know to never edit that, right?
 
-Because of the way styles are loaded, the typical child theme for the Assignment Bank [style.css](ds106banker/style.css) is blank except for the information needed to establish the relationship to the parent theme. Any custom style over-rides should be added to [style.css](ds106banker/ds106bank.css)
+Because of the way styles are loaded, the typical child theme for the Assignment Bank [style.css](ds106banker/style.css) is blank except for the information needed to establish the relationship to the parent theme. 
+
+Any custom style over-rides should be added to [style.css](ds106banker/ds106bank.css). If you add additional styles, make a back up copy as updates to this theme will override your edits.
 
 ### Other Suggested plugins
 The following plugins are installed on the [demo site](http://bank.ds106.us/) to create useful sidebar/footer Widgets
