@@ -1,5 +1,8 @@
 # ds106 Assignment Bank Wordpress Theme
 
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
 <!-- Place this tag where you want the button to render. -->
 <a class="github-button" href="https://github.com/cogdog/ds106bank/issues" data-icon="octicon-issue-opened" data-style="mega" data-count-api="/repos/cogdog/ds106bank#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue cogdog/ds106bank on GitHub">Issue</a>
 
@@ -391,7 +394,6 @@ The following plugins are installed on the [demo site](http://bank.ds106.us/) to
 ```
 
 
-<script async defer src="https://buttons.github.io/buttons.js"></script>
 
 
 
