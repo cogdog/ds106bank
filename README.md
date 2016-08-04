@@ -1,11 +1,5 @@
 # ds106 Assignment Bank Wordpress Theme
 
-
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-
-<!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/cogdog/ds106bank/issues" data-icon="octicon-issue-opened" data-style="mega" data-count-api="/repos/cogdog/ds106bank#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue cogdog/ds106bank on GitHub">Issue</a>
-
 The DS106 Assignment Bank Theme is a Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/). With it you can build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  
 
     This theme is Copyright (C) 2014 Alan Levine http://cog.dog/ http://cogdogblog.com/
