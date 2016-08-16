@@ -70,6 +70,10 @@ The site options allow people to submit their examples created in response to a 
 
 You can allows site visitors to add their own challenges via a web form, this is [what made the DS106 assignment bank valuable](http://assignments.ds106.us/submit-an-assignment/).
 
+**Note: You should always, always create your "things" via this form, even if you do not allow the public to do so.** The form adds a number of post custom field values necessary to make everything work. You can always modify these later, in the editor (making sure you make Custom Fields visible via screen options).
+
+The one field that you may need to edit is the URL for the example of the assignment, stored as custom field named `fwp_url`. If you prefer not to display any example, simply leave the value blank.
+
 ![](images/add-thing.jpg "Form to add a new thing")
 
 Besides descriptive information, a visitor can associate a new thing with one or more types, and can also add free form tags to better describe it.  If the ratings capability is enabled, they can assign a first seed value for the rating.
@@ -193,6 +197,10 @@ If the pages are *not* created for you on theme activation...
 2. Create a new page to **Submit New Things** You will need this even if you do not allow visitors to add them so you can add them yourself (the page can be unlinked or have a password set on it). The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Assignments**.
 
 ![](images/add-thing.jpg "Form to add a new thing")
+
+**To repeat: You should always, always create your "things" via this form, even if you do not allow the public to do so.** The form adds a number of post custom field values necessary to make everything work. You can always modify these later, in the editor (making sure you make Custom Fields visible via screen options).
+
+The one field that you may need to edit is the URL for the example of the assignment, stored as custom field named `fwp_url`. If you prefer not to display any example, simply leave the value blank.
 
 3. Create a new page to **Submit Examples**. This form is used to allow visitors to add examples or tutorial for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Example/Tutorial Form**
 

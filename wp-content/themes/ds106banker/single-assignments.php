@@ -97,9 +97,13 @@
 
 							<?php bank106_twitter_button ( $post->ID, THINGNAME )?>
 						</div>
+						
+						<?php if ( get_post_meta($post->ID, 'fwp_url', $single = true) ): // only if we have example ?> 
 						<div class="col-sm-4" id="examplemedia">
 							<?php echo get_example_media($my_id)?>
 						</div>
+						<?php endif?>
+						
 				</div>
 					
 				</article> <!-- end article -->
@@ -124,10 +128,10 @@
 							<p>After you do this <?php echo lcfirst(THINGNAME)?>, please share it so it can appear with other responses below. 
 												
 							<?php if ( $my_fwp_mode == 'internal' ):?>
-							If you are writing to a blog connected to this site just use the tag <strong><?php echo $my_assignment_tag;?></strong> when writing a post on your own blog. Then your response will be added to the list below. <br /><br />Or if 
+							If you are writing to a blog connected to this site just use a tag or category <strong><?php echo $my_assignment_tag;?></strong> when writing a post on your own blog. Then your response will be added to the list below. <br /><br />Or if 
 						
 							<?php elseif ( $my_fwp_mode == 'external' ):?>
-							If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags when writing a post on your own blog. (You must use BOTH tags!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_assignment_tag;?></strong> Then your response will be added to the list below. <br /><br />Or if 
+							If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags/categories when writing a post on your own blog. (You must use BOTH!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_assignment_tag;?></strong> Then your response will be added to the list below. <br /><br />Or if 
 						
 							<?php else:?>
 							If 
@@ -157,10 +161,10 @@
 								<p>Have you created something or know of an external resource that might help others complete this <?php echo lcfirst(THINGNAME)?>? 
 											
 								<?php if ( $my_fwp_mode == 'internal' ):?>
-								If you are writing to a blog connected to this site just use the tag <strong><?php echo $my_tutorial_tag;?></strong> when writing a post on your own blog. Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
+								If you are writing to a blog connected to this site just use a tag or category <strong><?php echo $my_tutorial_tag;?></strong> when writing a post on your own blog. Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
 					
 								<?php elseif ( $my_fwp_mode == 'external' ):?>
-								If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags when writing a post on your own blog. (You must use BOTH tags!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_tutorial_tag;?></strong> Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
+								If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags/categories when writing a post on your own blog. (You must use BOTH!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_tutorial_tag;?></strong> Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
 					
 								<?php else:?>
 								If 

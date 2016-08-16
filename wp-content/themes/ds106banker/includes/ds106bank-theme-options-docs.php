@@ -1,4 +1,6 @@
-<p>For terminology, this site creates a collection of <strong>things</strong> which may be assignments, challenges, tasks, dog toys, etc. You can create any number of <strong>types</strong> of things.</p>
+<p><em>This page documents all of the options for a DS106 type Assignment bank- for complete documentation that includes suggestions for setup, plugins, <a href="https://github.com/cogdog/ds106bank">see the theme repository on GitHub</a>.</em></p>
+
+<p>For terminology this site creates a collection of <strong>things</strong> which may be assignments, challenges, tasks, dog toys, etc. You can create any number of <strong>types</strong> of things.</p>
 
 <h2>Set Up Specific Pages</h2>
 <p>This theme provides three templates for Wordpress Pages that provide specific functionality for your site. You should at least create these all for a new site, even if you do not use them.</p>
