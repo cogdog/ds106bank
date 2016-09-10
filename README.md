@@ -96,15 +96,15 @@ Note: Do not upload the zip for this GitHub repo to install the themes. It won't
 1. Upload the **ds106banker** and the **wp-bootstrap** directories (from wp-content/ on this distro) to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links.  A zip of both themes is included with this repo, or you can download directly [installable-ds106banker.zip](https://github.com/cogdog/ds106bank/blob/master/installable-ds106banker.zip) and  [installable-wp-bootstrap.zip](https://github.com/cogdog/ds106bank/blob/master/installable-wp-bootstrap.zip) 
 
 2. Activate the **ds106banker** theme (you do not have to activate the wp-bootstrap theme)
-3. Install WP-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme (see below).
+3. Install WP-PostRatings and/or Feed Wordpress plugins according to the way you plan to use the theme (see below).
 4. Create /modify as needed pages for the Main Index, the page with a form to add examples, and a form for creating new "things" (see below).  The theme *should* create these for you, but if not you can create them and set the appropriate template as described below.
 5. Set the theme options (detailed in length below). Find the **Assignment Bank Options** listed both under the **Appearance** settings in the Wordpress Dashboard, or via the admin nav bar.
 6. Customize the site menus. The theme provides a few shortcodes you can use on any page or sidebar.
 7. See other suggested plugins
 8. Create some stuff
 
-### Setting up WP-Ratings for Popularity Ratings
-Install the [WP-Ratings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing popularity rating feature. Not installing the plugin (or de-activating it) removes the feature from the site. the purpose here is to allow visitors to rate Things, and provide sorting of things based on said ratings.
+### Setting up WP-PostRatings for Popularity Ratings
+Install the [WP-PostRatings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing popularity rating feature. Not installing the plugin (or de-activating it) removes the feature from the site. the purpose here is to allow visitors to rate Things, and provide sorting of things based on said ratings.
 
 A few settings for the plugin are necessary.
 
