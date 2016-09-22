@@ -72,7 +72,7 @@
 							?>
 
 							<p>
-							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> <br />
+							
 							
 							<?php // show creator difficulty rating if enabled
 
@@ -81,8 +81,10 @@
 							}
 							?>
 													
-							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', $single = true); ?></strong><br />		
-							<?php the_tags('<span class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ': </span> ', ' ', '</span>'); ?>
+							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', $single = true); ?></strong><br />
+							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> <br />
+							<?php  $thingcats = get_the_term_list( $post->ID, 'assignmentcats', 'Category: ', ', ', '' ); if ($thingcats) echo $thingcats . '<br />' ?> 
+							<?php $thingtags = the_tags('<span class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ': </span> ', ' ', '</span>'); if ($thingtags) echo $thingtags ?>
 							</p>
 							
 						</div>

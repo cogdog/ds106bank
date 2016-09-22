@@ -1,5 +1,8 @@
 function wp_tags( taglist ) {
 	var mystr = '';
+	
+	if (! Array.isArray(taglist)) return '';
+	
 	var tagarray = taglist.split(',');
 		
 	for (i = 0; i < tagarray.length; i++) { 
@@ -52,11 +55,19 @@ function decodeEntities(input) {
 			}
 						
 			var adiff = $('input[name=assignmentDifficulty]:checked', '#bank106form').val();
+			
 			if ( adiff === 'undefined') {
 				adiff = '';
 			} else {
 				adiff = 'Difficulty: <strong>' + adiff + '</strong> (<strong>1</strong> = very easy, <strong>5</strong> = very difficult)';
 			}
+
+			if ( $('#assignmentCategories').val() == '') {
+				catd = ' ';
+			} else {
+				catd = ', ';
+			}
+
 			
 			if ( $('#assignmentTags').val() == '') {
 				tagd = ' ';
@@ -71,7 +82,7 @@ function decodeEntities(input) {
                 thingtypes.push(capitalizeEachWord(ts));
             });
 			
-			this.content = '<div class="col-sm-3"><div class="thing-icon-single"><img src="' + $('#thingthumb').attr('src')  + '"></div></div><div class="col-sm-8" ><h1 class="single-title assignment-header">' + $('#assignmentTitle').val() + '</h1>' + myRatings + '<br />' + adiff + '<br />Created <strong><time>' + moment().format('MMM D, YYYY') + '</time></strong> by <strong>' + $('#submitterName').val() + '</strong><br />Number of views: <strong>0</strong></p><p>Type: ' + thingtypes.join(", ") + '</p><p class="tags">Tags: ' + wp_tags( $('#assignmentTags').val() + tagd + $('#submitterTwitter').val()) + '</p></div>	<div class="col-sm-8 clearfix">' + $('#assignmentDescriptionHTML').val() +  '</div><div class="col-md-4" id="examplemedia"><strong>Example for "' + $('#assignmentTitle').val() + '"</strong><br /><a href="' + $('#assignmentURL').val() + '">' + $('#assignmentURL').val() + '</a><br />' + myEmbed + '</div>';
+			this.content = '<div class="col-sm-3"><div class="thing-icon-single"><img src="' + $('#thingthumb').attr('src')  + '"></div></div><div class="col-sm-8" ><h1 class="single-title assignment-header">' + $('#assignmentTitle').val() + '</h1>' + myRatings + '<br />' + adiff + '<br />Created <strong><time>' + moment().format('MMM D, YYYY') + '</time></strong> by <strong>' + $('#submitterName').val() + '</strong><br />Number of views: <strong>0</strong></p><p>Type: ' + thingtypes.join(", ") + '<br />Categories: ' + wp_tags( $('#assignmentCategories').val()) + '<br/><span class="tags">Tags: ' + wp_tags( $('#assignmentTags').val() + tagd + $('#submitterTwitter').val()) + '</span></p></div>	<div class="col-sm-8 clearfix">' + $('#assignmentDescriptionHTML').val() +  '</div><div class="col-md-4" id="examplemedia"><strong>Example for "' + $('#assignmentTitle').val() + '"</strong><br /><a href="' + $('#assignmentURL').val() + '">' + $('#assignmentURL').val() + '</a><br />' + myEmbed + '</div>';
 			
 			$('#submitassignment').removeClass( "disabled" );
 		},

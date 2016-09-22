@@ -20,7 +20,7 @@ if ($sortedby  == 'random') {
 		'post_type' => 'assignments',
 		'tax_query' => array(
 				array(
-					'taxonomy' => 'assignmenttypes',
+					'taxonomy' => 'assignmentcats',
 					'field' => 'slug',
 					'terms' => $term->slug
 				)
@@ -91,7 +91,6 @@ get_header(); ?>
 						}
 					} 
 
-
 					// count of items found
 					$found_things = $wp_query->found_posts;				
 					// Because grammar
@@ -103,14 +102,13 @@ get_header(); ?>
 						$verb = "are";
 					}
 
-					
 					?>				
 					<div class="page-header">
-						<h1 class="archive_title"><?php echo $term->name;?> <?php echo THINGNAME;?>s</h1>
+						<h1 class="archive_title"><?php echo THINGNAME;?>s Categorized "<?php echo $term->name;?>" </h1>
 						<p><em><?php echo $term->description;?></em></p>
 						
 						<form id="taxassignmentview" method="get">
-						<p>There <?php echo $verb?>  <strong><?php echo $found_things;?></strong> <?php echo $term->name;?> <?php echo  THINGNAME . $plural?>. View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
+						<p>There <?php echo $verb?>  <strong><?php echo $found_things;?></strong>  <?php echo  THINGNAME . $plural?> in this category. View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
 							<?php
 							// remove any query string from current URL
 							$base_url = strtok( $_SERVER["REQUEST_URI"], '?' );

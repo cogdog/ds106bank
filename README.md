@@ -2,27 +2,12 @@
 
 The DS106 Assignment Bank Theme is a Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/). With it you can build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  
 
-    This theme is Copyright (C) 2014 Alan Levine http://cog.dog/ http://cogdogblog.com/
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 Got a question? Suggestion? Feature Requests? Problem? A surplus of money? Please send them my way via [GitHub Issues](https://github.com/cogdog/ds106bank/issues) or directly to cogdogblog@gmail.com
 
 ## What Can You Build With This?
 This Wordpress Theme is modeled after the original [DS106 Open Assignment Bank](http://assignments.ds106.us/) developed for the open digital storytelling course [DS106](http://ds106.us).
 
-Other known instances that have used include:
+Other known instances of banks include:
 
 * [All The Toys](http://www.allthetoys.org/)
 * [Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
@@ -35,13 +20,14 @@ Other known instances that have used include:
 * [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
 * [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
 
-Hey, if you know more...  let me know-- or better yet, DIY; please fork this in GitHub, add your example, and submit a pull request.
+Hey, if you know more...  let me know-- or better yet, DIY; please fork this in GitHub, add your example, and submit a pull request. That's how this git thing gets things!
 
-For more details behind how this thing came to be see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
+For more details behind how this theme came to be see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
 
 ## What's New?
 
-* July 16, 2016: Finally revamped the Options interface to overcome a bug in the broken tabbed display of sections. All settings are now on one long scrolling tab, a second one is used for documentation. Also added a new feature by request of Jim Luke for options to suppress the section of tutorials and/or examples on the single Thing display 
+* Sep 22, 2016: Added a category-like taxonomy for things, another way to organize them. The primary "bins" are the "types" that appear on the main menu. But now you can also use categories to organize things across these bins. Because I was using the Wordpress Category taxonomy for responses, I had to create a new one, with an archive template. 
+* Jul 16, 2016: Finally revamped the Options interface to overcome a bug in the broken tabbed display of sections. All settings are now on one long scrolling tab, a second one is used for documentation. Also added a new feature by request of Jim Luke for options to suppress the section of tutorials and/or examples on the single Thing display 
 * May 3, 2016: New theme option to allow for archive views of assignments to use the embed-able media of it's example as an icon (e.g. YouTube video) rather than the thumbnail.
 * May 30, 2015: Major updates for UDG Agora project- vastly improved submission forms with previews, options to track users by twitter handle, improved single layout, leaderboard.
 
@@ -89,7 +75,7 @@ A self hosted Wordpress hosted site (in other words "you cannot use this on Word
 
 
 ## Installing and Configuring the Theme
-*(see headings below for more detail, there's a boat load of detail...)*
+*(see headings below for more detail, there's a boatload of detail...)*
 
 Note: Do not upload the zip for this GitHub repo to install the themes. It won't work!
 
@@ -102,6 +88,9 @@ Note: Do not upload the zip for this GitHub repo to install the themes. It won't
 6. Customize the site menus. The theme provides a few shortcodes you can use on any page or sidebar.
 7. See other suggested plugins
 8. Create some stuff
+
+
+------
 
 ### Setting up WP-PostRatings for Popularity Ratings
 Install the [WP-PostRatings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing popularity rating feature. Not installing the plugin (or de-activating it) removes the feature from the site. the purpose here is to allow visitors to rate Things, and provide sorting of things based on said ratings.
@@ -143,7 +132,6 @@ Finally, for **Ratings None**:
 Popularity:  %RATINGS_IMAGES_VOTE% (No Ratings Yet)<br />%RATINGS_TEXT%
 ```
 
-
 FYI the data for ratings are stored in three custom fields on all Things; they can be edited to adjust any rating if you can sort out the arithmetic:
 
 * **ratings_score** is the total cumulative votes submitted (in the above example, 7)
@@ -157,7 +145,6 @@ If you feel the vote of 5 by one person is too high, you might change the values
 ![](wp-content/themes/ds106banker/images/challenge-ratings.jpg)
 
 Enable this option to allow creators of new things to define their own rating of difficulty; this is completely separate from user popularity rating
-
 
 
 ### Setting Up Feed Wordpress
@@ -315,7 +302,7 @@ It is recommended to test the feed first to make sure it is pulling in data and 
 #### Assignment Bank Options: Thing Types
 ![](wp-content/themes/ds106banker/images/new-thing-types.jpg)
 
-The second tab of the theme options is where you can create and edit the categories or types of things in your collection. You can add any number of new things by listing them one per line in the **Names for new types** field.
+At the bottom of the theme options is where you can create and edit the categories or types of things in your collection. You can add any number of new things by listing them one per line in the **Names for new types** field.
 
 After clicking **Save Changes**, each type will now have its own editing field. They will be listed in the same display order you set in the General Settings.
 
@@ -328,8 +315,10 @@ Checking a type for deletion will remove it permanently upon saving.
 
 ----------
 
-### (6) Creating Menus
-The structure of the sites navigation is left to the owner; use the built in Wordpress menu editor to activate a top menu *the footer menu seems to not be formatted in the parent theme, and has been removed from the assignment bank footer.php template).
+## Other Wordpress Stuff to Do
+
+### Creating Menus
+The structure of the sites navigation is left to the owner; use the built in Wordpress menu editor to activate a top menu the footer menu seems to not be formatted in the parent theme, and has been removed from the assignment bank footer.php template). Be sure to open the *Screen Options* so you can and more kinds of items to menus (like Thing Types, Thing Categories).
 
 This means you can create any structure you like, including archives for the types of things. Below is the structure of the demo site:
 
@@ -341,8 +330,10 @@ A few special URLs are available, for say a site set up on `/bank.yourdomain.org
 * `http://bank.yourdomain.org/assignments/?srt=random` a random thing
 * `http://bank.yourdomain.org/examples` an archive of all examples added to the site
 
+### Thing Categories
+Under *Things to Do* you can add a category taxonomy that work like regular blog posts (*Thing Categories*); this allows another way to organize the things in your bank. If you do not create any categories, they will never be seen. But once you add a few, the will show up as selectable items on the Thing creation form.
 
-### (6) Shortcodes
+### Shortcodes
 These shortcodes can be used in an page, post, widget
 
 `[thingcount]` generates a count of all "things" in the bank such as **34 challenges**
@@ -352,7 +343,7 @@ These shortcodes can be used in an page, post, widget
 `[feedroll]`  If Feed Wordpress is installed, this shortcode generates a list of all subscribed blogs, useful as a sidebar widget. If feeds have different tags to segment them, a specific list can be produced by `[feedroll tag="section5"]`
 
 #### Leaderboard Shortcodes
-These codes can be used in posts or widgets to list the most active participants if the option is enabled to track submissions by twitter name
+These codes can be used in posts or widgets to list the most active participants (if the option is enabled to track submissions by twitter name)
 
 List all respondents in order of most active to least
 
@@ -371,7 +362,7 @@ List all the twitter names that have contributed new Things via the submission f
 	[bankleaders type="contributors"]
 
 
-### (6) Customizing CSS
+###  Customizing CSS
 Most of the theme's design is managed by the parent WP-Bootstrap theme. You do know to never edit that, right?
 
 Because of the way styles are loaded, the typical child theme for the Assignment Bank [style.css](ds106banker/style.css) is blank except for the information needed to establish the relationship to the parent theme. 
@@ -394,6 +385,22 @@ The following plugins are installed on the [demo site](http://bank.ds106.us/) to
 ```
 <input type="hidden" name="post_type" value="assignments" />
 ```
+
+
+    This theme is Copyright (C) 2014 Alan Levine http://cog.dog/ http://cogdogblog.com/
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 

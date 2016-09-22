@@ -266,7 +266,6 @@ function post_type_assignments() {
 							'assignmenttypes',
 							'assignmenttags',
 							'tutorialtags',
-							//'category',
 							'post_tag',
 						),
 							
@@ -408,7 +407,7 @@ function create_assignmentbank_tax() {
 	// create taxonomy for assignment types
 	register_taxonomy(
 		'assignmenttypes', // Taxonomy name
-		array( 'assignments' ), // Post Types applied ro
+		array( 'assignments' ), // Post Types applied to
 		array( 
 			'labels' => array(
 						'name' => __( $singularThing . ' Types'),
@@ -428,6 +427,34 @@ function create_assignmentbank_tax() {
 			'query_var' => 'type',
 			'show_ui' => true,
 			'show_tagcloud' => true,
+			'show_admin_column' => true,
+			'hierarchical' => true,
+		)
+	);
+
+
+	// create taxonomy for assignment categories
+	register_taxonomy(
+		'assignmentcats', // Taxonomy name
+		array( 'assignments' ), // Post Types applied to
+		array( 
+			'labels' => array(
+						'name' => __( $singularThing . ' Categories'),
+						'singular_name' => __( $singularThing .' Category'),
+						'search_items'               => __( 'Search ' . $singularThing . ' Categories' ),
+						'all_items'                  => __( 'All ' . $singularThing . ' Categories' ),
+						'edit_item'                  => __( 'Edit ' . $singularThing . ' Category' ),
+						'update_item'                => __( 'Update ' . $singularThing . ' Category' ),
+						'add_new_item'               => __( 'Add New ' . $singularThing . ' Category' ),
+						'new_item_name'              => __( 'New ' . $singularThing . ' Category' ),
+						'separate_items_with_commas' => __( 'Separate ' . lcfirst($singularThing) . ' categories with commas' ),
+						'add_or_remove_items'        => __( 'Add or remove ' . lcfirst($singularThing) . ' categories' ),
+						'choose_from_most_used'      => __( 'Choose from the most used ' . lcfirst($singularThing) . ' categories' ),
+						'not_found'                  => __( 'No ' . lcfirst($singularThing) . ' categories found.' ),
+						),
+			'rewrite' => array('slug' => 'cats'),
+			'query_var' => 'cats',
+			'show_ui' => true,
 			'show_admin_column' => true,
 			'hierarchical' => true,
 		)
@@ -576,21 +603,18 @@ function is_url_embeddable( $url ) {
 // test if URL matches the ones that Wordpress can do oembed on
 // test by by string matching
 	
-	// keep 'em lower case, ace
-	$url = strtolower($url);
-	
 	$allowed_embeds = array(
-					'youtube.com/watch?',
-					'youtu.be',
-					'flickr.com/photos',
+					'outube.com/watch?',
+					'outu.be',
+					'lickr.com/photos',
 					'flic.kr',
-					'vimeo.com', 
-					'soundcloud.com',
-					'instagram.com',
-					'twitter.com',
-					'vine.co',
-					'imgur.com',
-					'animoto.com'
+					'imeo.com', 
+					'oundcloud.com',
+					'nstagram.com',
+					'witter.com',
+					'ine.co',
+					'mgur.com',
+					'nimoto.com'
 	);
 	
 	// walk the array til we get a match
@@ -607,10 +631,6 @@ function is_url_embeddable( $url ) {
 function url_is_video ($url) {
 // tests if URl is for a potentially media site so we can wrap with
 // boostrap resppnsive tags
-
-	// keep 'em lower case, ace
-	$url = strtolower($url);
-
 	$allowed_videos = array(
 					'youtube.com/watch?',
 					'youtu.be',
