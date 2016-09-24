@@ -55,7 +55,7 @@ function ds106bank_setup() {
 		
 		$page_data = array(
 			'post_title' 	=> 'Add a New ' . THINGNAME,
-			'post_content'	=> 'Use this form to add a new ' . THINGNAME,
+			'post_content'	=> 'Complete this form to add a new ' . THINGNAME,
 			'post_name'		=> 'add-' . strtolower(THINGNAME),
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
@@ -71,8 +71,8 @@ function ds106bank_setup() {
   
 		// create the add example/tutorial page if it does not exist
 		$page_data = array(
-			'post_title' 	=> 'Add a New Example',
-			'post_content'	=> 'Insert instructions here for adding an exmaple or tutorial to the site',
+			'post_title' 	=> 'Add Your Response',
+			'post_content'	=> '',
 			'post_name'		=> 'add-example',
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
@@ -86,7 +86,7 @@ function ds106bank_setup() {
 	
 	if (! page_with_template_exists( 'page-assignment-menu.php' ) ) {
   
-		// create the Write page if it does not exist
+		// create the page used for the index to things (usually set to the front of the site) if it does not exist
 		$page_data = array(
 			'post_title' 	=>  THINGNAME . ' Bank',
 			'post_content'	=> 'Insert welcome info here.',
@@ -100,6 +100,27 @@ function ds106bank_setup() {
 	
 		wp_insert_post( $page_data );
 	}
+	
+	if (! page_with_template_exists( 'page-random.php' ) ) {
+  
+		// create a page holder for the random redirect
+		// backdate creation date 2 days just to make sure they do not end up future dated
+		
+		$page_data = array(
+			'post_title' 	=> 'Random',
+			'post_content'	=> 'You should never see this page, it is for random redirects. What are you doing looking at this page? Get back to yer assignments, willya?',
+			'post_name'		=> 'random',
+			'post_status'	=> 'publish',
+			'post_type'		=> 'page',
+			'post_author' 	=> 1,
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
+			'page_template'	=> 'page-random.php',
+		);
+	
+		wp_insert_post( $page_data );
+	}
+	
+	
 	
 } // function ds106bank_setup
 

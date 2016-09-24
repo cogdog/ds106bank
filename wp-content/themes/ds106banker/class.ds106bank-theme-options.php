@@ -507,7 +507,7 @@ class ds106bank_Theme_Options {
 				array(
 					'title'   => __( THINGNAME . ' Type #' . $i ),
 					'desc'    => __( '' ),
-					'std'     =>  '',
+					'std'     =>  ucfirst($atype->name),
 					'type'    => 'text',
 					'section' => 'types'
 				);

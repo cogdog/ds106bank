@@ -360,8 +360,7 @@ List the top 10 respondents and exclude the ones identified in the hashtag taxon
 List all the twitter names that have contributed new Things via the submission form 
 
 	[bankleaders type="contributors"]
-
-
+	
 ###  Customizing CSS
 Most of the theme's design is managed by the parent WP-Bootstrap theme. You do know to never edit that, right?
 
@@ -386,6 +385,9 @@ The following plugins are installed on the [demo site](http://bank.ds106.us/) to
 <input type="hidden" name="post_type" value="assignments" />
 ```
 
+-----
+
+### Licensely Yours
 
     This theme is Copyright (C) 2014 Alan Levine http://cog.dog/ http://cogdogblog.com/
 
