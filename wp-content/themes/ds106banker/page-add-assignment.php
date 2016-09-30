@@ -24,6 +24,9 @@ $use_twitter_name = ds106bank_option( 'use_twitter_name' );
 // use evil captchas?
 $use_captcha = ds106bank_option('use_captcha');
 
+// use thing categories (=1 to use on this form)
+$use_thing_cats = ds106bank_option('use_thing_cats');
+
 // ----- set defaults ---------------------
 // set af default rating values
 $assignmentRating = 3;    	// default public rating
@@ -36,11 +39,18 @@ $feedback_msg = '<div class="alert alert-info" role="alert">Here is where you cr
 $previewBtnState = ' disabled';
 $submitBtnState = ' disabled';
 
-// see if we are using any taxonomy terms (aka categories but not post ones)
-$assignmentCats = get_terms( array(
-    'taxonomy' => 'assignmentcats',
-    'hide_empty' => false,
-) );
+
+if ($use_thing_cats == 1) {
+	// ony if we are using  taxonomy terms (categories for asignments)
+	$assignmentTaxTerms = get_terms( array(
+		'taxonomy' => 'assignmentcats',
+		'hide_empty' => false,
+	) );
+
+	// now let's sort them if there is a heirarchy, a litle bit of judo...
+	$assignmentCats = array();
+	bank106_sort_terms_hierarchicaly( $assignmentTaxTerms, $assignmentCats );
+}
 
 // a little mojo to get current page ID so we can build a link back here
 $post = $wp_query->post;
@@ -198,7 +208,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					wp_set_object_terms( $post_id, $assignmentType, 'assignmenttypes');
 					
 					// set the taxonomy terms for categories for the type of thing (if we are using cats)
-					if (! empty( $assignmentCats ) ) wp_set_object_terms( $post_id, $assignmentCategories, 'assignmentcats');
+					if ( $use_thing_cats ) wp_set_object_terms( $post_id, $assignmentCategories, 'assignmentcats');
 				
 					// update the new tags
 					update_assignment_tags( $post_id );
@@ -340,17 +350,30 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 							?>	
 					</div>
  
- 					<?php if (! empty( $assignmentCats ) ): // offer only if categories in use ?>
+ 					<?php if ( $use_thing_cats ): // offer only if categories in use ?>
  					
- 					<div class="form-group">
+ 					<!-- hack of a way to send the category label to jQuery for the preview -->
+ 					<div class="form-group" id="thing_cat_hole" data-catlabel="<?php echo ds106bank_option( 'thing_cat_name' ) ?>">
  					
- 					<label for="assignmentCategories"><?php _e( THINGNAME . ' Categories' , 'wpbootstrap' ) ?></label>
+ 					<label for="assignmentCategories"><?php _e( THINGNAME . ' ' . ds106bank_option( 'thing_cat_name' ) , 'wpbootstrap' ) ?></label>
  					<span id="assignmentCategoriesHelpBlock" class="help-block">Choose any/all that apply.</span>
- 					<?php foreach ($assignmentCats as $theCat) {
-								$checked = ( is_array($assignmentCategories) and in_array( $theCat->slug, $assignmentCategories ) ) ? 'checked="checked"' : ''; 
-								echo '<div class="checkbox"><label><input type="checkbox" name="assignmentCategories[]" value="' . $theCat->slug . '" ' . $checked .'> ' . $theCat->name . '</label></div>';
+ 					 					
+ 					<?php  
+ 					// let's walk the categories and output checkboxes for each
+ 					foreach ($assignmentCats as $theCat) {
+ 								$checked = ( is_array($assignmentCategories) and in_array( $theCat->slug, $assignmentCategories ) ) ? 'checked="checked"' : ''; 
+									echo '<div class="checkbox"><label for="' . $theCat->slug . '"><input type="checkbox" name="assignmentCategories[]" id="' . $theCat->slug . '" value="' . $theCat->slug . '" ' . $checked .'> ' . $theCat->name . '</label></div>';
+									
+						// are there children? If so walk them and do the same.			
+						if ( is_array( $theCat->children ) ) {
+							foreach ($theCat->children as $subCat) {
+								$checked = ( is_array($assignmentCategories) and in_array( $subCat->slug, $assignmentCategories ) ) ? 'checked="checked"' : ''; 
+								echo '<div class="checkbox" style="margin-left:1em;"><label for="' . $subCat->slug . '"><input type="checkbox" name="assignmentCategories[]" id="' . $subCat->slug .'" value="' . $subCat->slug . '" ' . $checked .'> ' . $subCat->name . '</label></div>';
 							}
-							?>
+						}
+					}
+					?>
+							
  					</div>
  					
  					<?php endif; // for cats in use. Meow.?>

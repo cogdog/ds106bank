@@ -191,6 +191,39 @@ class ds106bank_Theme_Options {
 			'section' => 'general'
 		);
 		
+
+		$this->settings['use_thing_cats'] = array(
+			'section' => 'general',
+			'title'   => __( 'Use Categories for ' . THINGNAME . 's' ),
+			'desc'    => __( 'Offer another way to organize them across types. You can present available categories on the form to let users assign them, or do it on the back end as a task for site admins.'),
+			'type'    => 'radio',
+			'std'     => '0',
+			'choices' => array (
+							'0' => 'No, do not use categories',
+							'1' => 'Yes, and let ' .  THINGNAME . ' creators assign categories',
+							'2' => 'Yes, but leave it for admins to assign categories'
+					)
+		);
+
+		$this->settings['thing_cat_name'] = array(
+			'title'   => __( 'Label for Category' ),
+			'desc'    => __( 'You can use another label besides the default \'Category\'- it should be singular.' ),
+			'std'     => 'Category',
+			'type'    => 'text',
+			'section' => 'general'
+		);
+
+		// ------- twitter options		
+		$this->settings['cc_heading'] = array(
+			'section' => 'general',
+			'title'   => '', // Not used for headings.
+			'desc'	 => 'Twitter Options',
+			'std'    => '',
+			'type'    => 'heading'
+		);
+
+
+		
 		$this->settings['use_twitter_name'] = array(
 			'section' => 'general',
 			'title'   => __( 'Use twitter name on submission forms?'),
@@ -447,7 +480,7 @@ class ds106bank_Theme_Options {
 		'section' => 'general',
 		'title' 	=> '' ,// Not used for headings.
 		'desc'   => 'Captcha Settings', 
-		'std'    => 'To reduce spamm activate a captcha for submission forms',
+		'std'    => 'To reduce spam activate a captcha for submission forms',
 		'type'    => 'heading'
 		);		
 		
@@ -493,7 +526,16 @@ class ds106bank_Theme_Options {
 				
 		/* Types of Things Settings
 		===========================================*/
+
 		
+		$this->settings['thing_type_heading'] = array(
+		'section' => 'general',
+		'title' 	=> '' ,// Not used for headings.
+		'desc'   => 'Types of ' . THINGNAME . 's', 
+		'std'    => 'Create the organzation of different kinds of ' . THINGNAME . 's',
+		'type'    => 'heading'
+		);		
+
 		// lets get all the existing assignment types
 		$assigntypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
 		$i = 0;
@@ -507,7 +549,7 @@ class ds106bank_Theme_Options {
 				array(
 					'title'   => __( THINGNAME . ' Type #' . $i ),
 					'desc'    => __( '' ),
-					'std'     =>  ucfirst($atype->name),
+					'std'     =>  '',
 					'type'    => 'text',
 					'section' => 'types'
 				);

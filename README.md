@@ -26,7 +26,7 @@ For more details behind how this theme came to be see [related posts on CogDogBl
 
 ## What's New?
 
-* Sep 22, 2016: Added a category-like taxonomy for things, another way to organize them. The primary "bins" are the "types" that appear on the main menu. But now you can also use categories to organize things across these bins. Because I was using the Wordpress Category taxonomy for responses, I had to create a new one, with an archive template. 
+* Sep 29, 2016: Added a category-like taxonomy for things, another way to organize them. The primary "bins" are the "types" that appear on the main menu. But now you can also use categories to organize things across these bins. Because I was using the Wordpress Category taxonomy for responses, I had to create a new one, with an archive template. Through the options panel, you can choose to not use the categories; to allow site users to select categories when they create Things; or to leave that as an option for site moderators to do. You can also assign it a different label than "Category" when displayed on the site.
 * Jul 16, 2016: Finally revamped the Options interface to overcome a bug in the broken tabbed display of sections. All settings are now on one long scrolling tab, a second one is used for documentation. Also added a new feature by request of Jim Luke for options to suppress the section of tutorials and/or examples on the single Thing display 
 * May 3, 2016: New theme option to allow for archive views of assignments to use the embed-able media of it's example as an icon (e.g. YouTube video) rather than the thumbnail.
 * May 30, 2015: Major updates for UDG Agora project- vastly improved submission forms with previews, options to track users by twitter handle, improved single layout, leaderboard.
@@ -113,16 +113,16 @@ These templates are generally not used by Bank sites but certainly could be used
 For a setup as a popularity voting, the **Ratings Vote Text** template might be:
 
 ```
-Popularity: %RATINGS_IMAGES_VOTE% (<strong>%RATINGS_USERS%</strong> votes, average:
-<strong>%RATINGS_AVERAGE%</strong> out of <strong>%RATINGS_MAX%</strong>)
+Popularity: %RATINGS_IMAGES_VOTE% (**%RATINGS_USERS%** votes, average:
+**%RATINGS_AVERAGE%** out of **%RATINGS_MAX%**)
 <br />%RATINGS_TEXT%
 ```
 
 For **Ratings Voted Text**:
 
 ```
-Popularity: %RATINGS_IMAGES% (<em><strong>%RATINGS_USERS%</strong> votes, average:
-<strong>%RATINGS_AVERAGE%</strong> out of <strong>%RATINGS_MAX%</strong>; 
+Popularity: %RATINGS_IMAGES% (<em>**%RATINGS_USERS%** votes, average:
+**%RATINGS_AVERAGE%** out of **%RATINGS_MAX%**; 
 you have rated this</em>)
 ```
 
@@ -211,6 +211,21 @@ If you  allow users to submit new things to the site, you can set the **default 
 The **display order** controls how the types of things are sequenced on the main index; by title, order created, or by the number of things in each type. This order can be switched direction via the **display order sorting**.
 
 The **excerpt length** is used to set the word length of short descriptions of examples and things on index pages (the Wordpress default is 55 words).
+
+#### Bank Options: General Settings: Thing Categories
+
+![](wp-content/themes/ds106banker/images/categories-for-things.jpg)
+
+For other ways to organize your Things across types you can enable the use of categories. For example, in a Bank of Assignments where they are organized by Types of Media (e.g. the original ds106 Assignment Bank), you could create a categorization based on different classes / courses using the bank.
+
+If you do want to use categories, you set them up first in the Dashboard under **Things to Do** -&gt; **Thing Categories**. The Bank will recognize only one set of child categories is applied.
+
+**Use Categories for _____** by default is set to no-- they will not be used at all on the site or visible, even if used in the past. The second option will present the categories on the public page when your site visitors create a new thing-- they check the appropriate boxes for categories.
+
+But there might be cases where you want to categorize only on the back end; e.g. do not let users self categorize but do it when you moderate / review things added. This is the second "yes" option.
+
+And if you use Categories but want to call them something else, like `Sections` enter that in the setting for **Label for Category**. This will be used on the entry forms and any where the categories are displayed.
+
 
 #### Assignment Bank Options: General Settings: Twitter Settings
 

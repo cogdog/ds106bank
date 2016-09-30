@@ -55,7 +55,7 @@ function ds106bank_setup() {
 		
 		$page_data = array(
 			'post_title' 	=> 'Add a New ' . THINGNAME,
-			'post_content'	=> 'Complete this form to add a new ' . THINGNAME,
+			'post_content'	=> 'Use this form to add a new ' . THINGNAME,
 			'post_name'		=> 'add-' . strtolower(THINGNAME),
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
@@ -71,8 +71,8 @@ function ds106bank_setup() {
   
 		// create the add example/tutorial page if it does not exist
 		$page_data = array(
-			'post_title' 	=> 'Add Your Response',
-			'post_content'	=> '',
+			'post_title' 	=> 'Add a New Example',
+			'post_content'	=> 'Insert instructions here for adding an exmaple or tutorial to the site',
 			'post_name'		=> 'add-example',
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
@@ -86,7 +86,7 @@ function ds106bank_setup() {
 	
 	if (! page_with_template_exists( 'page-assignment-menu.php' ) ) {
   
-		// create the page used for the index to things (usually set to the front of the site) if it does not exist
+		// create the Write page if it does not exist
 		$page_data = array(
 			'post_title' 	=>  THINGNAME . ' Bank',
 			'post_content'	=> 'Insert welcome info here.',
@@ -100,27 +100,6 @@ function ds106bank_setup() {
 	
 		wp_insert_post( $page_data );
 	}
-	
-	if (! page_with_template_exists( 'page-random.php' ) ) {
-  
-		// create a page holder for the random redirect
-		// backdate creation date 2 days just to make sure they do not end up future dated
-		
-		$page_data = array(
-			'post_title' 	=> 'Random',
-			'post_content'	=> 'You should never see this page, it is for random redirects. What are you doing looking at this page? Get back to yer assignments, willya?',
-			'post_name'		=> 'random',
-			'post_status'	=> 'publish',
-			'post_type'		=> 'page',
-			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
-			'page_template'	=> 'page-random.php',
-		);
-	
-		wp_insert_post( $page_data );
-	}
-	
-	
 	
 } // function ds106bank_setup
 
@@ -984,6 +963,44 @@ function bank106_twitter_credit_link ( $post_id, $prefix='', $suffix='', $path='
 		// otherwise, send nothing
 		return ('');
 	}
+}
+
+function bank106_get_page_id_by_slug( $page_slug ) {
+	// pass the slug and get it's id, so we can use most basic permalink structure
+	// ----- h/t https://gist.github.com/davidpaulsson/9224518
+	
+	// get page as object
+	$page = get_page_by_path( $page_slug );
+	
+	if ( $page ) {
+		return $page->ID;
+	} else {
+		return null;
+	}
+}
+
+
+/**
+ * Recursively sort an array of taxonomy terms hierarchically. Child categories will be
+ * placed under a 'children' member of their parent term.
+ * @param Array   $cats     taxonomy term objects to sort
+ * @param Array   $into     result array to put them in
+ * @param integer $parentId the current parent ID to put them in
+   h/t http://wordpress.stackexchange.com/a/99516/14945
+ */
+function bank106_sort_terms_hierarchicaly(Array &$cats, Array &$into, $parentId = 0)
+{
+    foreach ($cats as $i => $cat) {
+        if ($cat->parent == $parentId) {
+            $into[$cat->term_id] = $cat;
+            unset($cats[$i]);
+        }
+    }
+
+    foreach ($into as $topCat) {
+        $topCat->children = array();
+        bank106_sort_terms_hierarchicaly($cats, $topCat->children, $topCat->term_id);
+    }
 }
 
 

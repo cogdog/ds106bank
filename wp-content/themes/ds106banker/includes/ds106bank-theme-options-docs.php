@@ -1,9 +1,9 @@
-<p><em>This page documents all of the options for a DS106 type Assignment bank- for complete documentation that includes suggestions for setup, plugins, <a href="https://github.com/cogdog/ds106bank">see the theme repository on GitHub</a>.</em></p>
+<p><em>This page documents all of the options for a DS106 type Assignment bank- for complete documentation that includes suggestions for setup, plugins, <a href="https://github.com/cogdog/ds106bank">see the theme repository on GitHub</a>. That is also <a href="https://github.com/cogdog/ds106bank/issues">a good place to ask question or toss accolades</a>.</em></p>
 
-<p>For terminology this site creates a collection of <strong>things</strong> which may be assignments, challenges, tasks, dog toys, etc. You can create any number of <strong>types</strong> of things.</p>
+<p>For terminology this site creates a collection of <strong>things</strong> which may be assignments, challenges, tasks, quests, dog toys, etc. You can create any number of <strong>types</strong> of things to organize them on the front of the site. But there are also categories and tags you can use to create different schemes of organization.</p>
 
 <h2>Set Up Specific Pages</h2>
-<p>This theme provides three templates for Wordpress Pages that provide specific functionality for your site. You should at least create these all for a new site, even if you do not use them.</p>
+<p>This theme provides three templates for Wordpress Pages that provide specific functionality for your site. This pages <em>should be created for you</em> when the theme is activated, but if not:</p>
 
 <ol>
 <li>Create a new Page for your  <strong>Main Menu</strong>  This generates the index of all types of things; they will be listed the order specified by the option defined in General Settings. The title and content of the page is displayed above a two column grid of types of things. To enable the functionality for the index, set the page template to <strong>Assignment Menu</strong><br /><br/>If you wish this page to be the front of the site (<a href="http://bank.ds106.us/">like the demo</a>), use the <a href="<?php echo admin_url( 'options-reading.php')?>">Reading Settings </a> to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).<br /><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/reading-settings.jpg" alt="" style="border:3px solid #000;" /></li>
@@ -28,6 +28,18 @@
 <p>The <strong>display order</strong> controls how the types of Things are sequenced on the main index; by title, order created, or by the number of things in each type. This order can be switched direction via the <strong>display order sorting</strong>.</p>
 
 <p>The <strong>excerpt length</strong> is used to set the word length of short descriptions of examples and things on index pages (the Wordpress default is 55 words).</p>
+
+<h2>Bank Options: General Settings: Thing Categories</h2>
+<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/categories-for-things.jpg" alt="" style="border:3px solid #000;" /><br />
+For other ways to organize your Things across types you can enable the use of categories. For example, in a Bank of Assignments where they are organized by Types of Media (e.g. the original ds106 Assignment Bank), you could create a categorization based on different classes / courses using the bank.</p>
+
+<p>If you do want to use categories, you set them up first in the Dashboard under <strong>Things to Do</strong> -&gt; <strong>Thing Categories</strong>. The Bank will recognize only one set of child categories is applied.</p>
+
+<strong>Use Categories for _____</strong> by default is set to no-- they will not be used at all on the site or visible, even if used in the past. The second option will present the categories on the public page when your site visitors create a new thing-- they check the appropriate boxes for categories.</p>
+
+<p>But there might be cases where you want to categorize only on the back end; e.g. do not let users self categorize but do it when you moderate / review things added. This is the second "yes" option.</p>
+
+<p>And if you use Categories but want to call them something else, like <code>Sections</code> enter that in the setting for <strong>Label for Category</strong>. This will be used on the entry forms and any where the categories are displayed.</p>
 
 
 <h2>Bank Options: General Settings: Twitter Settings</h2>
@@ -135,7 +147,7 @@ At the bottom of the <a href="<?php echo  admin_url( 'admin.php?page=feedwordpre
 
 
 <h2>Adding Feeds</h2>
-<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fwp-add-feeds.jpg" alt="" style="float:right; border:3px solid #000;" /><br />At this time, all RSS feeds must be added to your site via the screen for <a href="<?php echo  admin_url( 'admin.php?page=feedwordpress/syndication.php')?>">Feed Wordpress Syndication Sites</a>. The <strong>add multiple</strong> button opens a field where you can enter in a list of sites or feeds.</p>
+<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fwp-add-feeds.jpg" alt="" style="float:right; border:3px solid #000; margin-left:1em;" /><br />At this time, all RSS feeds must be added to your site via the screen for <a href="<?php echo  admin_url( 'admin.php?page=feedwordpress/syndication.php')?>">Feed Wordpress Syndication Sites</a>. The <strong>add multiple</strong> button opens a field where you can enter in a list of sites or feeds.</p>
 
 <p>For each feed, you will have to confirm or select the correct Feed URL (some sites offer several options of Feed format or the content it finds as an RSS feed</p>.
 
