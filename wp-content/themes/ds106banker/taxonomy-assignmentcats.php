@@ -6,9 +6,6 @@ $term =	$wp_query->queried_object; // the term we need for this taxonomy
 // kind of sort passed by paramaters
 $sortedby =  ( isset( $wp_query->query_vars['srt'] ) ) ? $wp_query->query_vars['srt'] : 'newest';
 
-// label for the tutorials, now customizable as theme option
-$help_thing_name = lcfirst( ds106bank_option('helpthingname') );
-
 $use_public_ratings = function_exists('the_ratings');
 $use_difficulty = ds106bank_option('difficulty_rating');
 
@@ -168,7 +165,7 @@ get_header(); ?>
 							
 							
 							<p class="meta">
-								<?php echo $assignment_difficulty?>Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> &bull; <strong><?php echo get_assignment_meta( $post->ID, 'assignment_visits')?></strong> views &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_examples')?></strong> responses </strong> &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?></strong> <?php echo $help_thing_name?>s
+								<?php echo $assignment_difficulty?>Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo get_assignment_meta_string( $post->ID );?>
 							</p>
 							
 						</header> 

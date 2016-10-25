@@ -600,6 +600,16 @@ class ds106bank_Theme_Options {
 			
 		/* Reset checkbox
 		===========================================*/
+		// ------- field so users can add new types of things
+		$this->settings['reset_heading'] = array(
+			'section' => 'reset',
+			'title'   => '', // Not used for headings.
+			'desc'    => 'Reset Settings',
+			'std'	  => 'Use with great care!', 
+			'type'    => 'heading'
+		);
+		
+		
 		
 		$this->settings['reset_theme'] = array(
 			'section' => 'reset',

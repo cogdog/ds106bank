@@ -763,17 +763,17 @@ function update_assignment_meta($id, $example_count, $tutorial_count) {
 // called on each view of an assignment
 
 	// get current value, if it does nto exist, then 0
-	$visit_count = ( get_post_meta($id, 'assignment_visits', true) ) ? get_post_meta($id, 'assignment_visits', true) : 0; 
+	$visit_count = ( get_post_meta( $id, 'assignment_visits', true ) ) ? get_post_meta( $id, 'assignment_visits', true ) : 0; 
 	$visit_count++;
 	
 	//update visit counts
-	update_post_meta($id,  'assignment_visits', $visit_count);
+	update_post_meta( $id,  'assignment_visits', $visit_count );
 	
 	// now update the number of examples
-	update_post_meta($id,  'assignment_examples', $example_count);
+	update_post_meta( $id,  'assignment_examples', $example_count );
 	
 	// now update the number of tutorials
-	update_post_meta($id,  'assignment_tutorials', $tutorial_count);
+	update_post_meta( $id,  'assignment_tutorials', $tutorial_count );
 }
 
 function update_example_meta( $id ) {
@@ -787,6 +787,30 @@ function update_example_meta( $id ) {
 	update_post_meta($id,  'examples_visits', $visit_count);
 }
 
+
+function get_assignment_meta_string( $id ) {
+// get thing meta data counts for views, examples, tutorials for use in archive views
+
+	// you gotta start somewhere
+	$str = ' &bull; <strong>' . get_assignment_meta( $id, 'assignment_visits') . '</strong> views ';
+	
+	
+	if ( ds106bank_option('show_ex' )  == 'both') {
+		// display examples and tutorials counts
+		$str .=  ' &bull; <strong>' . get_assignment_meta( $id, 'assignment_examples') . '</strong> responses &bull;  <strong>' .  get_assignment_meta( $id, 'assignment_tutorials') . '</strong> ' .  lcfirst( ds106bank_option('helpthingname') ) . 's';
+		
+	} elseif ( ds106bank_option('show_ex' )  == 'ex' ) {
+		// display example counts only
+		$str .=  ' &bull; <strong>' . get_assignment_meta( $id, 'assignment_examples') . '</strong> responses';
+		
+	} elseif ( ds106bank_option('show_ex' )  == 'tut') {
+		// display tutorial counts only
+		$str .=  '  &bull;  <strong>' .  get_assignment_meta( $id, 'assignment_tutorials') . '</strong> ' .  lcfirst( ds106bank_option('helpthingname') ) . 's';
+		
+	}
+	
+	return ($str);
+}
 
 /****************** FOR CREATIVE COMMONS LICENSING  **************************/	
 function cc_license_html ($license, $author='', $yr='') {

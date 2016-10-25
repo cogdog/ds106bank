@@ -6,9 +6,6 @@ $term =	$wp_query->queried_object; // the term we need for this taxonomy
 // kind of sort passed by paramaters
 $sortedby =  ( isset( $wp_query->query_vars['srt'] ) ) ? $wp_query->query_vars['srt'] : 'newest';
 
-// label for the tutorials, now customizable as theme option
-$help_thing_name = lcfirst( ds106bank_option('helpthingname') );
-
 $use_public_ratings = function_exists('the_ratings');
 $use_difficulty = ds106bank_option('difficulty_rating');
 
@@ -158,19 +155,15 @@ get_header(); ?>
 							<?php 
 							// insert ratings if enabled
 							if ( $use_public_ratings ) { the_ratings(); }
-						
-							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
 							
-							// no author assigned
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
-							
-							if ( $use_difficulty ) $assignment_difficulty = 'Difficulty: <strong>' .  get_post_meta($post->ID, 'assignment_difficulty', $single = true)  . '</strong> (rated by author; 1=easy &lt--&gt; 5=difficult)<br />';
+							$assignmentAuthor = get_assignment_meta( $post->ID, 'fwp_name', 'Anonymous' );
+													
+							if ( $use_difficulty ) $assignment_difficulty = 'Difficulty: <strong>' .  get_post_meta( $post->ID, 'assignment_difficulty', $single = true )  . '</strong> (rated by author; 1=easy &lt--&gt; 5=difficult)<br />';
 							?>
 							
 							
 							<p class="meta">
-								<?php echo $assignment_difficulty?>Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> &bull; <strong><?php echo get_assignment_meta( $post->ID, 'assignment_visits')?></strong> views &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_examples')?></strong> responses </strong> &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?></strong> <?php echo $help_thing_name?>s
+								<?php echo $assignment_difficulty?>Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo get_assignment_meta_string( $post->ID );?>
 							</p>
 							
 						</header> 

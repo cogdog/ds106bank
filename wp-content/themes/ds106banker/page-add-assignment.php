@@ -350,7 +350,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 							?>	
 					</div>
  
- 					<?php if ( $use_thing_cats ): // offer only if categories in use ?>
+ 					<?php if ( $use_thing_cats == 1 ): // offer only if categories in use and set for users to select ?>
  					
  					<!-- hack of a way to send the category label to jQuery for the preview -->
  					<div class="form-group" id="thing_cat_hole" data-catlabel="<?php echo ds106bank_option( 'thing_cat_name' ) ?>">
