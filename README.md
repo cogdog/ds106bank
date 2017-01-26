@@ -95,7 +95,7 @@ Note: Do not upload the zip for this GitHub repo to install the themes. It won't
 ### Setting up WP-PostRatings for Popularity Ratings
 Install the [WP-PostRatings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing popularity rating feature. Not installing the plugin (or de-activating it) removes the feature from the site. the purpose here is to allow visitors to rate Things, and provide sorting of things based on said ratings.
 
-A few settings for the plugin are necessary.
+A few settings for the plugin are necessary (found in the new Ratings option in the Admin Sidebar).
 
  ![](wp-content/themes/ds106banker/images/ratings-options.jpg)
 
@@ -138,34 +138,34 @@ FYI the data for ratings are stored in three custom fields on all Things; they c
 * **ratings_users** is the number of people who voted (in the above example, 2)
 * **ratings_average** is the value that will be displayed (in the above example, 3.5)
 
-If you feel the vote of 5 by one person is too high, you might change the values to be ratings_score=2, ratings_users and ratings_average=2 to reduce the rating to 2. Changing votes is your decision
+If you feel the vote of 5 by one person is too high, you might change the values to be ratings_score=2, ratings_users and ratings_average=2 to reduce the rating to 2. Changing votes is your decision.
 
 ### Author Challenge Ratings
 
 ![](wp-content/themes/ds106banker/images/challenge-ratings.jpg)
 
-Enable this option to allow creators of new things to define their own rating of difficulty; this is completely separate from user popularity rating
+Found under Appearance/Assignment Bank Options, enable this option to allow creators of new things to define their own rating of difficulty. This is completely separate from user popularity rating. 
 
 
 ### Setting Up Feed Wordpress
-Install the [Feed Wordpress plugin](http://wordpress.org/plugins/feedwordpress/) if you wish to syndicate in responses to "thongs" as examples. This means that you can add blog feeds to the bank (it does the feed aggregation) or you can syndicate in from another site that is aggregating feeds (the ds 106 model). 
+Install the [Feed Wordpress plugin](http://wordpress.org/plugins/feedwordpress/) if you wish to syndicate in responses to "things" as examples. This means that you can add blog feeds to the bank (it does the feed aggregation) or you can syndicate in from another site that is aggregating feeds (the ds 106 model). 
 
 If this is not a desired feature, the plugin is not needed. You can still allow visitors to submit their examples via a web form.
 
 A few settings must be made in Feed Wordpress to work correctly with the Assignment Bank Theme.
 
 ![](wp-content/themes/ds106banker/images/fwp-update-scheduling.jpg)
-Under **Updates Scheduling** in the  **Feed and Updates Feed Wordpress Settings** set the  **set to automatically check for updates after pages load** to generate the process of feed checking. This is the easiest approach that is triggered by site activity- if you understand cron scripts you can set that up as an alternative.
+Under **Updates Scheduling** in the  **Feed and Updates** option under **Syndication Settings** set the dropdown menu to **set to automatically check for updates after pages load** to generate the process of feed checking. This is the easiest approach that is triggered by site activity- if you understand cron scripts you can set that up as an alternative.
 
 ![](wp-content/themes/ds106banker/images/fwp-post-settings.jpg)
-At the bottom of the **Posts and Links Feed Wordpress Settings**  in the section for **Custom Post Types (advanced database settings)**, set the option for Custom Post Types to **Examples Done**. What this does is to associate all syndicated posts with the content type that defines the examples. 
+At the bottom of the **Posts and Links** page of the **Syndication Settings** in the section for **Custom Post Types (advanced database settings)**, set the option for Custom Post Types to **Responses**. What this does is to associate all syndicated posts with the content type that defines the examples. 
 
 
 ![](wp-content/themes/ds106banker/images/fwp-tag-settings.jpg)
 
-To the RSS feeds that Feed Wordpress syndicates, any tags or categories an incoming feed are actually associated as categories in the RSS structure. 
+To the RSS feeds that Feed Wordpress syndicates, any tags or categories in an incoming feed are actually associated as categories in the RSS structure. 
 
-In the **Feed Categories & Tags Feed Wordpress Settings** check the options for **Match feed categories** and **Match inline tags** to include **Thing Tags** and **Tutorial Tags**. This will match all incoming tags to be associated with the taxonomy that organize the examples into the proper Thing types.
+In the **Feed Categories & Tags** section of the **Syndication Settings** check the options for **Match feed categories** and **Match inline tags** to include **Thing Tags** and **Tutorial Tags**. This will match all incoming tags to be associated with the taxonomy that organize the examples into the proper Thing types.
 
 If you have no use for other tags in posts, under **Unmatched Categories** check the option for **Don't create any matching terms**. This keeps the database from being filled by un-used user tags/categories.
 
@@ -177,11 +177,11 @@ A few Wordpress pages should be created on theme activation, to create the main 
 
 If the pages are *not* created for you on theme activation...
 
-1. Create a new page for a  **Main Menu** This generates the index of all types of things; they will be listed in the  order specified by your theme options. The title and content of the page (which you edit) is displayed above a grid of types of things. To enable the functionality, set the page template to **Assignment Menu** If you wish this page to be the front of the site, use the **Wordpress Reading Settings** to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).
+1. Create a new page for a  **Main Menu**. This generates the index of all types of things; they will be listed in the order specified by your theme options. The title and content of the page (which you edit) is displayed above a grid of types of things. To enable the functionality, set the page template to **Assignment Menu** If you wish this page to be the front of the site, use the **Wordpress Reading Settings** to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).
 
 ![](wp-content/themes/ds106banker/images/reading-settings.jpg)
 
-2. Create a new page to **Submit New Things** You will need this even if you do not allow visitors to add them so you can add them yourself (the page can be unlinked or have a password set on it). The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Assignments**.
+2. Create a new page to **Submit New Things** You will need this even if you do not allow visitors to add them so you can add them yourself (the page can be unlinked or have a password set on it). The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Thing Form**.
 
 ![](images/add-thing.jpg "Form to add a new thing")
 
@@ -206,7 +206,7 @@ This theme has a comprehensive set of options, available via the **Assignment Ba
 
 **Define the name of things** in the bank- the name here should be singular. This is used in numerous places throughout the site; note that changing this name will revise the name of the tags used to identify them for user tagging. You should set this very early in the setup process.
 
-If you  allow users to submit new things to the site, you can set the **default status for new things** to Draft so you can moderate them. If the form will only be used by admins or i you allow new things to go directly to the site, set this option to Publish Immediately.
+If you  allow users to submit new things to the site, you can set the **default status for new things** to Draft so you can moderate them. If the form will only be used by admins or if you allow new things to go directly to the site, set this option to Publish Immediately.
 
 The **display order** controls how the types of things are sequenced on the main index; by title, order created, or by the number of things in each type. This order can be switched direction via the **display order sorting**.
 
