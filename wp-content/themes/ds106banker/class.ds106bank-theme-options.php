@@ -1,6 +1,7 @@
 <?php
 // manages all of the theme options
 // heavy lifting via http://alisothegeek.com/2011/01/wordpress-settings-api-tutorial-1/
+// Revision July 26, 2016 by @cogdog as jQuery update killed TAB UI
 
 class ds106bank_Theme_Options {
 
@@ -16,79 +17,73 @@ class ds106bank_Theme_Options {
 		$this->checkboxes = array();
 		$this->settings = array();
 		
-		//$this->bank106_init();
+		// go get ;em
 		$this->get_settings();
 		
+		// Sections for the options, always have General and Reset
 		$this->sections['general'] = __( 'General Settings' );
 		$this->sections['types']   = __( ds106bank_option( 'thingname' ) . ' Types' );
-		$this->sections['docs']        = __( 'Documentation' );
-		$this->sections['reset']   = __( 'Reset to Defaults' );
+		$this->sections['reset']   = __( 'Reset Options to Defaults' );
+		
 
-		// enqueue scripts for media uploader
+		// Create a colllection of callbacks for each section heading
+		foreach ( $this->sections as $slug => $title ) {
+			$this->section_callbacks[$slug] = 'display_' . $slug;
+		}
+		
+		// enqueue scripts for media uploader, get 'em in queueu
         add_action( 'admin_enqueue_scripts', 'ds106bank_enqueue_options_scripts' );
 		
+		// Do the rest of the set up stuff, Clyde
 		add_action( 'admin_menu', array( &$this, 'add_pages' ) );
 		add_action( 'admin_init', array( &$this, 'register_settings' ) );
 		
 		if ( ! get_option( 'ds106banker_options' ) )
 			$this->initialize_settings();
 	}
+	
 
 	/* Add page(s) to the admin menu */
 	public function add_pages() {
+		// options page added
 		$admin_page = add_theme_page( 'Assignment Bank Options', 'Assignment Bank Options', 'manage_options', 'ds106bank-options', array( &$this, 'display_page' ) );
 		
-		// give us javascript for this page
-		add_action( 'admin_print_scripts-' . $admin_page, array( &$this, 'scripts' ) );
-		
-		// and some pretty styling
-		add_action( 'admin_print_styles-' . $admin_page, array( &$this, 'styles' ) );
+		// documents page, but don't add to menu		
+		$docs_page = add_theme_page( 'Assignment Bank Documentation', '', 'manage_options', 'ds106bank-docs', array( &$this, 'display_docs' ) );
+
 	}
-
-	/* HTML to display the theme options page */
+	
+	
+	/* HTML to display the theme options page and it's tabs */
 	public function display_page() {
-		echo '<div class="wrap">
-		<div class="icon32" id="icon-options-general"></div>
-		<h2>Assignment Bank Options</h2>';
 		
-		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == true )
-			echo '<div class="updated fade"><p>' . __( 'Theme options updated.' ) . '</p></div>';
-				
+	 	echo '<div class="wrap">
+		<h1>Assignment Bank Options</h1>';
+		
+		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == true ) {
+			echo '<div class="notice notice-success"><p>' . __( 'Theme options updated.' ) . '</p></div>';
+		}
+		
 		echo '<form action="options.php" method="post" enctype="multipart/form-data">';
+		
+		// set up thr settings
+		settings_fields( 'ds106banker_options' );
+		
+		// tabbed navigation stuff
+		echo  '<h2 class="nav-tab-wrapper"><a class="nav-tab nav-tab-active" href="?page=ds106bank-options">Settings</a>
+		<a class="nav-tab" href="?page=ds106bank-docs">Documentation</a></h2>';
 
-			settings_fields( 'ds106banker_options' );
-			echo '<div class="ui-tabs">
-				<ul class="ui-tabs-nav">';
-
-			foreach ( $this->sections as $section_slug => $section )
-				echo '<li><a href="#' . $section_slug . '">' . $section . '</a></li>';
-
-			echo '</ul>';
-			do_settings_sections( $_GET['page'] );
-
-			echo '</div>
-			<p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . __( 'Save Changes' ) . '" /></p>
-
-		</form>';
+		// generates all the form stuff, it's like MAGIC
+		do_settings_sections( $_GET['page'] );
+		
+		// do not forget a button!
+		echo  '<p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . __( 'Save Changes' ) . '" /></p>
+		</form>
+		</div>';
+		
+		// some extra jQuery suff to make the forms even more spiffier
 		echo '<script type="text/javascript">
 		jQuery(document).ready(function($) {
-			var sections = [];';
-			
-			foreach ( $this->sections as $section_slug => $section )
-				echo "sections['$section'] = '$section_slug';";
-			
-			echo 'var wrapped = $(".wrap h3").wrap("<div class=\"ui-tabs-panel\">");
-			wrapped.each(function() {
-				$(this).parent().append($(this).parent().nextUntil("div.ui-tabs-panel"));
-			});
-			$(".ui-tabs-panel").each(function(index) {
-				$(this).attr("id", sections[$(this).children("h3").text()]);
-				if (index > 0)
-					$(this).addClass("ui-tabs-hide");
-			});
-			$(".ui-tabs").tabs({
-				fx: { opacity: "toggle", duration: "fast" }
-			});
 			
 			$("input[type=text], textarea").each(function() {
 				if ($(this).val() == $(this).attr("placeholder") || $(this).val() == "")
@@ -107,8 +102,6 @@ class ds106bank_Theme_Options {
 				}
 			});
 			
-			$(".wrap h3, .wrap table").show();
-			
 			// This will make the "warning" checkbox class really stand out when checked.
 			// I use it here for the Reset checkbox.
 			$(".warning").change(function() {
@@ -117,57 +110,27 @@ class ds106bank_Theme_Options {
 				else
 					$(this).parent().css("background", "none").css("color", "inherit").css("fontWeight", "normal");
 			});
-			
-			// Browser compatibility
-			if ($.browser.mozilla) 
-			         $("form").attr("autocomplete", "off");
-			         
+		});
+		</script>';
+    }
+
+	/*  Display documentation in a tab */
+	public function display_docs() {	
+		// This displays on the "Documentation" tab. 
 		
-				//  via http://stackoverflow.com/a/14467706/2418186
-	
-				//  jQueryUI 1.10 and HTML5 ready
-				//      http://jqueryui.com/upgrade-guide/1.10/#removed-cookie-option 
-				//  Documentation
-				//      http://api.jqueryui.com/tabs/#option-active
-				//      http://api.jqueryui.com/tabs/#event-activate
-				//      http://balaarjunan.wordpress.com/2010/11/10/html5-session-storage-key-things-to-consider/
-				//
-				//  Define friendly index name
-				var index = "key";
-				//  Define friendly data store name
-				var dataStore = window.sessionStorage;
-				//  Start magic!
-				try {
-					// getter: Fetch previous value
-					var oldIndex = dataStore.getItem(index);
-				} catch(e) {
-					// getter: Always default to first tab in error state
-					var oldIndex = 0;
-				}
-				$(".ui-tabs").tabs({
-					// The zero-based index of the panel that is active (open)
-					active : oldIndex,
-					// Triggered after a tab has been activated
-					activate : function( event, ui ){
-						//  Get future value
-						var newIndex = ui.newTab.parent().children().index(ui.newTab);
-						//  Set future value
-						dataStore.setItem( index, newIndex ) 
-					}
-				}); 
-					 
-			});
-	</script>
-</div>';	
+	 	echo '<div class="wrap">
+		<h1>Assignment Bank Options</h1>
+		<h2 class="nav-tab-wrapper">
+		<a class="nav-tab" href="?page=ds106bank-options">Settings</a>
+		<a class="nav-tab nav-tab-active" href="?page=ds106bank-docs">Documentation</a></h2>';
+		
+		// suck in a whack of HTML
+		include( get_stylesheet_directory() . '/includes/ds106bank-theme-options-docs.php');
+		
+		echo '</div>';		
 	}
+				
 			
-		/* Insert custom CSS */
-		public function styles() {
-
-			wp_register_style( 'ds106bank-admin', get_stylesheet_directory_uri() . '/ds106bank-options.css' );
-			wp_enqueue_style( 'ds106bank-admin' );
-
-		}
 
 	/* Define all settings and their defaults */
 	public function get_settings() {
@@ -228,6 +191,39 @@ class ds106bank_Theme_Options {
 			'section' => 'general'
 		);
 		
+
+		$this->settings['use_thing_cats'] = array(
+			'section' => 'general',
+			'title'   => __( 'Use Categories for ' . THINGNAME . 's' ),
+			'desc'    => __( 'Offer another way to organize them across types. You can present available categories on the form to let users assign them, or do it on the back end as a task for site admins.'),
+			'type'    => 'radio',
+			'std'     => '0',
+			'choices' => array (
+							'0' => 'No, do not use categories',
+							'1' => 'Yes, and let ' .  THINGNAME . ' creators assign categories',
+							'2' => 'Yes, but leave it for admins to assign categories'
+					)
+		);
+
+		$this->settings['thing_cat_name'] = array(
+			'title'   => __( 'Label for Category' ),
+			'desc'    => __( 'You can use another label besides the default \'Category\'- it should be singular.' ),
+			'std'     => 'Category',
+			'type'    => 'text',
+			'section' => 'general'
+		);
+
+		// ------- twitter options		
+		$this->settings['cc_heading'] = array(
+			'section' => 'general',
+			'title'   => '', // Not used for headings.
+			'desc'	 => 'Twitter Options',
+			'std'    => '',
+			'type'    => 'heading'
+		);
+
+
+		
 		$this->settings['use_twitter_name'] = array(
 			'section' => 'general',
 			'title'   => __( 'Use twitter name on submission forms?'),
@@ -285,7 +281,7 @@ class ds106bank_Theme_Options {
 		$this->settings['media_icon'] = array(
 			'section' => 'general',
 			'title'   => __( 'Embed Media For Icon' ),
-			'desc'    => __( 'Embed example (if embeddable) as icon on index and archive views' ),
+			'desc'    => __( 'Embed example (if embeddable, e.g. YouTube/vimeo video, tweet) as icon on index and archive views' ),
 			'type'    => 'radio',
 			'std'     => '0',
 			'choices' => array(
@@ -298,7 +294,7 @@ class ds106bank_Theme_Options {
 		$this->settings['cc_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => 'Apply Creative Commons to ' . THINGNAME . 's',
+			'desc'	 => 'Apply Creative Commons to each ' . THINGNAME,
 			'std'    => '',
 			'type'    => 'heading'
 		);
@@ -311,14 +307,14 @@ class ds106bank_Theme_Options {
 			'std'     => 'site',
 			'choices' => array(
 				'none' => 'No Creative Commons',
-				'site' => 'Apply one license to all ' . lcfirst(THINGNAME) . 's',
+				'site' => 'Apply one license to every ' . lcfirst(THINGNAME),
 				'user' => 'Enable users to choose license when submitting  a ' . lcfirst(THINGNAME)
 			)
 		);
 		
 		$this->settings['cc_site'] = array(
 			'section' => 'general',
-			'title'   => __( 'License for All ' . THINGNAME . 's'),
+			'title'   => __( 'License for Every ' . THINGNAME),
 			'desc'    => __( 'Choose a license that will appear sitewide' ),
 			'type'    => 'select',
 			'std'     => 'by',
@@ -350,16 +346,29 @@ class ds106bank_Theme_Options {
 			'std'     => 0 // Set to 1 to be checked by default, 0 to be unchecked by default.
 		);
 
-
 		// ------- example setup options
 		$this->settings['examples_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => 'Settings for ' . THINGNAME . ' Examples',
+			'desc'	 => 'Settings for ' . THINGNAME . ' Examples and Tutorials',
 			'std'    => '',
 			'type'    => 'heading'
 		);
-		
+
+		$this->settings['show_ex'] = array(
+			'section' => 'general',
+			'title'   => __( 'Display on Single ' . THINGNAME ),
+			'desc'    => __( 'Enable display of associated examples and/or tutorials on the single view (they can still be submitted but you may choose not to have them listed)' ),
+			'type'    => 'radio',
+			'std'     => 'both',
+			'choices' => array(
+				'both' => 'Examples and Tutorials',
+				'ex' => 'Examples only',
+				'tut' => 'Tutorials only',
+				'none' => 'Neither'
+			)
+		);
+
 		$this->settings['example_via_form'] = array(
 			'section' => 'general',
 			'title'   => __( 'Submit examples directly' ),
@@ -380,7 +389,6 @@ class ds106bank_Theme_Options {
 					)
 		);
 
-		
  		// Build array to hold options for select, an array of published pages on the site
 	  	$page_options = array( '--' => 'Select Page');
 
@@ -398,7 +406,6 @@ class ds106bank_Theme_Options {
 			'std'     => '--',
 			'choices' => $page_options
 		);	
-
 
 		$this->settings['new_example_status'] = array(
 			'section' => 'general',
@@ -467,14 +474,13 @@ class ds106bank_Theme_Options {
 			'section' => 'general'
 		);
 		
-		
-		// ------- captcha options
+		// ------- captcha options, if we need 'em
 		
 		$this->settings['captcha_heading'] = array(
 		'section' => 'general',
 		'title' 	=> '' ,// Not used for headings.
 		'desc'   => 'Captcha Settings', 
-		'std'    => 'To reduce spamm activate a captcha for submission forms',
+		'std'    => 'To reduce spam activate a captcha for submission forms',
 		'type'    => 'heading'
 		);		
 		
@@ -485,7 +491,6 @@ class ds106bank_Theme_Options {
 			'type'    => 'checkbox',
 			'std'     => 0 // Set to 1 to be checked by default, 0 to be unchecked by default.
 		);
-		
 		
 		$this->settings['captcha_style'] = array(
 		'section' => 'general',
@@ -501,7 +506,6 @@ class ds106bank_Theme_Options {
 		)
 	);
 	
-		
 		$this->settings['captcha_pub'] = array(
 			'title'   => __( 'reCaptcha Public Key' ),
 			'desc'    => __( '' ),
@@ -524,6 +528,14 @@ class ds106bank_Theme_Options {
 		===========================================*/
 
 		
+		$this->settings['thing_type_heading'] = array(
+		'section' => 'general',
+		'title' 	=> '' ,// Not used for headings.
+		'desc'   => 'Types of ' . THINGNAME . 's', 
+		'std'    => 'Create the organzation of different kinds of ' . THINGNAME . 's',
+		'type'    => 'heading'
+		);		
+
 		// lets get all the existing assignment types
 		$assigntypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
 		$i = 0;
@@ -585,11 +597,19 @@ class ds106bank_Theme_Options {
 			'type'    => 'textarea',
 			'section' => 'types'
 	);
-
-
 			
-		/* Reset
+		/* Reset checkbox
 		===========================================*/
+		// ------- field so users can add new types of things
+		$this->settings['reset_heading'] = array(
+			'section' => 'reset',
+			'title'   => '', // Not used for headings.
+			'desc'    => 'Reset Settings',
+			'std'	  => 'Use with great care!', 
+			'type'    => 'heading'
+		);
+		
+		
 		
 		$this->settings['reset_theme'] = array(
 			'section' => 'reset',
@@ -597,16 +617,27 @@ class ds106bank_Theme_Options {
 			'type'    => 'checkbox',
 			'std'     => 0,
 			'class'   => 'warning', // Custom class for CSS
-			'desc'    => __( 'Check this box and click "Save Changes" below to reset assignment bank options to their defaults.' )
+			'desc'    => __( 'Check this box and click "Save Changes" below to reset options to their defaults.' )
 		);
+	}
 
-		
+	public function display_general() {
+		// section heading for general setttings
+		echo '<p>These settings manaage the behavior and appearance of your bank. There are quite a few of them!</p>';		
 	}
-	
-	/* Description for section */
-	public function display_section() {
-		// code
+
+
+	public function display_types() {
+		// section heading for assignment type setttings
+		echo '<p>Add and edit the titles, icons, and descriptions for the types of items in your bank.</p>';
+
 	}
+
+	public function display_reset() {
+		// section heading for reset section setttings, none needed
+	}
+
+
 
 	/* HTML output for individual settings */
 	public function display_setting( $args = array() ) {
@@ -630,11 +661,11 @@ class ds106bank_Theme_Options {
 		switch ( $type ) {
 		
 			case 'heading':
-				echo '</td></tr><tr valign="top"><td colspan="2"><h4 style="margin-bottom:0;">' . $desc . '</h4><p style="margin-top:0">' . $std . '</p>';
+				echo '<tr><td colspan="2" class="alternate"><h3>' . $desc . '</h3><p>' . $std . '</p></td></tr>';
 				break;
 
 			case 'checkbox':
-
+			
 				echo '<input class="checkbox' . $field_class . '" type="checkbox" id="' . $id . '" name="ds106banker_options[' . $id . ']" value="1" ' . checked( $options[$id], 1, false ) . ' /> <label for="' . $id . '">' . $desc . '</label>';
 
 				break;
@@ -649,10 +680,13 @@ class ds106bank_Theme_Options {
 
 				if ( $desc != '' )
 					echo '<br /><span class="description">' . $desc . '</span>';
-
+				
 				break;
 
 			case 'radio':
+				if ( $desc != '' )
+					echo '<span class="description">' . $desc . '</span><br /><br />';
+					
 				$i = 0;
 				foreach ( $choices as $value => $label ) {
 					echo '<input class="radio' . $field_class . '" type="radio" name="ds106banker_options[' . $id . ']" id="' . $id . $i . '" value="' . esc_attr( $value ) . '" ' . checked( $options[$id], $value, false ) . '> <label for="' . $id . $i . '">' . $label . '</label>';
@@ -660,13 +694,11 @@ class ds106bank_Theme_Options {
 						echo '<br />';
 					$i++;
 				}
-
-				if ( $desc != '' )
-					echo '<br /><span class="description">' . $desc . '</span>';
-
+					
 				break;
 
 			case 'textarea':
+			
 				echo '<textarea class="' . $field_class . '" id="' . $id . '" name="ds106banker_options[' . $id . ']" placeholder="' . $std . '" rows="5" cols="30">' . wp_htmledit_pre( $options[$id] ) . '</textarea>';
 
 				if ( $desc != '' )
@@ -675,10 +707,7 @@ class ds106bank_Theme_Options {
 				break;
 				
 			case 'medialoader':
-			
-			
-				echo '<div id="uploader_' . $id . '">';
-				
+					
 				if ( strpos ( $options[$id], 'http') !==false ) {
 					echo '<img id="previewimage_' . $id . '" src="' . $options[$id] . '" width="' . THUMBW . '" height="' . THUMBH . '" alt="default thumbnail" />';
 				} else {
@@ -695,7 +724,7 @@ class ds106bank_Theme_Options {
 				break;
 
 			case 'password':
-				echo '<input class="regular-text' . $field_class . '" type="password" id="' . $id . '" name="ds106banker_options[' . $id . ']" value="' . esc_attr( $options[$id] ) . '" />';
+				echo '<label for="my-text-field">' . $title . '</label><input class="regular-text' . $field_class . '" type="password" id="' . $id . '" name="ds106banker_options[' . $id . ']" value="' . esc_attr( $options[$id] ) . '" />';
 
 				if ( $desc != '' )
 					echo '<br /><span class="description">' . $desc . '</span>';
@@ -704,33 +733,19 @@ class ds106bank_Theme_Options {
 
 			case 'text':
 			default:
-				echo '<input class="regular-text' . $field_class . '" type="text" id="' . $id . '" name="ds106banker_options[' . $id . ']" placeholder="' . $std . '" value="' . esc_attr( $options[$id] ) . '" />';
-
+				echo '<input class="regular-text' . $field_class . '" type="text" id="' . $id . '"     name="ds106banker_options[' . $id . ']"   placeholder="' . $std . '" value="' . esc_attr( $options[$id] ) . '" />';
+ 
+ 
 				if ( $desc != '' ) {
-				
+	
 					if ($id == 'def_thumb') $desc .= '<br /><a href="' . $options[$id] . '" target="_blank"><img src="' . $options[$id] . '" style="overflow: hidden;" width="' . $options["index_thumb_w"] . '"></a>';
-					echo '<br /><span class="description">' . $desc . '</span>';
+					
+				echo '<br /><span class="description">' . $desc . '</span>';
 				}
 
 				break;
 		}
 	}	
-			
-
-
-	/**
-	 * Description for Docs section
-	 *
-	 * @since 1.0
-	 */
-	public function display_docs_section() {
-		
-		// This displays on the "Documentation" tab. 
-		
-		include( get_stylesheet_directory() . '/includes/ds106bank-theme-options-docs.php');
-		
-		
-	}
 
 	/* Initialize settings to their default values */
 	public function initialize_settings() {
@@ -750,15 +765,11 @@ class ds106bank_Theme_Options {
 	public function register_settings() {
 
 		register_setting( 'ds106banker_options', 'ds106banker_options', array ( &$this, 'validate_settings' ) );
-		//register_setting( 'ds106banker_options', 'ds106banker_options' );
 
-		foreach ( $this->sections as $slug => $title )
-		
-			if ( $slug == 'docs' ) {
-				add_settings_section( $slug, $title, array( &$this, 'display_docs_section' ), 'ds106bank-options' );
-			} else {
-				add_settings_section( $slug, $title, array( &$this, 'display_section' ), 'ds106bank-options' );
-			}
+		// Add all the sections, with appropriate callback functions
+		foreach ( $this->sections as $slug => $title ) {
+			add_settings_section( $slug, $title, array( &$this, $this->section_callbacks[$slug] ), 'ds106bank-options' );
+		}
 
 		$this->get_settings();
 	
@@ -805,11 +816,6 @@ class ds106bank_Theme_Options {
 	}
 	
 	
-	/* jQuery Tabs */
-	public function scripts() {
-		wp_print_scripts( 'jquery-ui-tabs' );
-	}
-	
 	public function validate_settings( $input ) {
 		
 		if ( ! isset( $input['reset_theme'] ) ) {
@@ -817,8 +823,6 @@ class ds106bank_Theme_Options {
 				
 			// has the thing name changed? If so we need to update the taxonmy terms
 			if ( $input['thingname'] !=  THINGNAME  ) {
-						
-			// return ( substr( $thing, 0, -1 ) );
 				bank106_update_tax( THINGNAME, $input['thingname'] );
 			}
 			
@@ -872,9 +876,7 @@ class ds106bank_Theme_Options {
 			return $input;
 		}
 		
-		return false;
-		
-		
+		return false;	
 	}
  }
  
@@ -888,7 +890,4 @@ function ds106bank_option( $option ) {
 	else
 		return false;
 }
-
- 
-
 ?>

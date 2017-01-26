@@ -46,11 +46,13 @@ function ds106bank_setup() {
 	// loaded from theme options()
 	define('THINGNAME', ds106bank_option('thingname') ); // the kind of things here, should be singular
 	
-	// look for existence of pages with the approproate template, if not found
+	// look for existence of pages with the appropriate template, if not found
 	// make 'em
 	if (! page_with_template_exists( 'page-add-assignment.php' ) ) {
   
 		// create the add a thing page if it does not exist
+		// backdate creation date 2 days just to make sure they do not end up future dated
+		
 		$page_data = array(
 			'post_title' 	=> 'Add a New ' . THINGNAME,
 			'post_content'	=> 'Use this form to add a new ' . THINGNAME,
@@ -58,7 +60,7 @@ function ds106bank_setup() {
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
 			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s'),
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
 			'page_template'	=> 'page-add-assignment.php',
 		);
 	
@@ -75,7 +77,7 @@ function ds106bank_setup() {
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
 			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s'),
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
 			'page_template'	=> 'page-add-example.php',
 		);
   	
@@ -92,33 +94,12 @@ function ds106bank_setup() {
 			'post_status'	=> 'publish',
 			'post_type'		=> 'page',
 			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s'),
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
 			'page_template'	=> 'page-assignment-menu.php',
 		);
 	
 		wp_insert_post( $page_data );
 	}
-
-
-/*	
-	if (! page_with_template_exists( 'page-help.php' ) ) {
-  
-		// create the Write page if it does not exist
-		$page_data = array(
-			'post_title' 	=>  'Help for ' . THINGNAME . ' Bank',
-			'post_content'	=> 'Insert pithy greeting.',
-			'post_name'		=> 'help',
-			'post_status'	=> 'publish',
-			'post_type'		=> 'page',
-			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s'),
-			'page_template'	=> 'page-help.php',
-		);
-	
-		wp_insert_post( $page_data );
-	}
-*/
-	
 	
 } // function ds106bank_setup
 
@@ -272,6 +253,7 @@ function post_type_assignments() {
 						'supports'  => array(
 									'title',
 									'editor',
+									'author',
 									'custom-fields',
 									'revisions',
 									'thumbnail',
@@ -284,7 +266,6 @@ function post_type_assignments() {
 							'assignmenttypes',
 							'assignmenttags',
 							'tutorialtags',
-							//'category',
 							'post_tag',
 						),
 							
@@ -318,6 +299,7 @@ function post_type_assignments() {
 						'supports'  => array(
 									'title',
 									'editor',
+									'author',
 									'custom-fields',
 									'revisions',
 									'comments',
@@ -425,7 +407,7 @@ function create_assignmentbank_tax() {
 	// create taxonomy for assignment types
 	register_taxonomy(
 		'assignmenttypes', // Taxonomy name
-		array( 'assignments' ), // Post Types applied ro
+		array( 'assignments' ), // Post Types applied to
 		array( 
 			'labels' => array(
 						'name' => __( $singularThing . ' Types'),
@@ -445,6 +427,34 @@ function create_assignmentbank_tax() {
 			'query_var' => 'type',
 			'show_ui' => true,
 			'show_tagcloud' => true,
+			'show_admin_column' => true,
+			'hierarchical' => true,
+		)
+	);
+
+
+	// create taxonomy for assignment categories
+	register_taxonomy(
+		'assignmentcats', // Taxonomy name
+		array( 'assignments' ), // Post Types applied to
+		array( 
+			'labels' => array(
+						'name' => __( $singularThing . ' Categories'),
+						'singular_name' => __( $singularThing .' Category'),
+						'search_items'               => __( 'Search ' . $singularThing . ' Categories' ),
+						'all_items'                  => __( 'All ' . $singularThing . ' Categories' ),
+						'edit_item'                  => __( 'Edit ' . $singularThing . ' Category' ),
+						'update_item'                => __( 'Update ' . $singularThing . ' Category' ),
+						'add_new_item'               => __( 'Add New ' . $singularThing . ' Category' ),
+						'new_item_name'              => __( 'New ' . $singularThing . ' Category' ),
+						'separate_items_with_commas' => __( 'Separate ' . lcfirst($singularThing) . ' categories with commas' ),
+						'add_or_remove_items'        => __( 'Add or remove ' . lcfirst($singularThing) . ' categories' ),
+						'choose_from_most_used'      => __( 'Choose from the most used ' . lcfirst($singularThing) . ' categories' ),
+						'not_found'                  => __( 'No ' . lcfirst($singularThing) . ' categories found.' ),
+						),
+			'rewrite' => array('slug' => 'cats'),
+			'query_var' => 'cats',
+			'show_ui' => true,
 			'show_admin_column' => true,
 			'hierarchical' => true,
 		)
@@ -753,17 +763,17 @@ function update_assignment_meta($id, $example_count, $tutorial_count) {
 // called on each view of an assignment
 
 	// get current value, if it does nto exist, then 0
-	$visit_count = ( get_post_meta($id, 'assignment_visits', true) ) ? get_post_meta($id, 'assignment_visits', true) : 0; 
+	$visit_count = ( get_post_meta( $id, 'assignment_visits', true ) ) ? get_post_meta( $id, 'assignment_visits', true ) : 0; 
 	$visit_count++;
 	
 	//update visit counts
-	update_post_meta($id,  'assignment_visits', $visit_count);
+	update_post_meta( $id,  'assignment_visits', $visit_count );
 	
 	// now update the number of examples
-	update_post_meta($id,  'assignment_examples', $example_count);
+	update_post_meta( $id,  'assignment_examples', $example_count );
 	
 	// now update the number of tutorials
-	update_post_meta($id,  'assignment_tutorials', $tutorial_count);
+	update_post_meta( $id,  'assignment_tutorials', $tutorial_count );
 }
 
 function update_example_meta( $id ) {
@@ -777,6 +787,30 @@ function update_example_meta( $id ) {
 	update_post_meta($id,  'examples_visits', $visit_count);
 }
 
+
+function get_assignment_meta_string( $id ) {
+// get thing meta data counts for views, examples, tutorials for use in archive views
+
+	// you gotta start somewhere
+	$str = ' &bull; <strong>' . get_assignment_meta( $id, 'assignment_visits') . '</strong> views ';
+	
+	
+	if ( ds106bank_option('show_ex' )  == 'both') {
+		// display examples and tutorials counts
+		$str .=  ' &bull; <strong>' . get_assignment_meta( $id, 'assignment_examples') . '</strong> responses &bull;  <strong>' .  get_assignment_meta( $id, 'assignment_tutorials') . '</strong> ' .  lcfirst( ds106bank_option('helpthingname') ) . 's';
+		
+	} elseif ( ds106bank_option('show_ex' )  == 'ex' ) {
+		// display example counts only
+		$str .=  ' &bull; <strong>' . get_assignment_meta( $id, 'assignment_examples') . '</strong> responses';
+		
+	} elseif ( ds106bank_option('show_ex' )  == 'tut') {
+		// display tutorial counts only
+		$str .=  '  &bull;  <strong>' .  get_assignment_meta( $id, 'assignment_tutorials') . '</strong> ' .  lcfirst( ds106bank_option('helpthingname') ) . 's';
+		
+	}
+	
+	return ($str);
+}
 
 /****************** FOR CREATIVE COMMONS LICENSING  **************************/	
 function cc_license_html ($license, $author='', $yr='') {
@@ -953,6 +987,44 @@ function bank106_twitter_credit_link ( $post_id, $prefix='', $suffix='', $path='
 		// otherwise, send nothing
 		return ('');
 	}
+}
+
+function bank106_get_page_id_by_slug( $page_slug ) {
+	// pass the slug and get it's id, so we can use most basic permalink structure
+	// ----- h/t https://gist.github.com/davidpaulsson/9224518
+	
+	// get page as object
+	$page = get_page_by_path( $page_slug );
+	
+	if ( $page ) {
+		return $page->ID;
+	} else {
+		return null;
+	}
+}
+
+
+/**
+ * Recursively sort an array of taxonomy terms hierarchically. Child categories will be
+ * placed under a 'children' member of their parent term.
+ * @param Array   $cats     taxonomy term objects to sort
+ * @param Array   $into     result array to put them in
+ * @param integer $parentId the current parent ID to put them in
+   h/t http://wordpress.stackexchange.com/a/99516/14945
+ */
+function bank106_sort_terms_hierarchicaly(Array &$cats, Array &$into, $parentId = 0)
+{
+    foreach ($cats as $i => $cat) {
+        if ($cat->parent == $parentId) {
+            $into[$cat->term_id] = $cat;
+            unset($cats[$i]);
+        }
+    }
+
+    foreach ($into as $topCat) {
+        $topCat->children = array();
+        bank106_sort_terms_hierarchicaly($cats, $topCat->children, $topCat->term_id);
+    }
 }
 
 
@@ -1235,6 +1307,4 @@ function oembed_filter( $str ) {
 
 	return $str;
 }
-
-
 ?>

@@ -1,7 +1,9 @@
-<p>For terminology, this site creates a collection of <strong>things</strong> which may be assignments, challenges, tasks, dog toys, etc. You can create any number of <strong>types</strong> of things.</p>
+<p><em>This page documents all of the options for a DS106 type Assignment bank- for complete documentation that includes suggestions for setup, plugins, <a href="https://github.com/cogdog/ds106bank">see the theme repository on GitHub</a>. That is also <a href="https://github.com/cogdog/ds106bank/issues">a good place to ask question or toss accolades</a>.</em></p>
 
-<h4>Set Up Specific Pages</h4>
-<p>This theme provides three templates for Wordpress Pages that provide specific functionality for your site. You should at least create these all for a new site, even if you do not use them.</p>
+<p>For terminology this site creates a collection of <strong>things</strong> which may be assignments, challenges, tasks, quests, dog toys, etc. You can create any number of <strong>types</strong> of things to organize them on the front of the site. But there are also categories and tags you can use to create different schemes of organization.</p>
+
+<h2>Set Up Specific Pages</h2>
+<p>This theme provides three templates for Wordpress Pages that provide specific functionality for your site. This pages <em>should be created for you</em> when the theme is activated, but if not:</p>
 
 <ol>
 <li>Create a new Page for your  <strong>Main Menu</strong>  This generates the index of all types of things; they will be listed the order specified by the option defined in General Settings. The title and content of the page is displayed above a two column grid of types of things. To enable the functionality for the index, set the page template to <strong>Assignment Menu</strong><br /><br/>If you wish this page to be the front of the site (<a href="http://bank.ds106.us/">like the demo</a>), use the <a href="<?php echo admin_url( 'options-reading.php')?>">Reading Settings </a> to set the Front Page as a static page (if you plan to use the blog, create a blank page that you can use for a Posts page).<br /><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/reading-settings.jpg" alt="" style="border:3px solid #000;" /></li>
@@ -15,7 +17,7 @@
 </ol>
 
 
-<h4>Assignment Bank Options: General Settings: Thing Settings</h4>
+<h2>Bank Options: General Settings: Thing Settings</h2>
 
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/general-thing-settings.jpg" alt="" style="border:3px solid #000;" /><br />
 
@@ -27,8 +29,20 @@
 
 <p>The <strong>excerpt length</strong> is used to set the word length of short descriptions of examples and things on index pages (the Wordpress default is 55 words).</p>
 
+<h2>Bank Options: General Settings: Thing Categories</h2>
+<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/categories-for-things.jpg" alt="" style="border:3px solid #000;" /><br />
+For other ways to organize your Things across types you can enable the use of categories. For example, in a Bank of Assignments where they are organized by Types of Media (e.g. the original ds106 Assignment Bank), you could create a categorization based on different classes / courses using the bank.</p>
 
-<h4>Assignment Bank Options: General Settings: Twitter Settings</h4>
+<p>If you do want to use categories, you set them up first in the Dashboard under <strong>Things to Do</strong> -&gt; <strong>Thing Categories</strong>. The Bank will recognize only one set of child categories is applied.</p>
+
+<strong>Use Categories for _____</strong> by default is set to no-- they will not be used at all on the site or visible, even if used in the past. The second option will present the categories on the public page when your site visitors create a new thing-- they check the appropriate boxes for categories.</p>
+
+<p>But there might be cases where you want to categorize only on the back end; e.g. do not let users self categorize but do it when you moderate / review things added. This is the second "yes" option.</p>
+
+<p>And if you use Categories but want to call them something else, like <code>Sections</code> enter that in the setting for <strong>Label for Category</strong>. This will be used on the entry forms and any where the categories are displayed.</p>
+
+
+<h2>Bank Options: General Settings: Twitter Settings</h2>
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/twitter-options.jpg" alt="" style="border:3px solid #000;" /><br />
 <strong>Use twitter name on submission forms?</strong> provides an option to include a twitter user name on form submission, and whether to make entry optional or not. When enabled, the twitter names are added to each item as a tag. This allows for tracking of work using twitter name as a marker and enabling of leaderboard options</p>
 
@@ -36,24 +50,24 @@
 
 
 
-<h4>Assignment Bank Options: General Settings: Captcha Settings</h4>
+<h2>Bank Options: General Settings: Captcha Settings</h2>
 
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/captcha-settings.jpg" alt="" style="border:3px solid #000;" /><br />
 Spam is a sad fact of life. Enabling this option will put a <a href="https://www.google.com/recaptcha">Google reCaptcha</a> on all submission forms. You can use one of the four styles of captcha. Public and private keys are needed to use the captcha and <a href="https://www.google.com/recaptcha/admin/create">can be obtained from the Google Recpatcha site</a><p/>
 
-<h4>Assignment Bank Options: General Settings: Media Settings</h4>
+<h2>Bank Options: General Settings: Media Settings</h2>
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/media-settings.jpg" alt="" style="border:3px solid #000;" /><br />
 Set the width and height of thumbnail images on all index (320 x 240px should would for most nearly every purpose), archive screens, and as displayed on a single Thing view.</p>
 
 <p>The <strong>default thumbnail image</strong> is what is used for a Thing if it is not specified via the submission form. The image can be uploaded here to or selected from the Wordpress media library. The image should be at least larger than the default thumbnail width.</p>
 
 
-<h4>Assignment Bank Options: General Settings: Creative Commons Settings</h4>
+<h2>Bank Options: General Settings: Creative Commons Settings</h2>
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/creative-commons-settings.jpg" alt="" style="border:3px solid #000;" /><br />Creative commons licenses can be attached to all Things on the site. Choose <strong>Apply one license to all challenges</strong> to place the same license on all things (a notice will be displayed on the submission form).</p>
 
 <p>Setting the Creative Commons options to <strong>Enable users to choose license when submitting a challenge</strong> will put the menu on the submission form so users can choose a license (or set to All Rights Reserved). At this time, the only way to reduce the number of license options is to edit <code>functions.php</code> in the template directory. Look for the function <code>function cc_license_select_options</code> and comment out the lines containing license options to hide.</p>
 
-<h4>Assignment Bank Options: General Settings: Thing Popularity Ratings</h4>
+<h2>Bank Options: General Settings: Thing Popularity Ratings</h2>
 <p>To enable user popularity ratings of Things, you must install the <a href="http://wordpress.org/plugins/wp-postratings/" target="_blank">WP-PostRatings plugin</a>; when installed, its status will be indicated on the options screen. If the plugin is not installed, all references to popularilty ratings will be hidden</p>
 
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/ratings-options.jpg" alt="" style="border:3px solid #000;" /><br />On the <strong><a href="<?php echo admin_url('admin.php?page=wp-postratings/postratings-options.php')?>">Post Rating Options</a></strong> choose the graphic style for the ratings, any of the options can be used, and you can also choose a value for the maximum setting (the default of 5 works well for stars).</p>
@@ -74,13 +88,22 @@ Set the width and height of thumbnail images on all index (320 x 240px should wo
 
 <p>If you feel the vote of 5 by one person is too high, you might change the values to be ratings_score=2, ratings_users and ratings_average=2 to reduce the rating to 2. Changing votes is your decision!</p>
 
-<h4>Assignment Bank Options: General Settings: Thing Difficulty Ratings</h4>
+<h2>Bank Options: General Settings: Thing Difficulty Ratings</h2>
 <p>An initial difficulty rating is provided by the creator of a Thing, separate from popularity ratings. Check the box to enable this feature and add it to the form for creating new Things.</p>
 
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/challenge-ratings.jpg" alt="" style="border:3px solid #000;" /></p>
 
 
-<h4>Assignment Bank Options: General Settings: Settings for Responses to Things</h4>
+<h2>Bank Options: General Settings: Settings for Responses to / Examples for Things</h2>
+
+<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/display-single-options.jpg" alt="" style="border:3px solid #000;" /><br />
+For some implementations, the display of a thing might not need examples, or tutorials or either listed. This new options allows you to set what is shown. If set to <code>both</code> they are displayed in two columns (default). If either is selected to display, it is shown as a single centered column, a bit wider. And by setting this option to <code>Neither</code> the listings of examples and tutorials is supressed.</p>
+
+<p>Note that if not shown, you can still choose to have a form where either or both are added to the site. </p>
+
+
+
+
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/submit-examples.jpg" alt="" style="border:3px solid #000;" /><br />By checking the first box, this section enables a web form for site visitors to submit their examples and support materials as response to a Thing (the form asks for name, email title, description, and a link). This page is only reached by following a link from a Thing, which passes it two variables to indicate the Thing, and whether it is an Example or a Tutorial.</p>
 
 <p>If the expectation of the site is that users will be linking to their work as stored elsewhere (e.g. blogs or other user maintained site) check the option for <strong>Link to Form Submitted Examples</strong> to be <strong>No, links go to example URL</strong>.</p>
@@ -94,7 +117,7 @@ Set the width and height of thumbnail images on all index (320 x 240px should wo
 <p>Finally, the items added to the right side can be Resources, Tutorials, Extra links- and you can use <strong>Name for Support Things</strong> to define how they are labeled. The submission form for these offer a place for a title, URL, and a short description.</p>
 
 
-<h4>Assignment Bank Options: General Settings: Settings for Syndication of Examples</h4>
+<h2>Bank Options: General Settings: Settings for Syndication of Examples</h2>
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/syndication-for-examples.jpg" alt="" style="border:3px solid #000;" /><br />The last section enables the features to syndicate in examples that users publish on their own blogs. If this feature is not desired, leave the default setting for <strong> No syndication</strong>. Examples are added only via web form (if enabled above) or only via WordPress Admin and you can ignore the rest of the settings.</p>
 
 <p>There are two approaches to syndication, both require the <a href="http://wordpress.org/plugins/feedwordpress/">Feed Wordpress plugin</a> to be installed.</p>
@@ -103,7 +126,7 @@ Set the width and height of thumbnail images on all index (320 x 240px should wo
 
 <p>The second approach is the setup used for ds106; the assignment bank will rely on another site that is managing the direct syndication of user content. The local install of Feed Wordpress is used to "re-syndicate" the content to the bank. In this case, you must specify a <strong>required tag</strong> users should use to indicate a post is in response to something in the bank; the second tag specifies the thing it should be associated with. Finally the name and the URL for the example are used in the instruction text for each Thing.</p>
 
-<h4>Extra Settings for Feed Wordpress</h4>
+<h2>Extra Settings for Feed Wordpress</h2>
 <p>These settings are suggested to enable Feed Wordpress to syndicate external posts in as examples.</p>
 
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fwp-update-scheduling.jpg" alt="" style="border:3px solid #000;" /><br />
@@ -123,8 +146,8 @@ At the bottom of the <a href="<?php echo  admin_url( 'admin.php?page=feedwordpre
 <p>If you have any use to mark all of the syndicated posts, the options at the bottom of this screen allow you to add Wordpress tags or categories to them (e.g. add a "syndicated" tag).</p>
 
 
-<h4>Adding Feeds</h4>
-<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fwp-add-feeds.jpg" alt="" style="float:right; border:3px solid #000;" /><br />At this time, all RSS feeds must be added to your site via the screen for <a href="<?php echo  admin_url( 'admin.php?page=feedwordpress/syndication.php')?>">Feed Wordpress Syndication Sites</a>. The <strong>add multiple</strong> button opens a field where you can enter in a list of sites or feeds.</p>
+<h2>Adding Feeds</h2>
+<p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/fwp-add-feeds.jpg" alt="" style="float:right; border:3px solid #000; margin-left:1em;" /><br />At this time, all RSS feeds must be added to your site via the screen for <a href="<?php echo  admin_url( 'admin.php?page=feedwordpress/syndication.php')?>">Feed Wordpress Syndication Sites</a>. The <strong>add multiple</strong> button opens a field where you can enter in a list of sites or feeds.</p>
 
 <p>For each feed, you will have to confirm or select the correct Feed URL (some sites offer several options of Feed format or the content it finds as an RSS feed</p>.
 
@@ -134,7 +157,7 @@ At the bottom of the <a href="<?php echo  admin_url( 'admin.php?page=feedwordpre
 
 <p>It is recommended to test the feed first to make sure it is pulling in data and the correctly tagged content.</p>
 
-<h4>Assignment Bank Options: Thing Types</h4>
+<h2>Bank Options: Thing Types</h2>
 <p><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/new-thing-types.jpg" alt="" style="border:3px solid #000;" /><br />The second tab of the theme options is where you can create and edit the categories or types of things in your collection. You can add any number of new things by listing them one per line in the <strong>Names for New Types</strong> field at the bottom.</p>
 
 <p>After clicking <strong>Save Changes</strong>, each type will now have its own editing field. They will be listed in the same display order you set in the General Settings.</p>

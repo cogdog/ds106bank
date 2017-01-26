@@ -1,8 +1,14 @@
 /* Style sheet to fully override any other bootstrap CSS, will be called
    last in the chain since bootstrap wants to load themes last. Take that!
-                                                                           */
+                                                                                        */
+/* ---------------------------------= Your STUFF =------------------------------------- 
+    Yes, I'm CSSing to you. This might be a handy spot for any custom CSS you might need
+    I'd make a copy of this 'cause any future updates will wipe it out. I should do it
+    more elegantly, but oh well                                                         */                                                                                                                                                
+                                                                                                                                
+                                                                           
 
-/* ---------------------------= General STUFF =---------------------------- */
+/* --------------------------------= General STUFF =----------------------------------- */
 .more-link {
 	text-align: right;
 }
@@ -13,12 +19,11 @@ p.meta, .post-ratings {
 
 p.attribution {
 	width:100%;
-
 }
 
 
-/* --------------------------= Images Be Responsive =----------------------------- */
-/* h/t http://wordpress.stackexchange.com/a/37768/14945                            */
+/* --------------------------= Images Be Responsive =--------------------------------- */
+/* h/t http://wordpress.stackexchange.com/a/37768/14945                                */
 
 .entry-content img,
 .comment-content img,
@@ -27,11 +32,11 @@ p.attribution {
 }
 img[class*="align"],
 img[class*="wp-image-"] {
-    height: auto; /* Make sure images with WordPress-added height and width >attributes are scaled correctly */
+    height: auto; /* Make sure images with WordPress-added height and width attributes are scaled correctly */
 }
 img.size-full {
     max-width: 97.5%;
-    width: auto; /* Prevent stretching of full-size images with height and >>width attributes in IE8 */
+    width: auto; /* Prevent stretching of full-size images with height and width attributes in IE8 */
 }
 
 .wp-caption { max-width: 100%; }
@@ -44,7 +49,7 @@ p.wp-caption-text {
     border-bottom: 2px dotted rgb(234, 240, 240)
 }
 
-/* ---------------------------= Single Thing =----------------------------- */
+/* --------------------------= Single Thingie =----------------------------- */
 
 
 .thing-icon-single {
@@ -93,7 +98,7 @@ p.wp-caption-text {
 }
 
 
-/* -----------------------= Assignment type index =------------------------- */
+/* -----------------------= Assignment Type Index =------------------------- */
 .thing-archive header, .thing-archive section {
 	padding: 1em;
 }
@@ -150,7 +155,7 @@ article.thing-archive section.post_content p, article.type-assignments #content 
 }
 
 
-/* ----------------------------= Forms =------------------------------------- */
+/* ------------------------------= Forms Be Formed =----------------------------------- */
 
 #bank106form {
 	margin:4em 0;
@@ -182,7 +187,6 @@ article.thing-archive section.post_content p, article.type-assignments #content 
 #bank106form fieldset  {
 	margin: 0 0 20px 0;
 }
-
 
 #commentform textarea {
 	width: 60%;

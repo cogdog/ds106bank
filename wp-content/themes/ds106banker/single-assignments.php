@@ -3,14 +3,21 @@
 	$my_assignment_tag = THINGNAME . $post->ID;
 	$my_tutorial_tag = 'Tutorial' . $post->ID;
 	
-	//options for example/tutorial syndication
+	// display option for exmaples & tutorials
+	$my_show_ex = ( empty( ds106bank_option( 'show_ex' ) ) ) ? 'both' : ds106bank_option( 'show_ex' ) ; 
 	
+	// allow form additions of examples, tutorials
+	$my_use_example_form = ds106bank_option( 'example_via_form' ); 
+	
+	// name for the support materials
+	$helpthing = ds106bank_option('helpthingname'); 
+	
+	//options for example/tutorial syndication
 	$my_fwp_mode = ds106bank_option( 'use_fwp'); // Syndication mode = none, intenal, external
-	$my_use_example_form = ds106bank_option( 'example_via_form' ); // allow form additions of examples, tutorials
 	$my_hub_site = ds106bank_option('syndication_site_name'); // external syndication site
 	$my_hub_url =  ds106bank_option('syndication_site_url'); // external syndication url
 	$my_syndication_tag = ds106bank_option( 'extra_tag' ); // external syndication required tag	
-	$helpthing = ds106bank_option('helpthingname'); // name for the support materials
+	
 	$my_cc_mode = ds106bank_option( 'use_cc' ); // creative commons usage mode
 
 	// store assignment link for later use
@@ -65,7 +72,7 @@
 							?>
 
 							<p>
-							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> <br />
+							
 							
 							<?php // show creator difficulty rating if enabled
 
@@ -74,8 +81,22 @@
 							}
 							?>
 													
-							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', $single = true); ?></strong><br />		
-							<?php the_tags('<span class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ': </span> ', ' ', '</span>'); ?>
+							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', $single = true); ?></strong><br />
+							<!-- Thing types -->
+							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> <br />
+
+							<!-- Thing categories (if allowed) -->
+							<?php  
+							// only display thning categories if option is 1 (user defined) or 2 (admin defined)
+							if ( ds106bank_option('use_thing_cats') ) {
+							
+								$thingcats = get_the_term_list( $post->ID, 'assignmentcats',  ds106bank_option( 'thing_cat_name' ) . ': ', ', ', '' ); 
+								if ($thingcats) echo $thingcats . '<br />'; 
+							}
+							?> 
+							
+							<!-- Thing tags -->
+							<?php $thingtags = the_tags('<span class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ': </span> ', ' ', '</span>'); if ($thingtags) echo $thingtags ?>
 							</p>
 							
 						</div>
@@ -90,58 +111,106 @@
 
 							<?php bank106_twitter_button ( $post->ID, THINGNAME )?>
 						</div>
+						
+						<?php if ( get_post_meta($post->ID, 'fwp_url', $single = true) ): // only if we have example ?> 
 						<div class="col-sm-4" id="examplemedia">
 							<?php echo get_example_media($my_id)?>
 						</div>
+						<?php endif?>
+						
 				</div>
 					
 				</article> <!-- end article -->
-
-				<div  class="clearfix row hilite">
-						<div class="clearfix col-sm-5">
-						<h3>Complete This <?php echo THINGNAME?></h3>
-						<p>After you do this <?php echo lcfirst(THINGNAME)?>, please share it so it can appear with other responses below. 
+				
+				<?php if ( $my_show_ex != 'none'): // show at least examples and/or tutorials ?>
+								
+					<div class="clearfix row hilite">
+				
+						<?php 
+							if ( $my_show_ex == 'both') {
+								// 2 columns
+								 echo '<div class="clearfix col-sm-5">';
+							} else {
+								// just 1
+								echo '<div class="clearfix col-sm-8 col-sm-offset-2">';
+							}	
+						?>
+					
+						<?php if ( $my_show_ex != 'tut' ) :?>
+						
+							<h3>Complete This <?php echo THINGNAME?></h3>
+							<p>After you do this <?php echo lcfirst(THINGNAME)?>, please share it so it can appear with other responses below. 
 												
-						<?php if ( $my_fwp_mode == 'internal' ):?>
-						If you are writing to a blog connected to this site just use the tag <strong><?php echo $my_assignment_tag;?></strong> when writing a post on your own blog. Then your response will be added to the list below. <br /><br />Or if 
+							<?php if ( $my_fwp_mode == 'internal' ):?>
+							If you are writing to a blog connected to this site just use a tag or category <strong><?php echo $my_assignment_tag;?></strong> when writing a post on your own blog. Then your response will be added to the list below. <br /><br />Or if 
 						
-						<?php elseif ( $my_fwp_mode == 'external' ):?>
-						If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags when writing a post on your own blog. (You must use BOTH tags!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_assignment_tag;?></strong> Then your response will be added to the list below. <br /><br />Or if 
+							<?php elseif ( $my_fwp_mode == 'external' ):?>
+							If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags/categories when writing a post on your own blog. (You must use BOTH!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_assignment_tag;?></strong> Then your response will be added to the list below. <br /><br />Or if 
 						
-						<?php else:?>
-						If 
-						<?php endif?>
+							<?php else:?>
+							If 
+							<?php endif?>
 						
-						<?php if ( $my_use_example_form):?>
-						your response exists at a public viewable URL, you can add the information directly to this site<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear pending moderator approval)'?>.</p><p class="text-center"><a href="<?php echo site_url(); ?>/<?php echo ds106bank_option( 'example_form_page' )?>/?aid=<?php echo $my_id?>&typ=ex" class="btn btn-primary btn"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add A Response</a>
-						<?php endif?>
-			
-						</p>
+							<?php if ( $my_use_example_form):?>
+							your response exists at a public viewable URL, you can add the information directly to this site<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear pending moderator approval)'?>.</p><p class="text-center"><a href="<?php echo site_url(); ?>/?page_id=<?php echo bank106_get_page_id_by_slug( ds106bank_option( 'example_form_page' ) )?>&aid=<?php echo $my_id?>&typ=ex" class="btn btn-primary btn"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add A Response</a>
+							<?php endif?>
+	
+		
+							</p>
+						
 						</div>
+						<?php endif // my_show_ex != 'tut' ?>
 						
-						<div  class="col-sm-5  col-sm-offset-1">
+						<?php
+					
+						if ( $my_show_ex == 'both' ) {
+							// 2 columns, we need another div, otherwise we already have it
+							 echo '<div class="col-sm-5  col-sm-offset-1">';
+						}
+						?>
+					
+						
+						<?php if ( $my_show_ex != 'ex' ) : ?>	
+					
 							<h3><?php echo $helpthing?>s for this <?php echo THINGNAME?></h3>
 								<p>Have you created something or know of an external resource that might help others complete this <?php echo lcfirst(THINGNAME)?>? 
-												
+											
 								<?php if ( $my_fwp_mode == 'internal' ):?>
-								If you are writing to a blog connected to this site just use the tag <strong><?php echo $my_tutorial_tag;?></strong> when writing a post on your own blog. Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
-						
+								If you are writing to a blog connected to this site just use a tag or category <strong><?php echo $my_tutorial_tag;?></strong> when writing a post on your own blog. Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
+					
 								<?php elseif ( $my_fwp_mode == 'external' ):?>
-								If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags when writing a post on your own blog. (You must use BOTH tags!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_tutorial_tag;?></strong> Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
-						
+								If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags/categories when writing a post on your own blog. (You must use BOTH!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_tutorial_tag;?></strong> Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
+					
 								<?php else:?>
 								If 
 								<?php endif?>
-						
-								<?php if ( $my_use_example_form):?>
-								the <?php echo strtolower($helpthing)?> is available at a public URL please share it<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear below pending moderator approval)'?>.</p><p class="text-center"><a href="<?php echo site_url(); ?>/<?php echo ds106bank_option( 'example_form_page' )?>/?aid=<?php echo $my_id?>&typ=tut" class="btn btn-primary btn"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add a <?php echo $helpthing?></a>
-								<?php endif?>
-								</p>
-						</div>
-					</div>
 					
-					<div id="content4" class="clearfix row">	
-						<div class="col-sm-5">
+								<?php if ( $my_use_example_form):?>
+								the <?php echo strtolower($helpthing)?> is available at a public URL please share it<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear below pending moderator approval)'?>.</p><p class="text-center"><a href="<?php echo site_url(); ?>/?page_id=<?php echo bank106_get_page_id_by_slug( ds106bank_option( 'example_form_page' ) )?>&aid=<?php echo $my_id?>&typ=tut" class="btn btn-primary btn"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add a <?php echo $helpthing?></a> 
+								
+								<?php endif?>
+								
+								
+								</p>
+							</div>							
+						<?php endif // my_show_ex != 'ex' ?>
+					</div> <!-- end row -->
+				
+					
+					<div class="clearfix row">	
+						
+						<?php 
+							if ( $my_show_ex == 'both') {
+								// 2 columns
+								 echo '<div class="clearfix col-sm-5">';
+							} else {
+								// just 1
+								echo '<div class="clearfix col-sm-8 col-sm-offset-2">';
+							}	
+						?>
+					
+						<?php if ( $my_show_ex != 'tut' ) :?>
+			
 							<?php
 							// find all examples done for this assignment
 							$examples_done_query = new WP_Query( 
@@ -149,20 +218,16 @@
 									'posts_per_page' =>'-1', 
 									'post_type' => 'examples',
 									'assignmenttags'=> $my_assignment_tag, 
-								
 								)
 							);
 						
 							$example_count = $examples_done_query->post_count;
 							$plural = ( $example_count == 1) ? '' : 's';
-						
 							?>
 		
 							<h3><?php echo $example_count?> Response<?php echo $plural?> Completed for this <?php echo THINGNAME?></h3>
-							<ol>
+							<ul>
 							<?php 
-	
-			
 							while ( $examples_done_query->have_posts() ) : $examples_done_query->the_post();
 									
 								// get link
@@ -173,18 +238,26 @@
 								} 
 							
 								?>
-							<li><a href="<?php echo $the_real_permalink ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a> (<?php echo get_post_meta( $post->ID, 'syndication_source', true ) . bank106_twitter_credit_link( $post->ID, ', ', '', 'exampletags' ) ?>)<br />
-							<?php the_excerpt(); ?></li>
+								<li><a href="<?php echo $the_real_permalink ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a> (<?php echo get_post_meta( $post->ID, 'syndication_source', true ) . bank106_twitter_credit_link( $post->ID, ', ', '', 'exampletags' ) ?>)<br />
+								<?php the_excerpt(); ?></li>
 						
 							<?php endwhile; ?>
+							</ul>
 						
-							</ol>
-						</div>
+						</div>	
+						<?php endif // my_show_ex != 'tut' ?>
 						
-						<div class="col-sm-5  col-sm-offset-1">
+						<?php
 					
-
+						if ( $my_show_ex == 'both') {
+							// 2 columns
+							 echo '<div  class="col-sm-5  col-sm-offset-1">';
+						} 
+						?>
 					
+						
+						<?php if ( $my_show_ex != 'ex' ) : ?>	
+								
 						<?php 
 						// now get all tutorials done for this assignment
 	
@@ -199,11 +272,10 @@
 							$plural = ( $tutorial_count == 1) ? '' : 's';
 						?>
 					
-					
 							<h3><?php echo $tutorial_count . ' ' . $helpthing . $plural?> for this <?php echo THINGNAME?></h3>	
-							<ol>
+							<ul>
+							
 							<?php 
-
 							while ( $tutorials_done_query->have_posts() ) : $tutorials_done_query->the_post();
 									
 								// get link
@@ -212,38 +284,44 @@
 								} else {
 								   $the_real_permalink = get_permalink( $post->ID );
 								} ?>
-							<li><a href="<?php echo $the_real_permalink ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a> (<?php echo get_post_meta( $post->ID, 'syndication_source', true ) . bank106_twitter_credit_link( $post->ID, ', ', '', 'exampletags' ) ?>)<br />
-							<?php the_excerpt(); ?></li>
+								<li><a href="<?php echo $the_real_permalink ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a> (<?php echo get_post_meta( $post->ID, 'syndication_source', true ) . bank106_twitter_credit_link( $post->ID, ', ', '', 'exampletags' ) ?>)<br />
+								<?php the_excerpt(); ?></li>
 						
 							<?php endwhile; ?>
 						
-							</ol>
-							 <?php wp_reset_query(); ?>
-						</div>
-						<div class="col-sm-12 hilite clearfix">
-							<p class="meta" style="text-align:center; padding:1em;">
-							<?php 
-								// display creative commons?
+							</ul>
+						</div>							
+						<?php endif // my_show_ex != 'ex' ?>
+					</div> <!-- end row -->							
 						
-								if ( $my_cc_mode != 'none' ) {
-							
-								// get the license code, either define for site or post meta for user assigned						
-								$cc_code = ( $my_cc_mode == 'site') ? ds106bank_option( 'cc_site' ) : get_post_meta($post->ID, 'cc', true);
-								echo cc_license_html($cc_code, $assignmentAuthor, get_the_time( "Y", $my_id ));
-							}
-							?>						
-						
-							</p>
-						</div>
+					<?php wp_reset_query(); ?>
 					
+						
+				<?php endif // my_show_ex != 'none' ?>	
+								
+					
+				<div class="col-sm-12 hilite clearfix">
+					<p class="meta" style="text-align:center; padding:1em;">
+					<?php 
+						// display creative commons?
+						if ( $my_cc_mode != 'none' ) {
+							// get the license code, either define for site or post meta for user assigned						
+							$cc_code = ( $my_cc_mode == 'site') ? ds106bank_option( 'cc_site' ) : get_post_meta($post->ID, 'cc', true);
+							echo cc_license_html($cc_code, $assignmentAuthor, get_the_time( "Y", $my_id ));
+						}
+					?>						
+					</p>
+				</div>
+					
+
+					
+					
+				<div id="content" class="row">
+					<div class="col-sm-8 ">
+				<!-- comments -->	
+					<?php comments_template('',true); ?>
+				
 					</div>
-					
-					<div id="content" class="row">
-						<div class="col-sm-8 ">
-					<!-- comments -->	
-						<?php comments_template('',true); ?>
-					
-						</div>
 					
 					<?php endwhile; ?>	
 					
@@ -265,8 +343,8 @@
 					    <footer>
 					    </footer>
 					</article>
-					</div>
-					<?php endif; ?>			
+				</div>
+				<?php endif; ?>			
 			
 	</div> <!-- end #main -->
 </div> <!-- end #content -->

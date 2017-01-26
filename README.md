@@ -1,28 +1,33 @@
 # ds106 Assignment Bank Wordpress Theme
-by Alan Levine http://cog.dog/ or http://cogdogblog.com/
 
-Got a question? Suggestion? Problem? Please (send them my way via  GutHub Issues)[https://github.com/cogdog/ds106bank/issues]
+The DS106 Assignment Bank Theme is a Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/). With it you can build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  
 
-## What is this?
-This Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/), to build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  You can find a live demo of silly examples running at http://bank.ds106.us/
+Got a question? Suggestion? Feature Requests? Problem? A surplus of money? Please send them my way via [GitHub Issues](https://github.com/cogdog/ds106bank/issues) or directly to cogdogblog@gmail.com
 
-Other known instances (with real content) include:
+## What Can You Build With This?
+This Wordpress Theme is modeled after the original [DS106 Open Assignment Bank](http://assignments.ds106.us/) developed for the open digital storytelling course [DS106](http://ds106.us).
 
-* [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
-* [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
-* [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
-* [The Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
-* [The Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
+Other known instances of banks include:
+
 * [All The Toys](http://www.allthetoys.org/)
+* [Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
+* [Foodworks Assignment Bank](http://foodworks.middcreate.net/assignments/) Middlebury College
 * [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
 * [Instructional Technology Assignments](http://tcoffman.org/INDT/) INDT501 at University of Mary Washington
+* [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
+* [OER's for Transitional Learning](http://ctl.openlcc.net/oer/) Lansing Community College
+* [Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
+* [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
+* [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
 
-Hey, if you know more...  let me know-- or better yet, DIY; please fork this in GitHub, add your example, and submit a pull request.
+Hey, if you know more...  let me know-- or better yet, DIY; please fork this in GitHub, add your example, and submit a pull request. That's how this git thing gets things!
 
-For more details behind how this thing came to be see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
+For more details behind how this theme came to be see [related posts on CogDogBlog](http://cogdogblog.com/tag/106bank/).
 
 ## What's New?
 
+* Sep 29, 2016: Added a category-like taxonomy for things, another way to organize them. The primary "bins" are the "types" that appear on the main menu. But now you can also use categories to organize things across these bins. Because I was using the Wordpress Category taxonomy for responses, I had to create a new one, with an archive template. Through the options panel, you can choose to not use the categories; to allow site users to select categories when they create Things; or to leave that as an option for site moderators to do. You can also assign it a different label than "Category" when displayed on the site.
+* Jul 16, 2016: Finally revamped the Options interface to overcome a bug in the broken tabbed display of sections. All settings are now on one long scrolling tab, a second one is used for documentation. Also added a new feature by request of Jim Luke for options to suppress the section of tutorials and/or examples on the single Thing display 
 * May 3, 2016: New theme option to allow for archive views of assignments to use the embed-able media of it's example as an icon (e.g. YouTube video) rather than the thumbnail.
 * May 30, 2015: Major updates for UDG Agora project- vastly improved submission forms with previews, options to track users by twitter handle, improved single layout, leaderboard.
 
@@ -51,6 +56,10 @@ The site options allow people to submit their examples created in response to a 
 
 You can allows site visitors to add their own challenges via a web form, this is [what made the DS106 assignment bank valuable](http://assignments.ds106.us/submit-an-assignment/).
 
+**Note: You should always, always create your "things" via this form, even if you do not allow the public to do so.** The form adds a number of post custom field values necessary to make everything work. You can always modify these later, in the editor (making sure you make Custom Fields visible via screen options).
+
+The one field that you may need to edit is the URL for the example of the assignment, stored as custom field named `fwp_url`. If you prefer not to display any example, simply leave the value blank.
+
 ![](images/add-thing.jpg "Form to add a new thing")
 
 Besides descriptive information, a visitor can associate a new thing with one or more types, and can also add free form tags to better describe it.  If the ratings capability is enabled, they can assign a first seed value for the rating.
@@ -66,34 +75,64 @@ A self hosted Wordpress hosted site (in other words "you cannot use this on Word
 
 
 ## Installing and Configuring the Theme
-(see headings below with the same number for more detail, there's a boat load of detail...)
+*(see headings below for more detail, there's a boatload of detail...)*
 
-1. Upload the **ds106banker** and the **wp-bootstrap** directories (from wp-content/ on this distro) to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links. You will have to create a zip file for each theme folder. *If you upload the .zip that you downloaded from github, failure will rain all over your soul.*
-2. Activate the **ds106banker** theme.
-3. Install WP-Ratings and/or Feed Wordpress plugins according to the way you plan to use the theme.
-4. Create holding pages for the Main Index, the form to add examples, and a form for creating new "things" (see below). Be sure to choose the appropriate Theme Template to create the functionality for each.
+Note: Do not upload the zip for this GitHub repo to install the themes. It won't work!
+
+1. Upload the **ds106banker** and the **wp-bootstrap** directories (from wp-content/ on this distro) to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links.  A zip of both themes is included with this repo, or you can download directly [installable-ds106banker.zip](https://github.com/cogdog/ds106bank/blob/master/installable-ds106banker.zip) and  [installable-wp-bootstrap.zip](https://github.com/cogdog/ds106bank/blob/master/installable-wp-bootstrap.zip) 
+
+2. Activate the **ds106banker** theme (you do not have to activate the wp-bootstrap theme)
+3. Install WP-PostRatings and/or Feed Wordpress plugins according to the way you plan to use the theme (see below).
+4. Create /modify as needed pages for the Main Index, the page with a form to add examples, and a form for creating new "things" (see below).  The theme *should* create these for you, but if not you can create them and set the appropriate template as described below.
 5. Set the theme options (detailed in length below). Find the **Assignment Bank Options** listed both under the **Appearance** settings in the Wordpress Dashboard, or via the admin nav bar.
 6. Customize the site menus. The theme provides a few shortcodes you can use on any page or sidebar.
-7. Other Suggested plugins
+7. See other suggested plugins
 8. Create some stuff
 
-### Setting up WP-Ratings for Popularity Ratings
-Install the [WP-Ratings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing popularity rating feature. Not installing the plugin (or de-activating it) removes the feature from the site. the purpose here is to allow visitors to rate Things, and provide sorting of things based on said ratings.
+
+------
+
+### Setting up WP-PostRatings for Popularity Ratings
+Install the [WP-PostRatings plugin](http://wordpress.org/plugins/wp-postratings/) to activate the user thing popularity rating feature. Not installing the plugin (or de-activating it) removes the feature from the site. the purpose here is to allow visitors to rate Things, and provide sorting of things based on said ratings.
 
 A few settings for the plugin are necessary.
 
  ![](wp-content/themes/ds106banker/images/ratings-options.jpg)
 
-On the **Post Rating Options** choose the graphic style for the ratings- the suggestion is one of the stars settings with a max ratings of 5 but any setting is viable. 
+On the **Post Rating Options** choose the graphic style for the ratings- the suggestion is one of the stars settings with a max ratings of 5 but any setting is viable. The suggested set up mode is to use the ratings as a measure of popularity, so the default `1 Star`, `2 Stars`, etc can be used. On the other hand, the original DS106 Assignment Bank was a crowd sourced measured of difficulty, so the labels could be customized as follows
 
 ![](wp-content/themes/ds106banker/images/ratings-text-value.jpg)
 
 Create any labels for your scale (these are used on the form to submit new Things). Set the "Allow to Rate" option to **Registered Users and Guests** to allow any site visitor to cast a vote.
 
-Set the **Post Ratings Templates**  to customize the text displayed to show the ratings- the first two templates are used. **Ratings Vote Text:** designates how the ratings are show; **Ratings Voted Text:** is shown as feedback and adds an indicated if a visitor has already voted.
+Set the **Post Ratings Templates**  to customize the text displayed to show the ratings- the first two templates are used. **Ratings Vote Text:** designates how the ratings are shows; **Ratings Voted Text:** is shown as feedback and adds an indicated if a visitor has already voted; **Ratings None:** is shown for an item that has not been rated yet.
 
-![](wp-content/themes/ds106banker/images/ratings-custom-fields.jpg)
-Data for ratings are stored in three custom fields on all Things; they can be edited to adjust any rating if you can sort out the arithmetic:
+These templates are generally not used by Bank sites but certainly could be used: **Ratings No Permission Text:**, **Highest Rated:**, and **Most Rated:**
+
+
+For a setup as a popularity voting, the **Ratings Vote Text** template might be:
+
+```
+Popularity: %RATINGS_IMAGES_VOTE% (**%RATINGS_USERS%** votes, average:
+**%RATINGS_AVERAGE%** out of **%RATINGS_MAX%**)
+<br />%RATINGS_TEXT%
+```
+
+For **Ratings Voted Text**:
+
+```
+Popularity: %RATINGS_IMAGES% (<em>**%RATINGS_USERS%** votes, average:
+**%RATINGS_AVERAGE%** out of **%RATINGS_MAX%**; 
+you have rated this</em>)
+```
+
+Finally, for **Ratings None**:
+
+```
+Popularity:  %RATINGS_IMAGES_VOTE% (No Ratings Yet)<br />%RATINGS_TEXT%
+```
+
+FYI the data for ratings are stored in three custom fields on all Things; they can be edited to adjust any rating if you can sort out the arithmetic:
 
 * **ratings_score** is the total cumulative votes submitted (in the above example, 7)
 * **ratings_users** is the number of people who voted (in the above example, 2)
@@ -106,7 +145,6 @@ If you feel the vote of 5 by one person is too high, you might change the values
 ![](wp-content/themes/ds106banker/images/challenge-ratings.jpg)
 
 Enable this option to allow creators of new things to define their own rating of difficulty; this is completely separate from user popularity rating
-
 
 
 ### Setting Up Feed Wordpress
@@ -147,6 +185,10 @@ If the pages are *not* created for you on theme activation...
 
 ![](images/add-thing.jpg "Form to add a new thing")
 
+**To repeat: You should always, always create your "things" via this form, even if you do not allow the public to do so.** The form adds a number of post custom field values necessary to make everything work. You can always modify these later, in the editor (making sure you make Custom Fields visible via screen options).
+
+The one field that you may need to edit is the URL for the example of the assignment, stored as custom field named `fwp_url`. If you prefer not to display any example, simply leave the value blank.
+
 3. Create a new page to **Submit Examples**. This form is used to allow visitors to add examples or tutorial for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Example/Tutorial Form**
 
 ![](images/add-example.jpg "Form to add a new example")
@@ -169,6 +211,21 @@ If you  allow users to submit new things to the site, you can set the **default 
 The **display order** controls how the types of things are sequenced on the main index; by title, order created, or by the number of things in each type. This order can be switched direction via the **display order sorting**.
 
 The **excerpt length** is used to set the word length of short descriptions of examples and things on index pages (the Wordpress default is 55 words).
+
+#### Bank Options: General Settings: Thing Categories
+
+![](wp-content/themes/ds106banker/images/categories-for-things.jpg)
+
+For other ways to organize your Things across types you can enable the use of categories. For example, in a Bank of Assignments where they are organized by Types of Media (e.g. the original ds106 Assignment Bank), you could create a categorization based on different classes / courses using the bank.
+
+If you do want to use categories, you set them up first in the Dashboard under **Things to Do** -&gt; **Thing Categories**. The Bank will recognize only one set of child categories is applied.
+
+**Use Categories for _____** by default is set to no-- they will not be used at all on the site or visible, even if used in the past. The second option will present the categories on the public page when your site visitors create a new thing-- they check the appropriate boxes for categories.
+
+But there might be cases where you want to categorize only on the back end; e.g. do not let users self categorize but do it when you moderate / review things added. This is the second "yes" option.
+
+And if you use Categories but want to call them something else, like `Sections` enter that in the setting for **Label for Category**. This will be used on the entry forms and any where the categories are displayed.
+
 
 #### Assignment Bank Options: General Settings: Twitter Settings
 
@@ -205,7 +262,15 @@ Creative commons licenses can be attached to all things on the site. Choose **Ap
 Setting the Creative Commons options to **Enable users to choose license when submitting a challenge** will put the menu on the submission form so users can choose a license (or set to All Rights Reserved). At this time, the only way to reduce the number of license options is to edit `functions.php` in the template directory. Look for the function `function cc_license_select_options` and comment out the lines containing license options to hide.
 
 
-#### Assignment Bank Options: General Settings: Settings for Responses to Things
+#### Assignment Bank Options: General Settings: Settings for Responses to / Tutorials for Things
+
+![](wp-content/themes/ds106banker/images/display-single-options.jpg)
+
+For some implementations, the display of a thing might not need examples, or tutorials or either listed. This new options allows you to set what is shown. If set to `both` they are displayed in two columns (default). If either is selected to display, it is shown as a single centered column, a bit wider. And by setting this option to `Neither` the listings of examples and tutorials is supressed.
+
+Note that if not shown, you can still choose to have a form where either or both are added to the site.
+
+
 ![](wp-content/themes/ds106banker/images/submit-examples.jpg)
 
 By checking the first box, this section enables a web form for site visitors to submit their examples and support materials as response to a Thing (the form asks for name, email title, description, and a link). This page is only reached by following a link from a Thing, which passes it two variables to indicate the Thing, and whether it is an Example or a Tutorial.
@@ -252,7 +317,7 @@ It is recommended to test the feed first to make sure it is pulling in data and 
 #### Assignment Bank Options: Thing Types
 ![](wp-content/themes/ds106banker/images/new-thing-types.jpg)
 
-The second tab of the theme options is where you can create and edit the categories or types of things in your collection. You can add any number of new things by listing them one per line in the **Names for new types** field.
+At the bottom of the theme options is where you can create and edit the categories or types of things in your collection. You can add any number of new things by listing them one per line in the **Names for new types** field.
 
 After clicking **Save Changes**, each type will now have its own editing field. They will be listed in the same display order you set in the General Settings.
 
@@ -265,8 +330,10 @@ Checking a type for deletion will remove it permanently upon saving.
 
 ----------
 
-### (6) Creating Menus
-The structure of the sites navigation is left to the owner; use the built in Wordpress menu editor to activate a top menu *the footer menu seems to not be formatted in the parent theme, and has been removed from the assignment bank footer.php template).
+## Other Wordpress Stuff to Do
+
+### Creating Menus
+The structure of the sites navigation is left to the owner; use the built in Wordpress menu editor to activate a top menu the footer menu seems to not be formatted in the parent theme, and has been removed from the assignment bank footer.php template). Be sure to open the *Screen Options* so you can and more kinds of items to menus (like Thing Types, Thing Categories).
 
 This means you can create any structure you like, including archives for the types of things. Below is the structure of the demo site:
 
@@ -278,8 +345,10 @@ A few special URLs are available, for say a site set up on `/bank.yourdomain.org
 * `http://bank.yourdomain.org/assignments/?srt=random` a random thing
 * `http://bank.yourdomain.org/examples` an archive of all examples added to the site
 
+### Thing Categories
+Under *Things to Do* you can add a category taxonomy that work like regular blog posts (*Thing Categories*); this allows another way to organize the things in your bank. If you do not create any categories, they will never be seen. But once you add a few, the will show up as selectable items on the Thing creation form.
 
-### (6) Shortcodes
+### Shortcodes
 These shortcodes can be used in an page, post, widget
 
 `[thingcount]` generates a count of all "things" in the bank such as **34 challenges**
@@ -289,7 +358,7 @@ These shortcodes can be used in an page, post, widget
 `[feedroll]`  If Feed Wordpress is installed, this shortcode generates a list of all subscribed blogs, useful as a sidebar widget. If feeds have different tags to segment them, a specific list can be produced by `[feedroll tag="section5"]`
 
 #### Leaderboard Shortcodes
-These codes can be used in posts or widgets to list the most active participants if the option is enabled to track submissions by twitter name
+These codes can be used in posts or widgets to list the most active participants (if the option is enabled to track submissions by twitter name)
 
 List all respondents in order of most active to least
 
@@ -306,13 +375,13 @@ List the top 10 respondents and exclude the ones identified in the hashtag taxon
 List all the twitter names that have contributed new Things via the submission form 
 
 	[bankleaders type="contributors"]
+	
+###  Customizing CSS
+Most of the theme's design is managed by the parent WP-Bootstrap theme. You do know to never edit that, right?
 
+Because of the way styles are loaded, the typical child theme for the Assignment Bank [style.css](ds106banker/style.css) is blank except for the information needed to establish the relationship to the parent theme. 
 
-
-### (6) Customizing CSS
-Most of the theme's design is managed by the parent WP-Bootstrap theme. You do not to never edit that, right?
-
-Because of the way styles are loaded, the typical child theme for the Assignment Bank [style.css](ds106banker/style.css) is blank except for the information needed to establish the relationship to the parent theme. Any custom style over-rides should be added to [style.css](ds106banker/ds106bank.css)
+Any custom style over-rides should be added to [style.css](ds106banker/ds106bank.css). If you add additional styles, make a back up copy as updates to this theme will override your edits.
 
 ### Other Suggested plugins
 The following plugins are installed on the [demo site](http://bank.ds106.us/) to create useful sidebar/footer Widgets
@@ -330,6 +399,26 @@ The following plugins are installed on the [demo site](http://bank.ds106.us/) to
 ```
 <input type="hidden" name="post_type" value="assignments" />
 ```
+
+-----
+
+### Licensely Yours
+
+    This theme is Copyright (C) 2014 Alan Levine http://cog.dog/ http://cogdogblog.com/
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 
 

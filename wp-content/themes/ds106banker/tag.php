@@ -19,9 +19,22 @@
 						}
 						?>
 						
-						
 						</h1>
-						<p><strong><?php echo $wp_query->found_posts?></strong> total <?php echo lcfirst(THINGNAME)?>s found</p>
+					<?php	
+					// count of items found
+					$found_things = $wp_query->found_posts;				
+					// Because grammar
+					if ( $found_things == 1 ) {
+						$plural = '';
+						$verb = "is";
+					} else {
+						$plural = 's';
+						$verb = "are";
+					}
+					?>
+
+						<p><p>There <?php echo $verb?> <strong><?php echo $found_things;?></strong>  <?php echo  THINGNAME . $plural?> with this tag.
+						
 					</div>
 
 				</div> <!-- end #main -->
@@ -35,11 +48,6 @@
 							
 							
 							<?php
-							// get the terms for the assignment type taxonomy
-							$assignmenttype_terms = wp_get_object_terms($post->ID, 'assignmenttypes');
-
-							// we expext only 1 assignment type
-							$my_assignment_type = $assignmenttype_terms[0];
 
 							$startrow = !$startrow;
 							

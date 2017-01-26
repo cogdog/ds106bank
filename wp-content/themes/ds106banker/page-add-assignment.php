@@ -24,6 +24,9 @@ $use_twitter_name = ds106bank_option( 'use_twitter_name' );
 // use evil captchas?
 $use_captcha = ds106bank_option('use_captcha');
 
+// use thing categories (=1 to use on this form)
+$use_thing_cats = ds106bank_option('use_thing_cats');
+
 // ----- set defaults ---------------------
 // set af default rating values
 $assignmentRating = 3;    	// default public rating
@@ -35,6 +38,19 @@ $errors = array(); 			// holder for bad form entry warnings
 $feedback_msg = '<div class="alert alert-info" role="alert">Here is where you create a new ' . lcfirst(THINGNAME) . ' for this site.<br /><br />Enter all required information in the form below and <a href="#" class="btn btn-primary btn-xs disabled">update</a> the information to first verify that is entered correctly. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to finalize the entry. Once you are satisfied, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form for the final time and it will be saved to this site.</div>';
 $previewBtnState = ' disabled';
 $submitBtnState = ' disabled';
+
+
+if ($use_thing_cats == 1) {
+	// ony if we are using  taxonomy terms (categories for asignments)
+	$assignmentTaxTerms = get_terms( array(
+		'taxonomy' => 'assignmentcats',
+		'hide_empty' => false,
+	) );
+
+	// now let's sort them if there is a heirarchy, a litle bit of judo...
+	$assignmentCats = array();
+	bank106_sort_terms_hierarchicaly( $assignmentTaxTerms, $assignmentCats );
+}
 
 // a little mojo to get current page ID so we can build a link back here
 $post = $wp_query->post;
@@ -66,6 +82,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		$submitterEmail = 			sanitize_email( $_POST['submitterEmail'] ); 
  		$assignmentDescription = 	$_POST['assignmentDescription'];
  		$assignmentType = 			$_POST['assignmentType'];
+ 		$assignmentCategories = 	$_POST['assignmentCategories'];
  		$assignmentRating = 		$_POST['assignmentRating'];	
  		$assignmentDifficulty = 	$_POST['assignmentDifficulty'];		
  		$assignmentURL = 			esc_url( trim($_POST['assignmentURL']), array('http', 'https') ); 
@@ -95,11 +112,11 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  			$errors['submitterEmail'] = '<span class="label label-danger">Invalid Email Address</span>- "' . $submitterEmail . '" is not a valid email address, please try again.';
  		}
 
- 		if ( $use_twitter_name ) {
+ 		if ( $use_twitter_name) {
  			if ( $submitterTwitter == '' and  $use_twitter_name == 2) {
  				$errors['submitterTwitter'] = '<span class="label label-danger">Twitter Name Missing</span> - please enter your twitter user name, it is required.';
- 			} elseif ( substr( $submitterTwitter, 0, 1 ) != '@')  {
- 				$errors['submitterTwitter'] = '<span class="label label-danger">@ Missing in Twitter Name</span>- a twitter username must begin with "@", it was added to your entry, but please review';
+ 			} elseif ( strlen($submitterTwitter) > 2 AND substr( $submitterTwitter, 0, 1 ) != '@')  {
+ 				$errors['submitterTwitter'] = '<span class="label label-danger">@ Missing in Twitter Name</span>- a twitter username must begin with "@", it was added to your entry, but please review' . $submitterTwitter;
  				$submitterTwitter = '@' . $submitterTwitter;
  			}	
  		}
@@ -187,8 +204,11 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					// give twitter credit if used
 					if ( $submitterTwitter ) update_post_meta( $post_id, 'submitter_twitter', esc_attr( $submitterTwitter ) );
 				
-					// set the term for the type of assignment
+					// set the term for the type of thing
 					wp_set_object_terms( $post_id, $assignmentType, 'assignmenttypes');
+					
+					// set the taxonomy terms for categories for the type of thing (if we are using cats)
+					if ( $use_thing_cats ) wp_set_object_terms( $post_id, $assignmentCategories, 'assignmentcats');
 				
 					// update the new tags
 					update_assignment_tags( $post_id );
@@ -316,8 +336,6 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					<div class="form-group<?php if (array_key_exists("assignmentType",$errors)) echo ' has-error ';?>">
 						<label for="assignmentType"><?php _e( 'Type of ' . THINGNAME , 'wpbootstrap' ) ?></label>
 						<span id="assignmentTypeHelpBlock" class="help-block">Choose at least one.</span>
-				
-					
 					
 						<?php 
 							// build options based on assignment types
@@ -331,6 +349,34 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 							}					
 							?>	
 					</div>
+ 
+ 					<?php if ( $use_thing_cats == 1 ): // offer only if categories in use and set for users to select ?>
+ 					
+ 					<!-- hack of a way to send the category label to jQuery for the preview -->
+ 					<div class="form-group" id="thing_cat_hole" data-catlabel="<?php echo ds106bank_option( 'thing_cat_name' ) ?>">
+ 					
+ 					<label for="assignmentCategories"><?php _e( THINGNAME . ' ' . ds106bank_option( 'thing_cat_name' ) , 'wpbootstrap' ) ?></label>
+ 					<span id="assignmentCategoriesHelpBlock" class="help-block">Choose any/all that apply.</span>
+ 					 					
+ 					<?php  
+ 					// let's walk the categories and output checkboxes for each
+ 					foreach ($assignmentCats as $theCat) {
+ 								$checked = ( is_array($assignmentCategories) and in_array( $theCat->slug, $assignmentCategories ) ) ? 'checked="checked"' : ''; 
+									echo '<div class="checkbox"><label for="' . $theCat->slug . '"><input type="checkbox" name="assignmentCategories[]" id="' . $theCat->slug . '" value="' . $theCat->slug . '" ' . $checked .'> ' . $theCat->name . '</label></div>';
+									
+						// are there children? If so walk them and do the same.			
+						if ( is_array( $theCat->children ) ) {
+							foreach ($theCat->children as $subCat) {
+								$checked = ( is_array($assignmentCategories) and in_array( $subCat->slug, $assignmentCategories ) ) ? 'checked="checked"' : ''; 
+								echo '<div class="checkbox" style="margin-left:1em;"><label for="' . $subCat->slug . '"><input type="checkbox" name="assignmentCategories[]" id="' . $subCat->slug .'" value="' . $subCat->slug . '" ' . $checked .'> ' . $subCat->name . '</label></div>';
+							}
+						}
+					}
+					?>
+							
+ 					</div>
+ 					
+ 					<?php endif; // for cats in use. Meow.?>
  
 					<div class="form-group<?php if (array_key_exists("assignmentTags",$errors)) echo ' has-error ';?>">
 						<label for="assignmentTags"><?php _e( 'Tags that describe this ' . THINGNAME . ' (optional)', 'wpbootstrap' ) ?></label>
