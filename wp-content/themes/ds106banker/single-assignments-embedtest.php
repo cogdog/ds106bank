@@ -51,6 +51,8 @@
 							
 							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title();?></h1>
 
+							
+							
 							<?php 
 							
 							// look for author name in Feedwordpress meta data
@@ -70,7 +72,7 @@
 							?>
 
 							<p>
-							
+							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> <br />
 							
 							<?php // show creator difficulty rating if enabled
 
@@ -79,22 +81,8 @@
 							}
 							?>
 													
-							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', $single = true); ?></strong><br />
-							<!-- Thing types -->
-							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> <br />
-
-							<!-- Thing categories (if allowed) -->
-							<?php  
-							// only display thning categories if option is 1 (user defined) or 2 (admin defined)
-							if ( ds106bank_option('use_thing_cats') ) {
-							
-								$thingcats = get_the_term_list( $post->ID, 'assignmentcats',  ds106bank_option( 'thing_cat_name' ) . ': ', ', ', '' ); 
-								if ($thingcats) echo $thingcats . '<br />'; 
-							}
-							?> 
-							
-							<!-- Thing tags -->
-							<?php $thingtags = the_tags('<span class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ': </span> ', ' ', '</span>'); if ($thingtags) echo $thingtags ?>
+							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', $single = true); ?></strong><br />		
+							<?php the_tags('<span class="tags"><span class="tags-title">' . __("Tags", "wpbootstrap") . ': </span> ', ' ', '</span>'); ?>
 							</p>
 							
 						</div>
@@ -105,23 +93,17 @@
 				<div class="clearfix row">	
 						<div class="col-sm-8">
 						
-							<?php 
+							<?php the_content(); ?>
+
+
+							<!-- some meta fantastic stuff -->
 							
-							the_content(); 
-							
-							$thingextras = get_post_meta($post->ID, 'assignment_extras', $single = true);
-							
-							if ( $thingextras ) echo '<div class="col-sm-offset-1 col-sm-9"><div class="alert alert-info" role="alert">' .  make_links_clickable($thingextras) . "</div>\n</div>\n";
-							
-							
-							?>
-							
-							<div class="col-sm-9">	
-							<?php bank106_twitter_button ( $post->ID, THINGNAME );?>
-							</div>
-							
-							
-							
+							<?php bank106_twitter_button ( $post->ID, THINGNAME )?> <a class="embedly-button" href="http://embed.ly/code" data-key="f6b10beaefbb4f1fb6b4aa8a0b873900" data-theme="light-round"  data-url="<?php echo get_permalink($post->ID); ?>"?>">Embed This</a>
+<script>!function(a){var b="embedly-platform",c="script";if(!a.getElementById(b)){var d=a.createElement(c);d.id=b,d.src=("https:"===document.location.protocol?"https":"http")+"://cdn.embedly.com/widgets/platform.js";var e=document.getElementsByTagName(c)[0];e.parentNode.insertBefore(d,e)}}(document);</script> 
+							<form action="javascript:myFunction(); return false;">
+							<label for="shorturl" style="margin-left:2em;">short link</label>
+						    <input type="text" size="40" value="<?php  echo site_url( '?p=' . $post->ID ); ?>" onClick="this.select()" readonly />
+							</form>
 						</div>
 						
 						<?php if ( get_post_meta($post->ID, 'fwp_url', $single = true) ): // only if we have example ?> 
@@ -164,10 +146,9 @@
 							<?php endif?>
 						
 							<?php if ( $my_use_example_form):?>
-							your response exists at a public viewable URL, you can add the information directly to this site<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear pending moderator approval)'?>.</p><p class="text-center"><a href="<?php echo site_url(); ?>/?page_id=<?php echo bank106_get_page_id_by_slug( ds106bank_option( 'example_form_page' ) )?>&aid=<?php echo $my_id?>&typ=ex" class="btn btn-primary btn"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add A Response</a>
+							your response exists at a public viewable URL, you can add the information directly to this site<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear pending moderator approval)'?>.</p><p class="text-center"><a href="<?php echo site_url(); ?>/<?php echo ds106bank_option( 'example_form_page' )?>/?aid=<?php echo $my_id?>&typ=ex" class="btn btn-primary btn"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add A Response</a>
 							<?php endif?>
-	
-		
+			
 							</p>
 						
 						</div>
@@ -198,11 +179,8 @@
 								<?php endif?>
 					
 								<?php if ( $my_use_example_form):?>
-								the <?php echo strtolower($helpthing)?> is available at a public URL please share it<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear below pending moderator approval)'?>.</p><p class="text-center"><a href="<?php echo site_url(); ?>/?page_id=<?php echo bank106_get_page_id_by_slug( ds106bank_option( 'example_form_page' ) )?>&aid=<?php echo $my_id?>&typ=tut" class="btn btn-primary btn"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add a <?php echo $helpthing?></a> 
-								
+								the <?php echo strtolower($helpthing)?> is available at a public URL please share it<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear below pending moderator approval)'?>.</p><p class="text-center"><a href="<?php echo site_url(); ?>/<?php echo ds106bank_option( 'example_form_page' )?>/?aid=<?php echo $my_id?>&typ=tut" class="btn btn-primary btn"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add a <?php echo $helpthing?></a>
 								<?php endif?>
-								
-								
 								</p>
 							</div>							
 						<?php endif // my_show_ex != 'ex' ?>

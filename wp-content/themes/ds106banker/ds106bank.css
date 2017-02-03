@@ -21,6 +21,10 @@ p.attribution {
 	width:100%;
 }
 
+.alert {
+    word-wrap: break-word;
+}
+
 
 /* --------------------------= Images Be Responsive =--------------------------------- */
 /* h/t http://wordpress.stackexchange.com/a/37768/14945                                */
@@ -105,31 +109,29 @@ p.wp-caption-text {
 
 .thing-archive {
 	background-color: #f8f8f8;
-	min-height: 500px;
 	margin:2em 0;
 	border: 8px solid #fff;
-	-moz-border-radius: 30px;
 	border-radius: 30px;
-	
 }
 
 .thing-icon {
 	text-align:center;
 	background-color: #f8f8f8;
 	padding:0;
-	min-height: 240px;
-	position: relative;
+	height: 0;
+    padding-bottom: 75%;	
+    position: relative;
 	overflow: hidden;
 }
 
 .thing-icon img {
   width: 100%;
-  height: auto;
-  overflow: auto;
+  height: 100%;
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
   border: 0px;
+  border-radius: initial;
 }
 
 

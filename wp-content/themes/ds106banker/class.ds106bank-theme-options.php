@@ -257,7 +257,7 @@ class ds106bank_Theme_Options {
 		$this->settings['thumb_w'] = array(
 			'title'   => __( 'Thumbnail Images Width' ),
 			'desc'    => __( 'Width of thumbnail images (in pixels)' ),
-			'std'     => '320',
+			'std'     => '640',
 			'type'    => 'text',
 			'section' => 'general'
 		);
@@ -265,7 +265,7 @@ class ds106bank_Theme_Options {
 		$this->settings['thumb_h'] = array(
 			'title'   => __( 'Thumbnail Images Height' ),
 			'desc'    => __( 'Height of images in pixels' ),
-			'std'     => '240',
+			'std'     => '480',
 			'type'    => 'text',
 			'section' => 'general'
 		);
@@ -277,6 +277,16 @@ class ds106bank_Theme_Options {
 			'type'    => 'medialoader',
 			'section' => 'general'
 		);
+		
+
+		$this->settings['def_thumb_credits'] = array(
+			'title'   => __( 'Thumbnail Attribution' ),
+			'desc'    => __( 'Credit for default thumbnail (e.g. Creative Commons Attribution). HTML Ok.' ),
+			'std'     => '',
+			'type'    => 'textarea',
+			'section' => 'general'
+		);
+		
 
 		$this->settings['media_icon'] = array(
 			'section' => 'general',
@@ -699,7 +709,7 @@ class ds106bank_Theme_Options {
 
 			case 'textarea':
 			
-				echo '<textarea class="' . $field_class . '" id="' . $id . '" name="ds106banker_options[' . $id . ']" placeholder="' . $std . '" rows="5" cols="30">' . wp_htmledit_pre( $options[$id] ) . '</textarea>';
+				echo '<textarea class="' . $field_class . '" id="' . $id . '" name="ds106banker_options[' . $id . ']" placeholder="' . $std . '" rows="5" style="width:80%">' . wp_htmledit_pre( $options[$id] ) . '</textarea>';
 
 				if ( $desc != '' )
 					echo '<br /><span class="description">' . $desc . '</span>';

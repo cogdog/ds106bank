@@ -156,6 +156,7 @@ get_header(); ?>
 							// insert ratings if enabled
 							if ( $use_public_ratings ) { the_ratings(); }
 							
+							// look for author name in Feedwordpress meta data
 							$assignmentAuthor = get_assignment_meta( $post->ID, 'fwp_name', 'Anonymous' );
 													
 							if ( $use_difficulty ) $assignment_difficulty = 'Difficulty: <strong>' .  get_post_meta( $post->ID, 'assignment_difficulty', $single = true )  . '</strong> (rated by author; 1=easy &lt--&gt; 5=difficult)<br />';

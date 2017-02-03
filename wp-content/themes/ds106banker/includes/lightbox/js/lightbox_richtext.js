@@ -14,6 +14,13 @@ function decodeEntities(input) {
   return y.value;
 }
 
+function nl2br (str, is_xhtml) {
+	// h/t http://stackoverflow.com/a/7467863/2418186
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+}
+
+
 
 
 (function($) {
@@ -43,7 +50,7 @@ function decodeEntities(input) {
 				var myExample = '<strong>Example for "' + $('#exampleTitle').val() + '"</strong><br /><a href="' + $('#exampleURL').val() + '">' + $('#exampleURL').val() + '</a><br />' + myEmbed;
 			}
 			
-			this.content = '<div class="col-sm-8"><h1 class="single-title assignment-header">' + $('#exampleTitle').val() + '</h1><p class="meta">A response to the <a href="' + $('#assignmentURL').val()  + '">' + $('#assignmentTitle').val() + ' </a> ' +   $('#thingName').val() + '<br />Created <strong><time>' + moment().format('MMM D, YYYY') + '</time></strong> by <strong>' + $('#submitterName').val() + '</strong><br />Number of views: <strong>0</strong></p><p class="tags">Tags ' + wp_tags( $('#exampleTags').val() + ',' + $('#submitterTwitter').val()) + '</p><hr />' + $('#exampleDescriptionHTML').val() +  '</div><div class="col-sm-4" id="examplemedia">' + myExample + '</div></div>';
+			this.content = '<div class="col-sm-8"><h1 class="single-title assignment-header">' + $('#exampleTitle').val() + '</h1><p class="meta">A response to the <a href="' + $('#assignmentURL').val()  + '">' + $('#assignmentTitle').val() + ' </a> ' +   $('#thingName').val() + '<br />Created <strong><time>' + moment().format('MMM D, YYYY') + '</time></strong> by <strong>' + $('#submitterName').val() + '</strong><br />Number of views: <strong>0</strong></p><p class="tags">Tags ' + wp_tags( $('#exampleTags').val() + ',' + $('#submitterTwitter').val()) + '</p><hr />' + nl2br( $('#exampleDescriptionHTML').val()) + '</div><div class="col-sm-4" id="examplemedia">' + myExample + '</div></div>';
 			
 			$('#submitexample').removeClass( "disabled" );
 		},

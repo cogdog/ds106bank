@@ -26,6 +26,8 @@ For more details behind how this theme came to be see [related posts on CogDogBl
 
 ## What's New?
 
+* Feb 2, 2017: There is a new field on adding a new "thing" for extra information, such as attribution credit for it's thumbnail image or other ancillary content. When published, it is displayed below the description in a blue info box. Javascript generated previews for Things and Examples updated to correctly mark paragraphs in content. Default thumbnail size bumped to 640x480 and CSS updated on archive listings to better preserve proportions.
+
 * Sep 29, 2016: Added a category-like taxonomy for things, another way to organize them. The primary "bins" are the "types" that appear on the main menu. But now you can also use categories to organize things across these bins. Because I was using the Wordpress Category taxonomy for responses, I had to create a new one, with an archive template. Through the options panel, you can choose to not use the categories; to allow site users to select categories when they create Things; or to leave that as an option for site moderators to do. You can also assign it a different label than "Category" when displayed on the site.
 * Jul 16, 2016: Finally revamped the Options interface to overcome a bug in the broken tabbed display of sections. All settings are now on one long scrolling tab, a second one is used for documentation. Also added a new feature by request of Jim Luke for options to suppress the section of tutorials and/or examples on the single Thing display 
 * May 3, 2016: New theme option to allow for archive views of assignments to use the embed-able media of it's example as an icon (e.g. YouTube video) rather than the thumbnail.

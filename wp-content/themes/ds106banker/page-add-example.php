@@ -74,13 +74,6 @@ if ( is_user_logged_in() ) {
 	//bypass captcha for logged in users
 	$use_captcha = false;
 	
-	// set default name and email based on user profile
-	global $current_user;
-	get_currentuserinfo();
-	
-	$submitterName 	= $current_user->user_firstname . ' ' . $current_user->user_lastname;
-	$submitterEmail = $current_user->user_email;
-	
 } else {
 	// set up captcha if set as option;
 	$use_captcha = ds106bank_option('use_captcha');
@@ -94,8 +87,11 @@ $my_new_status = ds106bank_option( 'new_example_status' );
 
 // flag for using/requring twitter on form
 $use_twitter_name = ds106bank_option( 'use_twitter_name' );
-$submitterTwitter = '';
+$submitterTwitter = $_COOKIE["bank106twitter"];
 
+// more cookies
+$submitterName = $_COOKIE["bank106name"];
+$submitterEmail = $_COOKIE["bank106email"];
 
 // verify that a  form was submitted and it passes the nonce check
 if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $_POST['bank106_form_add_example_submitted'], 'bank106_form_add_example' ) ) {
@@ -107,7 +103,18 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
  		$exampleDescription = 		stripslashes($_POST['exampleDescription']);
  		$exampleURL = 				esc_url( trim($_POST['exampleURL']), array('http', 'https') ); 
  		$exampleTags = 				cleanTags( sanitize_text_field( $_POST['exampleTags'] ) );
- 		if ($use_twitter_name) $submitterTwitter = sanitize_text_field( trim($_POST['submitterTwitter']) ); 
+
+ 		if ($use_twitter_name) {
+ 		
+ 			$submitterTwitter = sanitize_text_field( trim( $_POST['submitterTwitter'] ) );  
+ 			// set a cookie
+ 			setcookie( "bank106twitter", $submitterTwitter, strtotime( '+14 days' ),  '/' );  /* expire in 14 days */
+ 		}
+ 		
+ 		// more cookies to store
+ 		setcookie( "bank106name", $submitterName, strtotime( '+14 days' ), '/' );  /* expire in 14 days */
+ 		setcookie( "bank106email", $submitterEmail, strtotime( '+14 days' ),  '/' );  /* expire in 14 days */
+
  		
  		$my_assignment_tag = THINGNAME . $aid;
 		$my_tutorial_tag = 'Tutorial' . $aid;
@@ -127,7 +134,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
  			}
  			
 			if ( strpos( $submitterTwitter, ',') !== false or  strpos( $submitterTwitter, ';') !== false or strpos( $submitterTwitter, ' ') !== false ) {
-				$errors['submitterTwitter'] = '<span class="label label-danger">Multiple Twitter Names not Allowed</span> - Put the name of the person authoring this ' . $sub_type . ' in the Twitter Name field; if you wish to credit other people, put their twitter names in the "Tags" field.';
+				$errors['submitterTwitter'] = '<span class="label label-danger">Multiple Twitter Names not Allowed</span> - Put the name of the person authoring this ' . $sub_type . ' in the Twitter Name field; if you wish to credit other people add their twitter names in the "Tags" field.';
  			} 	
  			
  			 if ( strpos( $submitterTwitter, '#') !== false  ) {
@@ -145,7 +152,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
  		// arbitrary string length to be considered a reasonable descriptions
  		if ( strlen( $exampleDescription ) < 10 )  $errors['exampleDescription'] = '<span class="label label-danger">Description Missing or Too Short</span>- please provide a full description that describes this ' . $sub_type. '.';
  		 		
- 		if ($exampleURL == '') {
+ 		if ($exampleURL == '' AND $exampleURL != 'n/a' ) {
  				$errors['exampleURL'] = '<span class="label label-danger">URL Missing or not Entered Correctly</span>-  please enter the full URL where this ' . $sub_type . ' can be found- it must start with "http://"';	 
  		} // end url CHECK
  		
@@ -215,7 +222,9 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					if ( count($add_tags) ) wp_set_object_terms( $post_id, $add_tags, 'exampletags'); 
 					
 					if ( $submitterTwitter ) update_post_meta( $post_id, 'submitter_twitter', esc_attr( $submitterTwitter ) );
-					update_post_meta( $post_id, 'example_url', esc_url_raw( $_POST['exampleURL'] ) ); // example url
+					
+					
+					update_post_meta( $post_id, 'example_url', $exampleURL ); // example url
 					
 					
 						
@@ -314,7 +323,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					<div class="form-group<?php if (array_key_exists("exampleTitle",$errors)) echo ' has-error ';?>">
 						<label for="exampleTitle"><?php _e(  'Title for this ' . $sub_type, 'wpbootstrap' ) ?></label>
 						<input type="text" name="exampleTitle" id="exampleTitle" value="<?php  echo $exampleTitle; ?>" class="form-control" tabindex="1" placeholder="Enter the title" aria-describedby="titleHelpBlock" />
-						<span id="titleHelpBlock" class="help-block">Enter a title that describes this well enough to make it stand out in a list of other items.</span>
+						<span id="titleHelpBlock" class="help-block">Enter a title that describes that will make it stand out in a list of other responses.</span>
 					</div>
 				</div>
 
@@ -323,7 +332,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					<div class="form-group<?php if (array_key_exists("exampleURL",$errors)) echo ' has-error ';?>">
 							<label for="exampleURL"><?php _e( 'Web address for this ' . $sub_type, 'wpbootstrap' )?> <a href="<?php echo $exampleURL?>" class="btn btn-xs btn-warning" id="testURL" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Test Link</a></label>
 							<input type="text" name="exampleURL" id="exampleURL" class="form-control" value="<?php echo $exampleURL; ?>" tabindex="2" placeholder="http://" aria-describedby="urlHelpBlock"/> 
-							<span id="urlHelpBlock" class="help-block">Enter the URL for the <?php echo $sub_type?> you are describing, make sure to test the link to make sure it works. <?php if ( $use_full_editor ) echo 'If there is no relevant site to link to then enter <strong>#</strong> to indicate a link is not appropriate'?></span>
+							<span id="urlHelpBlock" class="help-block">Enter the URL for the <?php echo $sub_type?> you are describing and test the link to make sure it works. <?php if ( $use_full_editor ) echo 'If there is no relevant site to link to then enter <strong>#</strong> to indicate a link is not appropriate'?></span>
 					</div>				
 				</div>
 				
@@ -333,7 +342,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					
 						<div class="form-group<?php if (array_key_exists("exampleDescription",$errors)) echo ' has-error ';?>">
 						<label for="exampleDescription"><?php _e( ' Full description for this ' . $sub_type, 'wpbootstrap') ?></label>
-						<span id="exampleHelpBlock" class="help-block">Use the rich text editor to compose a detailed entry that describes this <?php echo $sub_type;?> in a way that will stand alone as a full description. To embed media from YouTube, vimeo, instagram, SoundCloud, Twitter, flickr, or Vine simple put the URL for its source page on a blank line. When saved and opened for previews, the embed code will be added. </span>
+						<span id="exampleHelpBlock" class="help-block">Use the rich text editor to compose a detailed entry that describes this <?php echo $sub_type;?>. To embed media from YouTube, vimeo, instagram, SoundCloud, Twitter, or flickr, simply put the URL for its source page on a blank line. When published url will be replaced by the embeded media for that link. </span>
 						<?php
 							// set up for inserting the WP post editor
 							$settings = array( 'textarea_name' => 'exampleDescription',  'tabindex'  => "3", 'media_buttons' => false, 'textarea_rows' => 8);
@@ -356,13 +365,9 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				
 					<div class="form-group<?php if (array_key_exists("exampleTags",$errors)) echo ' has-error ';?>">
 					
-						<?php if ($use_twitter_name) :?>
-						<label for="exampleTags"><?php _e( 'Tags that describe this ' . $sub_type .  '  and Twitter Names of co-authors (optional)', 'wpbootstrap') ?></label>
-						<?php else:?>
 						<label for="exampleTags"><?php _e( 'Tags that describe this ' . $sub_type .  ' (optional)', 'wpbootstrap') ?></label>
-						<?php endif?>
 						<input type="text" name="exampleTags" class="form-control" id="exampleTags" value="<?php echo $exampleTags; ?>" tabindex="4" aria-describedby="tagHelpBlock" />
-						<span id="tagHelpBlock" class="help-block">Separate each tag with a space or a comma <?php if ($use_twitter_name) echo 'You can credit co-authors by adding their twitters name as tags, including the "@"';?></span>
+						<span id="tagHelpBlock" class="help-block">Separate each tag a comma</span>
 					</div>
 
 				</div> 
@@ -386,7 +391,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					<div class="form-group<?php if (array_key_exists("submitterTwitter",$errors)) echo ' has-error ';?>">
 						<label for="submitterTwitter"><?php _e( 'Your Twitter username ', 'wpbootstrap' ) ?> <?php if ($use_twitter_name == 1) { echo '(optional)'; } else { echo '(required)';}?></label>
 						<input type="text" name="submitterTwitter" class="form-control" id="submitterTwitter" value="<?php echo $submitterTwitter; ?>" tabindex="7" placeholder="@"  aria-describedby="twitterHelpBlock" />
-						<span id="twitterHelpBlock" class="help-block">Enter the twitter name (including the "@" symbol) of the person authoring this form so the site can keep track of all your shared <?php echo $sub_type?>s. If you wish to credit other people, add their twitter name to the "Tags" field. </span>
+						<span id="twitterHelpBlock" class="help-block">Enter the twitter name (including the "@" symbol) of the person authoring this form so the site can keep track of all your shared <?php echo $sub_type?>s. To credit other people add their twitter name to the "Tags" field. </span>
 					</div>	
 			
 					<?php endif?>		

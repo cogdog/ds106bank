@@ -29,13 +29,19 @@ $use_thing_cats = ds106bank_option('use_thing_cats');
 
 // ----- set defaults ---------------------
 // set af default rating values
+
+// mmm cookies
+$submitterTwitter = $_COOKIE["bank106twitter"];
+$submitterName = $_COOKIE["bank106name"];
+$submitterEmail = $_COOKIE["bank106email"];
+
+
 $assignmentRating = 3;    	// default public rating
 $assignmentDifficulty = 3;  // default author rating
-$submitterTwitter = '';
 $assignmentURL = ''; 		// start it empty, baby
 $errors = array(); 			// holder for bad form entry warnings
 
-$feedback_msg = '<div class="alert alert-info" role="alert">Here is where you create a new ' . lcfirst(THINGNAME) . ' for this site.<br /><br />Enter all required information in the form below and <a href="#" class="btn btn-primary btn-xs disabled">update</a> the information to first verify that is entered correctly. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to finalize the entry. Once you are satisfied, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form for the final time and it will be saved to this site.</div>';
+$feedback_msg = '<div class="alert alert-info" role="alert">Create a new ' . lcfirst(THINGNAME) . ' right here! Enter all required information below and <a href="#prettybuttons" style="text-decoration: underline">use the buttons below</a> to <a href="#" class="btn btn-primary btn-xs disabled">update</a> your information to verify it. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to make it look beautiful (get it right, you will not be able to edit it later). Once you are happy with it, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form for the last time and it will be saved to this site.</div>';
 $previewBtnState = ' disabled';
 $submitBtnState = ' disabled';
 
@@ -58,15 +64,7 @@ $current_ID = $post->ID;
 
 if ( is_user_logged_in() ) {
 	//bypass captcha for logged in users, they deserve a break
-	$use_captcha = false;
-
-	// set default name and email based on user profile
-	global $current_user;
-	get_currentuserinfo();
-	
-	$submitterName 	= $current_user->user_firstname . ' ' . $current_user->user_lastname;
-	$submitterEmail = $current_user->user_email;
-	
+	$use_captcha = false;	
 } 
 
 // include captch lib if we need to
@@ -87,9 +85,20 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		$assignmentDifficulty = 	$_POST['assignmentDifficulty'];		
  		$assignmentURL = 			esc_url( trim($_POST['assignmentURL']), array('http', 'https') ); 
  		$assignmentCC = 			$_POST['assignmentCC'];
+ 		$assignmentExtras = 		stripslashes(sanitize_text_field( $_POST['assignmentExtras'] ));
  		$assignment_thumb_id = 		$_POST['assignment_thumb_id'];
- 		if ($use_twitter_name) $submitterTwitter = sanitize_text_field( $_POST['submitterTwitter'] ); 
+
+ 		if ($use_twitter_name) {
  		
+ 			$submitterTwitter = sanitize_text_field( $_POST['submitterTwitter'] ); 
+ 			// set a cookie
+ 			setcookie( "bank106twitter", $submitterTwitter, strtotime( '+14 days' ),  '/' );  /* expire in 14 days */
+ 			
+ 		}
+ 		
+ 		// more cookies
+ 		setcookie( "bank106name", $submitterName, strtotime( '+14 days' ), '/' );  /* expire in 14 days */
+ 		setcookie( "bank106email", $submitterEmail, strtotime( '+14 days' ),  '/' );  /* expire in 14 days */
  		
 
 		// upload thumnbail if selected
@@ -227,6 +236,9 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 
 					// user selected license
 					if ( $my_cc_mode == 'user' ) update_post_meta( $post_id,  'cc', $assignmentCC);
+					
+					// give it a count
+					update_post_meta( $post_id,  'assignment_extras', $assignmentExtras );
 				
 				
 					// if we got an attachment id, then update meta data to indicate thumbnal
@@ -304,7 +316,6 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				<div class="col-sm-offset-2 col-sm-8">	
 					<?php echo $feedback_msg?>	
 				</div>
-
 			
 			<?php if (!$post_id) : //hide form if we had success ?>
 			
@@ -321,7 +332,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 			
 					<div class="form-group<?php if (array_key_exists("assignmentDescription",$errors)) echo ' has-error ';?>">
 							<label for="assignmentDescription"><?php _e( 'Full Description for this '  . ucfirst(THINGNAME), 'wpbootstrap') ?></label>
-							<span id="assignmentHelpBlock" class="help-block">Use the rich text editor to compose everything someone might need to complete this <?php echo THINGNAME?>. (add link to detailed help?). To embed media from YouTube, vimeo, instagram, SoundCloud, Twitter, flickr, or Vine simple put the URL for its source page on a blank line. When saved, the embed code will be added.   </span>
+							<span id="assignmentHelpBlock" class="help-block">Use the rich text editor to compose everything someone might need to complete this <?php echo THINGNAME?>. See  <a href="https://make.wordpress.org/support/user-manual/content/editors/visual-editor/" target="_blank">documentation for using the editing tools</a> (link will open in a new tab/window). To embed media from YouTube, vimeo, instagram, SoundCloud, Twitter, flickr, just put the URL for its source page as plain text on a blank line. When your <?php echo THINGNAME?> is published the link will be replaced by a media embed.</span>
 							<?php
 								// set up for inserting the WP post editor
 								$settings = array( 'textarea_name' => 'assignmentDescription',  'tabindex'  => "3", 'media_buttons' => false, 'textarea_rows' => 8);
@@ -376,7 +387,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 							
  					</div>
  					
- 					<?php endif; // for cats in use. Meow.?>
+ 					<?php endif; // for cats in use. Meow ?>
  
 					<div class="form-group<?php if (array_key_exists("assignmentTags",$errors)) echo ' has-error ';?>">
 						<label for="assignmentTags"><?php _e( 'Tags that describe this ' . THINGNAME . ' (optional)', 'wpbootstrap' ) ?></label>
@@ -445,7 +456,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					
 						<div class="form-group">
 							<label for="uploadThumb"><?php _e( 'Upload Thumbnail Image', 'wpbootstrap' )?></label>
-							<span id="uploadHelpBlock" class="help-block">Upload a JPG or PNG image to represent your <?php echo THINGNAME?> to replace the image below. It should be a image sized larger than <?php echo THUMBW?>x<?php echo THUMBH?> pixels (it may be cropped to fit). </span>
+							<span id="uploadHelpBlock" class="help-block">Upload a JPG or PNG image to represent your <?php echo THINGNAME?> in place of the default image below. Please use an image size larger than <?php echo THUMBW?>x<?php echo THUMBH?> pixels (it will be center cropped to these proportions). </span>
 						
 							<?php 
 						
@@ -460,6 +471,15 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 							<div><input type="file" class="filestyle" data-buttonText="Choose Image" data-iconName="glyphicon-upload" name="assignmentImage" id="assignmentImage" tabindex="14" aria-describedby="uploadHelpBlock" /></div>
 				
 						</div>
+						
+						<div class="form-group">
+							<label for="assignmentExtras"><?php _e( 'Extra Information' , 'wpbootstrap' ) ?></label>
+							<span id="extrasHelpBlock" class="help-block">Use this field to append additional end notes for this <?php echo THINGNAME?> such as an attribution for the thumbnail image or other credits. Any  HTML will be removed but URLs will be converted to hyperlinks.</span>
+							
+							<textarea name="assignmentExtras" id="assignmentExtras" rows="4" class="form-control" tabindex="15"  aria-describedby="extrasHelpBlock"><?php  echo $assignmentExtras; ?></textarea>	
+						
+						</div>
+						
 				
 					<?php if ( $my_cc_mode != 'none' ):?>
 						<!-- creative commons options -->
@@ -504,7 +524,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 						<div class="form-group<?php if (array_key_exists("submitterTwitter",$errors)) echo ' has-error ';?>">
 							<label for="submitterTwitter"><?php _e( 'Your Twitter username ', 'wpbootstrap' ) ?> <?php if ($use_twitter_name == 1) { echo '(optional)'; } else { echo '(required)';}?></label>
 							<input type="text" name="submitterTwitter" class="form-control" id="submitterTwitter" value="<?php echo $submitterTwitter; ?>" tabindex="7" placeholder="@" aria-describedby="twitterHelpBlock" />
-							<span id="twitterHelpBlock" class="help-block">Enter your twitter name (including the "@" symbol) so the site can keep track of all your shared <?php echo THINGNAME?>s</span>
+							<span id="twitterHelpBlock" class="help-block">Enter your twitter name including the "@" symbol</span>
 						</div>	
 			
 						<?php endif?>		
@@ -542,7 +562,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					</div>
 				<?php endif?>
 					
-				<div class="form-group">
+				<div class="form-group" id="prettybuttons">
 					<label for="submitassignment"><?php _e( 'Review and Submit this ' . THINGNAME, 'wpbootstrap' )?></label>
 					
 					<div class="row"> <!-- submit buttons row -->
@@ -569,7 +589,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 							</button>
 						</div>
 						<div class="col-xs-8 col-md-9">
-							<span class="help-block">Once every thing looks perfect, submit this <?php echo lcfirst(THINGNAME)?> to the site.</span>
+							<span class="help-block">Once every thing looks good, submit this <?php echo lcfirst(THINGNAME)?> to the site.</span>
 						</div>
 					</div>	<!-- end submit buttons row -->									
 

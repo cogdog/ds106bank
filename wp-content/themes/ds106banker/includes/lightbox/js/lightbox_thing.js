@@ -24,6 +24,18 @@ function decodeEntities(input) {
 }
 
 
+function replaceURLWithHTMLLinks(text) {
+	// h/t http://stackoverflow.com/a/19548526/2418186
+    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text.replace(exp,"<a href='$1'>$1</a>"); 
+}
+
+function nl2br (str, is_xhtml) {
+	// h/t http://stackoverflow.com/a/7467863/2418186
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+}
+
 
 (function($) {
  
@@ -92,7 +104,7 @@ function decodeEntities(input) {
           
             
 			
-			this.content = '<div class="col-sm-3"><div class="thing-icon-single"><img src="' + $('#thingthumb').attr('src')  + '"></div></div><div class="col-sm-8" ><h1 class="single-title assignment-header">' + $('#assignmentTitle').val() + '</h1>' + myRatings + '<br />' + adiff + '<br />Created <strong><time>' + moment().format('MMM D, YYYY') + '</time></strong> by <strong>' + $('#submitterName').val() + '</strong><br />Number of views: <strong>0</strong></p><p>Type: ' + thingtypes.join(", ") + '<br />' + $('#thing_cat_hole').data( "catlabel" )  + ': ' + thingcats.join(", ") + '<br/><span class="tags">Tags: ' + wp_tags( $('#assignmentTags').val() + tagd + $('#submitterTwitter').val()) + '</span></p></div>	<div class="col-sm-8 clearfix">' + $('#assignmentDescriptionHTML').val() +  '</div><div class="col-md-4" id="examplemedia"><strong>Example for "' + $('#assignmentTitle').val() + '"</strong><br /><a href="' + $('#assignmentURL').val() + '">' + $('#assignmentURL').val() + '</a><br />' + myEmbed + '</div>';
+			this.content = '<div class="col-sm-3"><div class="thing-icon-single"><img src="' + $('#thingthumb').attr('src')  + '"></div></div><div class="col-sm-8" ><h1 class="single-title assignment-header">' + $('#assignmentTitle').val() + '</h1>' + myRatings + '<br />' + adiff + '<br />Created <strong><time>' + moment().format('MMM D, YYYY') + '</time></strong> by <strong>' + $('#submitterName').val() + '</strong><br />Number of views: <strong>0</strong></p><p>Type: ' + thingtypes.join(", ") + '<br />' + $('#thing_cat_hole').data( "catlabel" )  + ': ' + thingcats.join(", ") + '<br/><span class="tags">Tags: ' + wp_tags( $('#assignmentTags').val() + tagd + $('#submitterTwitter').val()) + '</span></p></div>	<div class="col-sm-8 clearfix">' + nl2br($('#assignmentDescriptionHTML').val()) + '<div class="col-sm-offset-1 col-sm-9"><div class="alert alert-info" role="alert">' +  replaceURLWithHTMLLinks($('#assignmentExtras').val()) + '</div></div></div><div class="col-md-4" id="examplemedia"><strong>Example for "' + $('#assignmentTitle').val() + '"</strong><br /><a href="' + $('#assignmentURL').val() + '">' + $('#assignmentURL').val() + '</a><br />' + myEmbed + '</div>';
 			
 			$('#submitassignment').removeClass( "disabled" );
 		},

@@ -723,8 +723,8 @@ function get_example_media ( $pid, $metafieldname='fwp_url' ) {
 
 function get_media_embedded ( $url ) {
 // get the media embeds for a given URL
-
-	if ($url == '') return ('-1');
+	
+	if ($url == '' or ( strpos( $url, 'commons.wikimedia.org' ) !== false ) ) return ('');
 
 	$str = ''; // hold output
 	$display_code = ''; // hold display code
@@ -838,7 +838,7 @@ function cc_license_html ($license, $author='', $yr='') {
 	// do we have an author?
 	$credit = ($author == '' OR  $author == 'Anonymous') ? '' : ' by ' . $author;
 	
-	return '<a rel="license" href="http://creativecommons.org/licenses/' . $license . '/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/' . $license . '/4.0/88x31.png" /></a><br />This work' . $credit . ' is licensed under a <a rel="license" href="http://creativecommons.org/licenses/' . $license . '/4.0/">Creative Commons ' . $commons[$license] . ' 4.0 International License</a>.';            
+	return '<a rel="license" href="https://creativecommons.org/licenses/' . $license . '/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/' . $license . '/4.0/88x31.png" /></a><br />This work' . $credit . ' is licensed under a <a rel="license" href="https://creativecommons.org/licenses/' . $license . '/4.0/">Creative Commons ' . $commons[$license] . ' 4.0 International License</a>.';            
 }
 
 
