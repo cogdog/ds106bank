@@ -214,7 +214,7 @@ class ds106bank_Theme_Options {
 		);
 
 		// ------- twitter options		
-		$this->settings['cc_heading'] = array(
+		$this->settings['twitter_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
 			'desc'	 => 'Twitter Options',
