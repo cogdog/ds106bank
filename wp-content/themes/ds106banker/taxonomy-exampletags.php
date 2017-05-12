@@ -11,7 +11,20 @@ get_header(); ?>
  						
 					    	<span><?php 
 					    	
-							echo THINGNAME . ' Responses and ' . ds106bank_option('helpthingname') . 's ';
+					    	switch ( ds106bank_option('show_ex') ) {
+								case 'both':
+									echo THINGNAME . ' Responses and ' . ds106bank_option('helpthingname') . 's ';
+									break;
+								case  'ex':
+									echo THINGNAME . ' Responses ';
+									break;
+								case  'tut':
+									echo THINGNAME . ds106bank_option('helpthingname') . 's ';
+									break;
+								case 'none';
+									break;
+							}
+								
 							// fetch the tag in question
 							$the_tag = single_term_title( '', false);
 						
