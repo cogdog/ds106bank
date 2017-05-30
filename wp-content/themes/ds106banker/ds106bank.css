@@ -9,6 +9,15 @@
                                                                            
 
 /* --------------------------------= General STUFF =----------------------------------- */
+
+#site-header {
+    padding-top: 6px;
+}
+
+#content {
+    padding: 16px 0 0;
+}
+
 .more-link {
 	text-align: right;
 }

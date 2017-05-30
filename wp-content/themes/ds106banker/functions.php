@@ -202,6 +202,20 @@ function bank106_tinymce_2_buttons($buttons)
  }
 add_filter('mce_buttons_2','bank106_tinymce_2_buttons');
 
+// ----- enable custom headers, a wee one across the top
+
+
+function ds106bank_custom_header_setup() {
+    $args = array(
+        'width'              => 970,
+        'height'             => 60,
+    );
+    
+    add_theme_support( 'custom-header', $args );
+}
+
+add_action( 'after_setup_theme', 'ds106bank_custom_header_setup' );
+
 
 /*************************** OPTIONS STUFF ************************************/	
 
@@ -688,6 +702,7 @@ function get_thing_icon ($pid, $imgsize, $imgclass = "thing-pic") {
 	} 
 } 
 
+
 function get_example_media ( $pid, $metafieldname='fwp_url' ) {
 // output link to example, display media or embeded media if example is embeddable
 
@@ -811,6 +826,23 @@ function get_assignment_meta_string( $id ) {
 	
 	return ($str);
 }
+
+
+# -----------------------------------------------------------------
+# Plugin Detectors
+# -----------------------------------------------------------------
+
+function ds106bank_alm_installed() {
+	// return status for Ajax Load More Plugin
+	if ( function_exists('alm_install' ) ) {
+		return ('The Ajax Load More plugin <strong>is installed</strong> and will be used to sequentially load responses (with the value entered) if there are many of them. Check documentation tab for details on setting up the custom template in the plugin.'); 
+		
+	} else {
+		return ('Ajax Load More plugin <strong>is not installed</strong>. This means all example responses will be loaded on a single ' . THINGNAME . ' and the number entered is ignored. If you start getting many responses, you may want to install this plugin. '); 
+	}
+}
+
+
 
 /****************** FOR CREATIVE COMMONS LICENSING  **************************/	
 function cc_license_html ($license, $author='', $yr='') {
