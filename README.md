@@ -231,16 +231,16 @@ But there might be cases where you want to categorize only on the back end; e.g.
 And if you use Categories but want to call them something else, like `Sections` enter that in the setting for **Label for Category**. This will be used on the entry forms and any where the categories are displayed.
 
 
-### Bank Options: General Settings: Login Options
-
-![](wp-content/themes/ds106banker/images/fwp-tag-settings.jpg)
+### Bank Options: General Settings: Login Settings
 
 ![](wp-content/themes/ds106banker/images/wp-login-options.jpg)
+
 **Use wordpress accounts for adding responses and/or items to the bank.** provides a bank owner the ability to use Wordpress user accounts to track activity. Note that a site owner will need to manage user account creation. No Wordpress capabilities are needed, a contributor level account will work. 
 
 If you enable the second or third options, a **Sign in** button will appear at the end of the navigation bar:
 
 ![](wp-content/themes/ds106banker/images/not-logged-in.jpg)
+
 After logging in, a user will be redirected back to the page they were using. The menu bar will now display they name adjacent to what is now a log out button, and the display name will link to their archive of contributions.
 
 ![](wp-content/themes/ds106banker/images/logged-in.jpg)
