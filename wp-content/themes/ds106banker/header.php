@@ -41,6 +41,9 @@
 	<body <?php body_class(); ?>>
 				
 		<header role="banner">
+
+				
+
 				
 			<div class="navbar navbar-default navbar-fixed-top">
 				<div class="container">
@@ -52,7 +55,7 @@
 						</a>
 					</div>
 				<?php endif; ?>
-
+				
           
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">

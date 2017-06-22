@@ -27,6 +27,10 @@ $use_captcha = ds106bank_option('use_captcha');
 // use thing categories (=1 to use on this form)
 $use_thing_cats = ds106bank_option('use_thing_cats');
 
+// require wp login?
+$use_wp_login = ds106bank_option('use_wp_login');
+
+
 // ----- set defaults ---------------------
 // set af default rating values
 
@@ -41,9 +45,41 @@ $assignmentDifficulty = 3;  // default author rating
 $assignmentURL = ''; 		// start it empty, baby
 $errors = array(); 			// holder for bad form entry warnings
 
-$feedback_msg = '<div class="alert alert-info" role="alert">Create a new ' . lcfirst(THINGNAME) . ' right here! Enter all required information below and <a href="#prettybuttons" style="text-decoration: underline">use the buttons below</a> to <a href="#" class="btn btn-primary btn-xs disabled">update</a> your information to verify it. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to make it look beautiful (get it right, you will not be able to edit it later). Once you are happy with it, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form for the last time and it will be saved to this site.</div>';
+$feedback_msg = '<div class="alert alert-info" role="alert">Create a new ' . lcfirst(THINGNAME) . ' right here! Enter all required information below and <a href="#prettybuttons" style="text-decoration: underline">use the buttons below</a> to <a href="#" class="btn btn-primary btn-xs disabled">update</a> your information to verify it. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to make it look beautiful (get it right, you will not be able to edit it later). Once you are happy with it, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form for the last time and it will be saved to this site.';
+
 $previewBtnState = ' disabled';
 $submitBtnState = ' disabled';
+
+
+if ( is_user_logged_in() ) {
+	//bypass captcha for logged in users
+	$use_captcha = false;
+	
+	$current_user = wp_get_current_user();
+	
+	$feedback_msg .= '<br /><br />All ' . THINGNAME . 's submitted here will be associated with your current login in as <strong>' . $current_user->display_name . '</strong>.' ;
+
+	
+} else {
+	
+	
+	if ( $use_wp_login == 1) {
+		// WP login optional
+		
+		
+		$feedback_msg .= '<br /><br />Logging in to this site is not required, but if you wish to have all  ' . THINGNAME . 's created  associated with your name ' . sprintf( '<a href="%s" class="btn btn-primary btn-xs">%s</a>', wp_login_url( get_permalink( ) ), __( 'sign in now' ) );  
+	
+	// WP login requred
+	} elseif ( $use_wp_login == 2 ) {
+		$must_login = true;
+		
+		// feedback message now an alert
+		$feedback_msg = '<div class="alert alert-danger" role="alert"> You must sign in to ' . bloginfo( 'name' ) . ' to add a '  . THINGNAME .  ' to this site. ' . sprintf( '<a href="%s" class="btn btn-primary btn-xs">%s</a>', wp_login_url( get_permalink( ) ), __( 'sign in now' ) );
+	}
+		
+}
+
+$feedback_msg .=  '</div>'; // close dat div
 
 
 if ($use_thing_cats == 1) {
@@ -61,11 +97,6 @@ if ($use_thing_cats == 1) {
 // a little mojo to get current page ID so we can build a link back here
 $post = $wp_query->post;
 $current_ID = $post->ID;
-
-if ( is_user_logged_in() ) {
-	//bypass captcha for logged in users, they deserve a break
-	$use_captcha = false;	
-} 
 
 // include captch lib if we need to
 if ($use_captcha) require_once( get_stylesheet_directory() . '/includes/recaptchalib.php');
@@ -317,7 +348,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					<?php echo $feedback_msg?>	
 				</div>
 			
-			<?php if (!$post_id) : //hide form if we had success ?>
+			<?php if (!$post_id and !$must_login) : //hide form if we had success ?>
 			
 				<form action="" id="bank106form" class="bank106form" method="post" action="" autocomplete="on" enctype="multipart/form-data">
 	

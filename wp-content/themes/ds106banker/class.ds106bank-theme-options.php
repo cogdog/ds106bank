@@ -212,6 +212,30 @@ class ds106bank_Theme_Options {
 			'type'    => 'text',
 			'section' => 'general'
 		);
+		
+		// ------- login options		
+		$this->settings['login_heading'] = array(
+			'section' => 'general',
+			'title'   => '', // Not used for headings.
+			'desc'	 => 'Login Options',
+			'std'    => '',
+			'type'    => 'heading'
+		);
+		
+		$this->settings['use_wp_login'] = array(
+			'section' => 'general',
+			'title'   => __( 'Use Wordpress accounts for adding responses and/or items to the bank.'),
+			'desc'    => __( 'Option to use and/or require a login for submissions. An individual\'s work can be tracked via <code>' . home_url() . '/author/' . '&lt;username&gt;</code>'),
+			'type'    => 'radio',
+			'std'     => '0',
+			'choices' => array (
+							'0' => 'Do not use Wordpress logins',
+							'1' => 'Yes, but make it optional',
+							'2' => 'Yes, and make it required'
+					)
+		);
+
+
 
 		// ------- twitter options		
 		$this->settings['twitter_heading'] = array(
@@ -221,13 +245,11 @@ class ds106bank_Theme_Options {
 			'std'    => '',
 			'type'    => 'heading'
 		);
-
-
-		
+	
 		$this->settings['use_twitter_name'] = array(
 			'section' => 'general',
 			'title'   => __( 'Use twitter name on submission forms?'),
-			'desc'    => __( 'Option to use and/or require a twitter name with submission, if used will be added as a tag to entries'),
+			'desc'    => __( 'Option to use and/or require a twitter name with submission, if used will be added as a tag to entries. An individual\'s work can be tracked via <code>' . home_url() . '/exampletags/' . '&lt;twittername&gt;</code>'),
 			'type'    => 'radio',
 			'std'     => '0',
 			'choices' => array (
@@ -378,6 +400,17 @@ class ds106bank_Theme_Options {
 				'none' => 'Neither'
 			)
 		);
+
+		$this->settings['examplesperview'] = array(
+			'section' => 'general',
+			'title'   => __( 'Number of Responses to Display at a Time' ),
+			'desc'    => __( 'How many to show per click of \'More\' button. ' . ds106bank_alm_installed() ),
+			'std'     => '10',
+			'type'    => 'text',
+			'section' => 'general'
+		);	
+
+		
 
 		$this->settings['example_via_form'] = array(
 			'section' => 'general',

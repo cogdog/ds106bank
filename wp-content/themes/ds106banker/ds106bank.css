@@ -10,6 +10,7 @@
 
 /* --------------------------------= General STUFF =----------------------------------- */
 
+
 #site-header {
     padding-top: 6px;
 }
@@ -39,6 +40,12 @@ p.attribution {
     margin-right: auto;
 }
 
+.btn-disabled {
+    pointer-events: none;
+	opacity: 0.5;
+}
+
+
 
 /* --------------------------= Images Be Responsive =--------------------------------- */
 /* h/t http://wordpress.stackexchange.com/a/37768/14945                                */
@@ -67,6 +74,16 @@ p.wp-caption-text {
     border-bottom: 2px dotted rgb(234, 240, 240)
 }
 
+
+/* --------------------------= Nav bar =----------------------------- */
+
+.navbar-default .navbar-nav>li>a.btn-primary {
+	color:#fff;
+}
+
+.navbar-default .navbar-nav>li>a.btn-primary:hover {
+	color:#777;
+}
 /* --------------------------= Single Thingie =----------------------------- */
 
 
@@ -169,6 +186,18 @@ article.thing-archive section.post_content p, article.type-assignments #content 
 .page-header {
   border-bottom: none;
 }
+
+
+/* ------------------------------= Ajax Load More =----------------------------------- */
+
+
+#load-more {
+    margin: 1em 35%;
+    width: 20%;
+    min-width: 200px;
+}
+
+
 
 
 /* ------------------------------= Forms Be Formed =----------------------------------- */

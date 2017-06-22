@@ -26,6 +26,8 @@ For more details behind how this theme came to be see [related posts on CogDogBl
 
 ## What's New?
 
+* June 22, 2017: New Assignment Bank options to make use of Wordpress user accounts to track contributions, either optionally or make it require. In the latter case, submssion forms are hidden until a visitor has logged in.
+
 * May 30, 2017: Added capability for thin header image atop nav bar that can be added via theme customizer (60px high)
 * Feb 2, 2017: There is a new field on adding a new "thing" for extra information, such as attribution credit for it's thumbnail image or other ancillary content. When published, it is displayed below the description in a blue info box. Javascript generated previews for Things and Examples updated to correctly mark paragraphs in content. Default thumbnail size bumped to 640x480 and CSS updated on archive listings to better preserve proportions.
 * Sep 29, 2016: Added a category-like taxonomy for things, another way to organize them. The primary "bins" are the "types" that appear on the main menu. But now you can also use categories to organize things across these bins. Because I was using the Wordpress Category taxonomy for responses, I had to create a new one, with an archive template. Through the options panel, you can choose to not use the categories; to allow site users to select categories when they create Things; or to leave that as an option for site moderators to do. You can also assign it a different label than "Category" when displayed on the site.
@@ -228,6 +230,34 @@ But there might be cases where you want to categorize only on the back end; e.g.
 
 And if you use Categories but want to call them something else, like `Sections` enter that in the setting for **Label for Category**. This will be used on the entry forms and any where the categories are displayed.
 
+
+### Bank Options: General Settings: Login Options
+
+![](wp-content/themes/ds106banker/images/fwp-tag-settings.jpg)
+
+![](wp-content/themes/ds106banker/images/wp-login-options.jpg)
+**Use wordpress accounts for adding responses and/or items to the bank.** provides a bank owner the ability to use Wordpress user accounts to track activity. Note that a site owner will need to manage user account creation. No Wordpress capabilities are needed, a contributor level account will work. 
+
+If you enable the second or third options, a **Sign in** button will appear at the end of the navigation bar:
+
+![](wp-content/themes/ds106banker/images/not-logged-in.jpg)
+After logging in, a user will be redirected back to the page they were using. The menu bar will now display they name adjacent to what is now a log out button, and the display name will link to their archive of contributions.
+
+![](wp-content/themes/ds106banker/images/logged-in.jpg)
+
+If the setting is for a user account  required, on the buttons that link to the form from a Thing, the button is disabled and a sign in button is provided:
+
+![](wp-content/themes/ds106banker/images/must-login-ex.jpg)
+
+If the user account is optional, the alert offers a chance to sign in as an option:
+
+![](wp-content/themes/ds106banker/images/optional-login.jpg)
+
+And if logged in, the submission forms indicate that their work will be associated with their account:
+
+![](wp-content/themes/ds106banker/images/logged-in-add-ex.jpg)
+
+The same prompts are provided on the page used to add a new Thing to a bank site.
 
 #### Assignment Bank Options: General Settings: Twitter Settings
 

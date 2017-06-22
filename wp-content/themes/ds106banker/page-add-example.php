@@ -57,7 +57,6 @@ if 	($typ == 'tut') {
 	}
 }
 
-$feedback_msg .= '<br /><br /><a href="' . site_url() . '/help/?typ=' . $typ . '" target="_blank" class="alert-link">Help for using this form is standing by</a> (link opens in a new window).</div>';
 
 
 // disable buttons
@@ -74,10 +73,34 @@ if ( is_user_logged_in() ) {
 	//bypass captcha for logged in users
 	$use_captcha = false;
 	
+	$current_user = wp_get_current_user();
+	
+	$feedback_msg .= '<br /><br />All responses submitted will be associated with your current login in as <strong>' . $current_user->display_name . '</strong>.' ;
+
+	
 } else {
 	// set up captcha if set as option;
 	$use_captcha = ds106bank_option('use_captcha');
+	
+	
+	if ( ds106bank_option('use_wp_login') == 1) {
+		// WP login optional
+		
+		
+		$feedback_msg .= '<br /><br />Logging in to this site is not required, but if you wish to have all your responses associated with your name ' . sprintf( '<a href="%s">%s</a>', wp_login_url( get_permalink( $aid ) ), __( 'sign in now' ) );  
+	
+	// WP login requred
+	} elseif ( ds106bank_option('use_wp_login') == 2 ) {
+		$must_login = true;
+		
+		// feedback message now an alert
+		$feedback_msg = '<div class="alert alert-danger" role="alert"> You must sign in to ' . bloginfo( 'name' ) . ' to add your response to this ' . THINGNAME . '. Return to <a href="' . get_permalink( $aid ) . '">' . get_the_title( $aid ) . '</a> to login so you can add your response here.';
+	}
+		
 }
+
+// close dat div
+$feedback_msg .=  '</div>';
 
 // include captch lib if we need to
 if ($use_captcha) require_once( get_stylesheet_directory() . '/includes/recaptchalib.php');
@@ -304,7 +327,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					
 						<p><em><?php the_excerpt(); ?></em></p>
 					
-						<p class="lead">Use the form below to add a <?php echo $sub_type?> to the <strong><a href="<?php echo get_permalink( $aid);?>"><?php the_title(); ?></a></strong> <?php echo lcfirst(THINGNAME)?>.</p>
+						<p class="lead">Use the form below to add a <?php echo $sub_type?> to the <strong><a href="<?php echo get_permalink( $aid );?>"><?php the_title(); ?></a></strong> <?php echo lcfirst(THINGNAME)?>.</p>
 					</div>
 				</div>
 				
@@ -314,7 +337,9 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				
 				</div>
 
-      	<?php if (!$post_id) : //hide form if we had success ?>
+			
+		
+      	<?php if (!$post_id and !$must_login) : //hide form if we had success ?>
 				<form action="" id="bank106form" class="abank106form" method="post" action="" autocomplete="on">
 				
 				<div class="clearfix row">
@@ -476,8 +501,6 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 	
 	<?php endwhile; ?>	
 	
-	<?php else: ?>
-			Harrumph. Something is messed up. This form is only activated if you follow a link from a published <?php THINGNAME?>. I need some more information passed my way.
 	
 	<?php endif?>			
 	

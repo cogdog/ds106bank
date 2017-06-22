@@ -19,12 +19,8 @@ add_action( 'init', 'create_assignmentbank_tax' );
 add_action( 'init', 'post_type_assignments' );
 add_action( 'init', 'bank106_load_theme_options' );
 
-$args = array(
-    'width'         => 900,
-    'height'    	=> 60,
-    'default-image' => get_stylesheet_directory_uri() . '/images/default-header.png',
-);
-add_theme_support( 'custom-header', $args );
+
+
 
 /* 
 	Tell WordPress to run ds106bank_setup() when the 'after_setup_theme' hook is run.
@@ -99,6 +95,11 @@ function ds106bank_setup() {
 		);
 	
 		wp_insert_post( $page_data );
+	}
+	
+	if ( ds106bank_option('use_wp_login') ) {
+		add_filter( 'loginout', 'ds106bank_login_menu_customize' );
+		add_filter( 'wp_nav_menu_items', 'ds106bank_login_logout_link', 10, 2);
 	}
 	
 } // function ds106bank_setup
@@ -215,6 +216,8 @@ function ds106bank_custom_header_setup() {
 }
 
 add_action( 'after_setup_theme', 'ds106bank_custom_header_setup' );
+
+
 
 
 /*************************** OPTIONS STUFF ************************************/	
@@ -898,6 +901,55 @@ function cc_license_select_options ($curr) {
 	}
 	
 	return ($str);
+}
+
+/************************************* LOGIN STUFF **************************************/	
+
+function ds106bank_get_author_link() {
+	
+	
+	$current_user = wp_get_current_user();
+	$user_id = get_current_user_id();
+	
+	return '<a href="' . site_url() . '/author/' . $current_user->user_login  . '" class="btn btn-default">' . $current_user->display_name . '</a>';
+
+}
+
+
+// change the text of the login / logout link
+// h/t https://core.trac.wordpress.org/ticket/34356#comment:4
+
+function ds106bank_login_menu_customize( $link ) {
+
+        if ( ! is_user_logged_in() ) {
+        	
+        	// return to current page when logged in
+			return sprintf( '<a href="%s" class="btn btn-primary">%s</a>', wp_login_url( get_permalink() ), __( 'Sign In' ) );
+        } else {
+        
+        	// send to home page on logout
+			return sprintf( '<a href="%s" class="btn btn-primary">%s</a>', wp_logout_url( home_url() ), __( 'Sign Out' ) );
+        }
+
+        return $link;
+}
+
+// add a login / logout option to the menu, will work only if a menu is created in 
+// Appaearances -> menus (who does not want menus?)
+// h/t http://vanweerd.com/enhancing-your-wordpress-3-menus/#add_login
+
+function ds106bank_login_logout_link( $items, $args ) {
+        ob_start();
+        wp_loginout();
+        $loginoutlink = ob_get_contents();
+        ob_end_clean();
+        $items .= '<li>'. $loginoutlink .'</li>';
+        
+        if (  is_user_logged_in() ) {
+        	 $items .= '<li>'. ds106bank_get_author_link() .'</li>';
+        }
+        
+    	return $items;
 }
 	
 
