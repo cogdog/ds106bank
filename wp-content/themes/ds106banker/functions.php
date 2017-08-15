@@ -389,7 +389,8 @@ function update_assignment_tags( $post_id ) {
 		
 	// make a tag for the type of assignment, assign to both taxonomies
 	// for assignment examples and tutorials
-	if ( count( $assignmenttype_terms ) ) {
+	if ( (! isset( $assignmenttype_terms->errors ) )
+		 && count( $assignmenttype_terms ) ) {
 		$assignment_type = $assignmenttype_terms[0]->name . THINGNAME;
 		wp_set_object_terms( $post_id, $assignment_type , 'assignmenttags');
 		wp_set_object_terms( $post_id, $assignment_type , 'tutorialtags');
