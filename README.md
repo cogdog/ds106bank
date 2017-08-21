@@ -94,6 +94,13 @@ Note: Do not upload the zip for this GitHub repo to install the themes. It won't
 8. Create some stuff
 
 
+## Updating the Theme
+
+If you have ftp/sftp access to your site (or this can be done in a cpanel file manager), simply upload the new theme files to the `wp-content/themes` directory that includes the older version theme. 
+
+For those that lack direct file upload access or maybe that idea sends shivers down the spine, upload and activate the [Easy Theme and Plugin Upgrades](https://wordpress.org/plugins/easy-theme-and-plugin-upgrades/) plugin -- this will allow you to upload a newer version of a theme as a ZIP archive, the same way you add a theme by uploading.
+
+
 ------
 
 ### Setting up WP-PostRatings for Popularity Ratings
@@ -196,6 +203,8 @@ The one field that you may need to edit is the URL for the example of the assign
 3. Create a new page to **Submit Examples**. This form is used to allow visitors to add examples or tutorial for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Example/Tutorial Form**
 
 ![](images/add-example.jpg "Form to add a new example")
+
+Note that this page is never viewed directly on it's own. It will be be linked from a single item page with additional paramaters to construct the full submission form.
 
 4. Create a new page to manage the  **Help** pages for submission forms (this one must have a permalink/slug of **help**). The title and content of the page is displayed above the help content (specific for the type of content being created). 
 
