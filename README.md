@@ -26,8 +26,9 @@ For more details behind how this theme came to be see [related posts on CogDogBl
 
 ## What's New?
 
-* June 22, 2017: New Assignment Bank options to make use of Wordpress user accounts to track contributions, either optionally or make it require. In the latter case, submssion forms are hidden until a visitor has logged in.
 
+* Oct 16, 2017: New site option to include a general set of instructions to appear when responding to an assignment. In addition, each assignment can include extra instructions that are specific to it. Both of these will appear at the top of the form when used to submit a reponse.
+* June 22, 2017: New Assignment Bank options to make use of Wordpress user accounts to track contributions, either optionally or make it require. In the latter case, submssion forms are hidden until a visitor has logged in.
 * May 30, 2017: Added capability for thin header image atop nav bar that can be added via theme customizer (60px high)
 * Feb 2, 2017: There is a new field on adding a new "thing" for extra information, such as attribution credit for it's thumbnail image or other ancillary content. When published, it is displayed below the description in a blue info box. Javascript generated previews for Things and Examples updated to correctly mark paragraphs in content. Default thumbnail size bumped to 640x480 and CSS updated on archive listings to better preserve proportions.
 * Sep 29, 2016: Added a category-like taxonomy for things, another way to organize them. The primary "bins" are the "types" that appear on the main menu. But now you can also use categories to organize things across these bins. Because I was using the Wordpress Category taxonomy for responses, I had to create a new one, with an archive template. Through the options panel, you can choose to not use the categories; to allow site users to select categories when they create Things; or to leave that as an option for site moderators to do. You can also assign it a different label than "Category" when displayed on the site.
@@ -66,7 +67,15 @@ The one field that you may need to edit is the URL for the example of the assign
 
 ![](images/add-thing.jpg "Form to add a new thing")
 
-Besides descriptive information, a visitor can associate a new thing with one or more types, and can also add free form tags to better describe it.  If the ratings capability is enabled, they can assign a first seed value for the rating.
+Besides descriptive information, a creator of an assignment can associate a new item with one or more types, and can also add free form tags to better describe it.  If the ratings capability is enabled, they can assign a first seed value for the rating. 
+
+And if the option is used to let users submit to the site via a web form, they can add a set of instructions that are specific to just this assignment (the generalized instructions added to all assignments are entered as described below by a site option);
+
+![](images/assignment-specific-instructions.jpg "Create instructions specific to assignment")
+
+The combination of these two features can let you customize instructions:
+
+![](images/add-example-instructions.jpg "Extra assignment instructions")
 
 ## Theming
 
@@ -323,6 +332,9 @@ On the other hand, setting this option to be **Yes, links go to entry on the ban
 
 ![](wp-content/themes/ds106banker/images/response-form.jpg)
 
+As a new feature, you can add a set of instructions that will appear at the top of the example response submission form.
+
+![](wp-content/themes/ds106banker/images/general-form-instructions.jpg)
 
 For the link to the submission form to work, you must have previously created a Page that uses the **Submit Example/Tutorial Form** template. The drop down menu will list all pages on the site; choose the one that should house the form. If you want to not make the form public, just avoid adding menu links to it (or put a password on te form)
 

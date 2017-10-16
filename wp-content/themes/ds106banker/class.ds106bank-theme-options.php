@@ -432,6 +432,18 @@ class ds106bank_Theme_Options {
 					)
 		);
 
+		$this->settings['example_gen'] = array(
+			'title'   => __( 'Example Form Instructions' ),
+			'desc'    => __( 'Any additional details that should be added to the entry form for every submitted response (' . THINGNAME . ' specific instructions can also be added per item).' ),
+			'std'     => '',
+			'type'    => 'textarea',
+			'section' => 'general'
+		);
+
+
+
+
+
  		// Build array to hold options for select, an array of published pages on the site
 	  	$page_options = array( '--' => 'Select Page');
 
@@ -666,7 +678,7 @@ class ds106bank_Theme_Options {
 
 	public function display_general() {
 		// section heading for general setttings
-		echo '<p>These settings manaage the behavior and appearance of your bank. There are quite a few of them!</p>';		
+		echo '<p>These settings manage the behavior and appearance of your bank. There are quite a few of them!</p>';		
 	}
 
 

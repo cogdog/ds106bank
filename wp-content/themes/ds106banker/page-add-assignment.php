@@ -118,6 +118,8 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		$assignmentCC = 			$_POST['assignmentCC'];
  		$assignmentExtras = 		stripslashes(sanitize_text_field( $_POST['assignmentExtras'] ));
  		$assignment_thumb_id = 		$_POST['assignment_thumb_id'];
+ 		
+ 		$assignmentInstructions = 	stripslashes(sanitize_text_field( $_POST['assignmentInstructions'] )); 
 
  		if ($use_twitter_name) {
  		
@@ -268,10 +270,12 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					// user selected license
 					if ( $my_cc_mode == 'user' ) update_post_meta( $post_id,  'cc', $assignmentCC);
 					
-					// give it a count
+					// extra info for assignment
 					update_post_meta( $post_id,  'assignment_extras', $assignmentExtras );
-				
-				
+					
+					// specific instructions for assignment
+					update_post_meta( $post_id,  'assignment_instructions', $assignmentInstructions );
+					
 					// if we got an attachment id, then update meta data to indicate thumbnal
 					if ($assignment_thumb_id) update_post_meta ($post_id, '_thumbnail_id', $assignment_thumb_id );	
 				
@@ -511,6 +515,16 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 						
 						</div>
 						
+						<?php if ( ds106bank_option('example_via_form') ) : // use only if doing form subs?>
+						<div class="form-group">
+							<label for="assignmentInstructions"><?php echo THINGNAME?><?php _e(' Specific Information' , 'wpbootstrap' ) ?></label>
+							<span id="extrasHelpBlock" class="help-block">Insert instructions that are individualized for this item that will appear above the form for adding a response</span>
+							
+							<textarea name="assignmentInstructions" id="assignmentInstructions" rows="4" class="form-control" tabindex="16"  aria-describedby="extrasHelpBlock"><?php  echo $assignmentInstructions; ?></textarea>	
+						
+						</div>
+
+						<?php endif?>
 				
 					<?php if ( $my_cc_mode != 'none' ):?>
 						<!-- creative commons options -->

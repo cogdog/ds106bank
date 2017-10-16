@@ -14,6 +14,9 @@ add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_add_ex_scripts' );
 // type of submissions (in query string)
 $typ = $wp_query->query_vars['typ']; 
 
+// assignment id
+$aid = $wp_query->query_vars['aid']; 
+
 // flag to NOT use rich text editor and full preview features (default)	
 $use_full_editor = false;
 
@@ -35,14 +38,26 @@ if 	($typ == 'tut') {
 	add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_richtext_scripts' );
 
 	$sub_type = 'response';
+
+	// start with generalized instructions for all things
+	if ( !empty( ds106bank_option( 'example_gen' ) ) ) {
+				$feedback_msg = '<div class="alert alert-success" role="alert"><strong>' . ds106bank_option( 'example_gen' ) . "</strong></div>\n";
+	}
+
+	// add any assignment specific instructions if present
+	$assignment_instructions = get_post_meta( $aid, 'assignment_instructions', $single = true);
 	
+	if ( !empty( $assignment_instructions ) ) {
+				$feedback_msg .= '<div class="alert alert-success" role="alert">'  . $assignment_instructions  . "</div>\n";
+	}
+		
 	if ( ds106bank_option('link_examples') == 1 ) {
 
 		// enqueue jquery for simple text editor and preview
 		add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_simpletext_scripts' );
-
+		
 		// simple editor and instructions
-		$feedback_msg = '<div class="alert alert-info" role="alert">Enter all information in the form below to share your response to this ' . THINGNAME . '. Then <a href="#" class="btn btn-primary btn-xs disabled">update</a> the information to  verify that is entered correctly. Once entered, <a href="#" class="btn btn-success btn-xs disabled">submit</a> so it will be saved as an example for others to see.';
+		$feedback_msg .= '<div class="alert alert-info" role="alert">Enter all information in the form below to share your response to this ' . THINGNAME . '. Then <a href="#" class="btn btn-primary btn-xs disabled">update</a> the information to  verify that is entered correctly. Once entered, <a href="#" class="btn btn-success btn-xs disabled">submit</a> so it will be saved as an example for others to see.';
 
 	} else {
 		
@@ -52,19 +67,15 @@ if 	($typ == 'tut') {
 		// flag to use rich text editor and full preview features
 		$use_full_editor = true;
 	
-		$feedback_msg = '<div class="alert alert-info" role="alert">Enter all information in the form below and <a href="#" class="btn btn-primary btn-xs disabled">update</a> to verify that is entered correctly. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to finalize the entry. When satisfied, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form  and it will be saved to this site.';
+		$feedback_msg .= '<div class="alert alert-info" role="alert">Enter all information in the form below and <a href="#" class="btn btn-primary btn-xs disabled">update</a> to verify that is entered correctly. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to finalize the entry. When satisfied, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form  and it will be saved to this site.';
 		
 	}
 }
-
-
 
 // disable buttons
 $previewBtnState = ' disabled';
 $submitBtnState = ' disabled';
 
-// assignment id
-$aid = $wp_query->query_vars['aid']; 
 
 // start with nothing, honey
 $exampleURL = '';
@@ -75,7 +86,8 @@ if ( is_user_logged_in() ) {
 	
 	$current_user = wp_get_current_user();
 	
-	$feedback_msg .= '<br /><br />All responses submitted will be associated with your current login in as <strong>' . $current_user->display_name . '</strong>.' ;
+	// append note for login name if it is being used as option
+	if ( ds106bank_option('use_wp_login') ) $feedback_msg .= '<br /><br />All responses submitted will be associated with your current login in as <strong>' . $current_user->display_name . '</strong>.' ;
 
 	
 } else {
