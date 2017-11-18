@@ -10,6 +10,7 @@ This Wordpress Theme is modeled after the original [DS106 Open Assignment Bank](
 Other known instances of banks include:
 
 * [All The Toys](http://www.allthetoys.org/)
+* [Box of Magic Web Tricks](https://cog.dog/roo/box/) Alan Levine, ISS Institute Tour Workshops, Nov 2017
 * [Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
 * [Foodworks Assignment Bank](http://foodworks.middcreate.net/assignments/) Middlebury College
 * [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
