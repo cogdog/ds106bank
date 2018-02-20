@@ -6,7 +6,7 @@
 				
 					<div class="page-header">
  						<h1 class="archive_title h2">
-					    	<span><?php _e('All ' . THINGNAME . ' Responses and ' . ds106bank_option('helpthingname') . 's', "wpbootstrap"); ?> </span>
+					    	<span><?php _e('All ' . ds106bank_option( 'thingname' ) . ' Responses and ' . ds106bank_option('helpthingname') . 's', "wpbootstrap"); ?> </span>
 					    </h1>					</div>
 
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
@@ -40,7 +40,7 @@
 							
 							<h3 class="h2"><a href="<?php echo $the_real_permalink ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a> <small>(<?php echo ucfirst($extype)?>)</small> </h3>
 							
-							<p class="meta"><?php _e("Added", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php echo get_post_meta($post->ID, 'syndication_source', $single = true);?>, <?php echo $extype?>  for  <?php echo $assignment_str?> <?php echo THINGNAME?></p>
+							<p class="meta"><?php _e("Added", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php echo get_post_meta($post->ID, 'syndication_source', $single = true);?>, <?php echo $extype?>  for  <?php echo $assignment_str?> <?php echo ds106bank_option( 'thingname' )?></p>
 						
 						</header> <!-- end article header -->
 					

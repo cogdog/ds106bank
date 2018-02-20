@@ -174,7 +174,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		}
  		
 		if ($assignmentURL == '') {
- 				$errors['assignmentURL'] = '<span class="label label-danger">URL Missing or not Entered Correctly</span>-  please enter the full URL where the example for this <?php echo lcfirst(THINGNAME)?> can be found- it must start with "http://"';	 
+ 				$errors['assignmentURL'] = '<span class="label label-danger">URL Missing or not Entered Correctly</span>-  please enter the full URL where the example for this ' .  lcfirst(THINGNAME) . ' can be found- it must start with "http://"';	 
  		} // end url CHECK 	
  					
  		// check captcha

@@ -300,11 +300,23 @@ function wp_bootstrap_my_widget_tag_cloud_args( $args ) {
 function wp_bootstrap_add_tag_class( $taglinks ) {
 	if (!is_array($taglinks) ) {
     $tags = explode('</a>', $taglinks);
-    $regex = "#(.*tag-link[-])(.*)(' title.*)#e";
+    // $regex = "#(.*tag-link[-])(.*)(' title.*)#e";
+    $regex = "#(.*tag-link[-])(.*)(' title.*)#";
 
     foreach( $tags as $tag ) {
-    	$tagn[] = preg_replace($regex, "('$1$2 label tag-'.get_tag($2)->slug.'$3')", $tag );
+    	// $tagn[] = preg_replace($regex, "('$1$2 label tag-'.get_tag($2)->slug.'$3')", $tag );
+    	    	
+    	$tagn[] =  preg_replace_callback(
+    		$regex, 
+    		function($matches){
+            		return '$matches[1]$matches[2] label tag-'.get_tag($matches[2])->slug.'$matches[3]'; 
+    		}, 
+   	 		$input
+		);  
+    	
     }
+ 
+    
 
     $taglinks = implode('</a>', $tagn);
 

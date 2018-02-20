@@ -93,21 +93,21 @@ get_header(); ?>
 					$found_things = $wp_query->found_posts;				
 					// Because grammar
 					if ( $found_things == 1 ) {
-						$plural = '';
+						$plural = ds106bank_option( 'thingnames' );
 						$verb = "is";
 					} else {
-						$plural = 's';
+						$plural = ds106bank_option( 'pluralthings' );
 						$verb = "are";
 					}
 
 					
 					?>				
 					<div class="page-header">
-						<h1 class="archive_title"><?php echo $term->name;?> <?php echo THINGNAME;?>s</h1>
+						<h1 class="archive_title"><?php echo $term->name;?> <?php echo $plural;?></h1>
 						<p><em><?php echo $term->description;?></em></p>
 						
 						<form id="taxassignmentview" method="get">
-						<p>There <?php echo $verb?>  <strong><?php echo $found_things;?></strong> <?php echo $term->name;?> <?php echo  THINGNAME . $plural?>. View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
+						<p>There <?php echo $verb?>  <strong><?php echo $found_things;?></strong> <?php echo $term->name;?> <?php echo   $plural?>. View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
 							<?php
 							// remove any query string from current URL
 							$base_url = strtok( $_SERVER["REQUEST_URI"], '?' );
@@ -179,7 +179,7 @@ get_header(); ?>
 						<!-- thing content -->
 						<section class="post_content">
 						
-							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>"  class="btn btn-primary"><?php echo THINGNAME?> Details</a><?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
+							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>"  class="btn btn-primary"><?php echo ds106bank_option( 'thingname' )?> Details</a><?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					
 						</section> <!-- end article section -->
 						
@@ -217,7 +217,7 @@ get_header(); ?>
 									<header>
 									</header>
 									<section class="post_content">
-										<p><?php _e("Hmmm, Nothing here. You should create some " . THINGNAME . "s to go here!", "wpbootstrap"); ?></p>
+										<p><?php _e("Hmmm, Nothing here. You should create some " . ds106bank_option( 'pluralthings' ) . " to go here!", "wpbootstrap"); ?></p>
 									</section>
 									<footer>
 									</footer>

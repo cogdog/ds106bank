@@ -73,10 +73,10 @@ get_header(); ?>
 					
 					?>
 					<div class="page-header">
-						<h1 class="archive_title">All <?php echo THINGNAME?>s</h1>
+						<h1 class="archive_title">All <?php echo ds106bank_option( 'pluralthings' )?></h1>
 						
 						<form action="" id="taxassignmentview" method="get" action="">
-						<p>There are <strong><?php echo $wp_query->found_posts;?></strong> <?php echo lcfirst(THINGNAME);?>s.  View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
+						<p>There are <strong><?php echo $wp_query->found_posts;?></strong> <?php echo lcfirst(ds106bank_option( 'pluralthings' ));?>s.  View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
 							<?php
 							// remove any query string from current URL
 							$base_url = strtok( $_SERVER["REQUEST_URI"], '?' );
@@ -157,7 +157,7 @@ get_header(); ?>
 					
 						<section class="post_content">
 						
-							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo THINGNAME?>s</a></a>
+							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo ds106bank_option( 'pluralthings' )?></a></a>
 							
 							<?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					

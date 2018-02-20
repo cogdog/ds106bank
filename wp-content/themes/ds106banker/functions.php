@@ -11,26 +11,27 @@ URL: http://cogdog.info/
 // Exit if accessed directly outside of WP
 if ( !defined('ABSPATH')) exit;
 
+/* -------------------------------------- SET UP -------------------------------------- */	
 
-/*************** SET UP *****************/	
-
+// all the inits
 
 add_action( 'init', 'create_assignmentbank_tax' );
-add_action( 'init', 'post_type_assignments' );
-add_action( 'init', 'bank106_load_theme_options' );
+add_action( 'init', 'post_type_assignments');
+add_action( 'init', 'bank106_load_theme_options', 12 );
+add_action( 'init', 'ds106bank_setup', 15 );
 
 
+function bank106_load_theme_options() {
+	// load theme options all available elsewhere via ds106bank_option("[optionname]")
 
+	if ( file_exists( get_stylesheet_directory()  . '/class.ds106bank-theme-options.php' ) ) {
+		include_once( get_stylesheet_directory()  . '/class.ds106bank-theme-options.php' );
+	}
+}
 
-/* 
-	Tell WordPress to run ds106bank_setup() when the 'after_setup_theme' hook is run.
-	Note that this function is hooked into the after_setup_theme hook, which runs
-	before the init hook. There was a good reason for this which now eludes me
-*/
-add_action( 'init', 'ds106bank_setup' );
 
 function ds106bank_setup() { 
-/* Sets up theme defaults used widely  */ 
+/* Sets up theme defaults  */ 
 
 	// dimensions for thumbnails
 	define('THUMBW', get_option( 'thumbnail_size_w' ) );
@@ -38,65 +39,7 @@ function ds106bank_setup() {
 	
 	// width for single page media
 	define('MEDIAW', get_option( 'medium_size_w' ) );
-	
-	// loaded from theme options()
-	define('THINGNAME', ds106bank_option('thingname') ); // the kind of things here, should be singular
-	
-	// look for existence of pages with the appropriate template, if not found
-	// make 'em
-	if (! page_with_template_exists( 'page-add-assignment.php' ) ) {
-  
-		// create the add a thing page if it does not exist
-		// backdate creation date 2 days just to make sure they do not end up future dated
 		
-		$page_data = array(
-			'post_title' 	=> 'Add a New ' . THINGNAME,
-			'post_content'	=> 'Use this form to add a new ' . THINGNAME,
-			'post_name'		=> 'add-' . strtolower(THINGNAME),
-			'post_status'	=> 'publish',
-			'post_type'		=> 'page',
-			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
-			'page_template'	=> 'page-add-assignment.php',
-		);
-	
-		wp_insert_post( $page_data );
-	}
-	
-	if (! page_with_template_exists( 'page-add-example.php' ) ) {
-  
-		// create the add example/tutorial page if it does not exist
-		$page_data = array(
-			'post_title' 	=> 'Add a New Example',
-			'post_content'	=> 'Insert instructions here for adding an exmaple or tutorial to the site',
-			'post_name'		=> 'add-example',
-			'post_status'	=> 'publish',
-			'post_type'		=> 'page',
-			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
-			'page_template'	=> 'page-add-example.php',
-		);
-  	
-  		wp_insert_post( $page_data );
-  	}
-	
-	if (! page_with_template_exists( 'page-assignment-menu.php' ) ) {
-  
-		// create the Write page if it does not exist
-		$page_data = array(
-			'post_title' 	=>  THINGNAME . ' Bank',
-			'post_content'	=> 'Insert welcome info here.',
-			'post_name'		=> 'assignment-menu',
-			'post_status'	=> 'publish',
-			'post_type'		=> 'page',
-			'post_author' 	=> 1,
-			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
-			'page_template'	=> 'page-assignment-menu.php',
-		);
-	
-		wp_insert_post( $page_data );
-	}
-	
 	if ( ds106bank_option('use_wp_login') ) {
 		add_filter( 'loginout', 'ds106bank_login_menu_customize' );
 		add_filter( 'wp_nav_menu_items', 'ds106bank_login_logout_link', 10, 2);
@@ -205,6 +148,7 @@ add_filter('mce_buttons_2','bank106_tinymce_2_buttons');
 
 // ----- enable custom headers, a wee one across the top
 
+add_action( 'after_setup_theme', 'ds106bank_custom_header_setup' );
 
 function ds106bank_custom_header_setup() {
     $args = array(
@@ -215,9 +159,118 @@ function ds106bank_custom_header_setup() {
     add_theme_support( 'custom-header', $args );
 }
 
-add_action( 'after_setup_theme', 'ds106bank_custom_header_setup' );
+
+// ----- create action to handle request for theme specific page setup
+
+add_action( 'admin_post_make_bank_pages', 'prefix_admin_make_bank_pages' );
 
 
+function prefix_admin_make_bank_pages() {
+	// look for existence of pages with the appropriate template, if not found
+	// make 'em. Called from the Assignmen Options.
+	
+	
+	if (! page_with_template_exists( 'page-add-assignment.php' ) ) {
+  
+		// create the add a thing page if it does not exist
+		// backdate creation date 2 days just to make sure they do not end up future dated
+		
+		$thingname = ds106bank_option( 'thingname' );
+		
+		$page_data = array(
+			'post_title' 	=> 'Add a New ' . $thingname,
+			'post_content'	=> 'Use this form to add a new ' . $thingname,
+			'post_name'		=> 'add-' . strtolower($thingname),
+			'post_status'	=> 'publish',
+			'post_type'		=> 'page',
+			'post_author' 	=> 1,
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
+			'page_template'	=> 'page-add-assignment.php',
+		);
+	
+		wp_insert_post( $page_data );
+		
+		// for feedback
+		$pages_made[] = '<a href="' . site_url('/') . 'add-' . strtolower($thingname) . '">' . 'Add a New ' . $thingname . '</a>';
+	}
+	
+	if (! page_with_template_exists( 'page-add-example.php' ) ) {
+  
+		// create the add example/tutorial page if it does not exist
+		$page_data = array(
+			'post_title' 	=> 'Add a New Example',
+			'post_content'	=> 'Insert instructions here for adding an exmaple or tutorial to the site',
+			'post_name'		=> 'add-example',
+			'post_status'	=> 'publish',
+			'post_type'		=> 'page',
+			'post_author' 	=> 1,
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
+			'page_template'	=> 'page-add-example.php',
+		);
+		
+		
+		// for feedback
+		$pages_made[] = '<a href="' . site_url('/') . 'add-example' . '">' . 'Add a New Example</a>';
+		
+  		wp_insert_post( $page_data );
+  	}
+	
+	if (! page_with_template_exists( 'page-assignment-menu.php' ) ) {
+  
+		// create the Write page if it does not exist
+		$page_data = array(
+			'post_title' 	=>  $thingname . ' Bank',
+			'post_content'	=> 'Insert welcome info here.',
+			'post_name'		=> 'assignment-menu',
+			'post_status'	=> 'publish',
+			'post_type'		=> 'page',
+			'post_author' 	=> 1,
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
+			'page_template'	=> 'page-assignment-menu.php',
+		);
+	
+		wp_insert_post( $page_data );
+		
+		// for feedback
+		$pages_made[] = '<a href="' . site_url('/') . 'assignment-menu' . '">' . $thingname . ' Bank</a> (Change the Settings -&gt; Reading Options to use for a Static Page this one)';
+
+	}
+	
+if (! page_with_template_exists( 'page-random.php' ) ) {
+  
+		// create the Write page if it does not exist
+		$page_data = array(
+			'post_title' 	=>  'Random',
+			'post_content'	=> 'This page dsipalys nothing, all the fun is in the template. It redirects a viewer to a random thing.',
+			'post_name'		=> 'random',
+			'post_status'	=> 'publish',
+			'post_type'		=> 'page',
+			'post_author' 	=> 1,
+			'post_date' 	=> date('Y-m-d H:i:s', time() - 172800),
+			'page_template'	=> 'page-random.php',
+		);
+	
+		wp_insert_post( $page_data );
+		
+		// for feedback
+		$pages_made[] = '<a href="' . site_url('/') . 'random' . '">Random ' . ds106bank_option( 'thingname' ) . ' </a>';
+
+	}
+	
+	if ( $pages_made ) {
+		echo 'The following special pages used by this theme have been built for you. Edit the content to customize an introduction. <ul>';
+		foreach ($pages_made as $new_page) {
+			echo '<li>' . $new_page . '</li>';		
+		}
+		
+		echo '<ul>';
+	} else {
+		echo 'Woot! All necessary theme pages are already created. <a href="' . admin_url('edit.php?post_type=page') . '">Review and edit Pages</a>';
+	}
+
+
+
+}
 
 
 /*************************** OPTIONS STUFF ************************************/	
@@ -233,13 +286,6 @@ function ds106bank_enqueue_options_scripts() {
 	wp_enqueue_script( 'bank106_options_js' );
 }
 
-function bank106_load_theme_options() {
-	// load theme options Settings
-
-	if ( file_exists( get_stylesheet_directory()  . '/class.ds106bank-theme-options.php' ) ) {
-		include_once( get_stylesheet_directory()  . '/class.ds106bank-theme-options.php' );
-	}
-}
 
 /*************************** CONTENT TYPES ***********************************/		
 
@@ -345,7 +391,7 @@ function bank106_set_custom_edit_examples_columns( $columns ) {
     unset($columns['categories']); //remove categories
     
     // add column for the THINGNAMEs
-    $columns['thing'] = __( THINGNAME, 'bonestheme' );
+    $columns['thing'] = __( ds106bank_option( 'thingname' ), 'bonestheme' );
     return $columns;
 }
 
@@ -391,13 +437,13 @@ function update_assignment_tags( $post_id ) {
 	// for assignment examples and tutorials
 	if ( (! isset( $assignmenttype_terms->errors ) )
 		 && count( $assignmenttype_terms ) ) {
-		$assignment_type = $assignmenttype_terms[0]->name . THINGNAME;
+		$assignment_type = $assignmenttype_terms[0]->name . ds106bank_option( 'thingname' );
 		wp_set_object_terms( $post_id, $assignment_type , 'assignmenttags');
 		wp_set_object_terms( $post_id, $assignment_type , 'tutorialtags');
 	}	
     
     // create unique tag names based on post ids
-    $assignment_tag = THINGNAME . $post_id; 
+    $assignment_tag = ds106bank_option( 'thingname' ) . $post_id; 
     $tutorial_tag =  'Tutorial' . $post_id;
      
     if ( term_exists(  $assignment_tag, 'assignments') == 0) {
@@ -558,7 +604,6 @@ function create_assignmentbank_tax() {
 			'hierarchical' => false,
 		)
 	);
-
 }
 
 
@@ -592,15 +637,14 @@ function bank106_update_tax ( $oldthingname, $newthingname ) {
 		if ($count > 0 ) {
 			// update the terms if we foind 
 			wp_update_term( $term->id, 'tutorialtags', array( 'name' => $newtag ) );
-		}
-		
+		}		
 	}
 }
 
 
 function get_examples_type_by_tax ( $post_id ) {
 	// identifies is an examples post type is a response (internallly called "example") or a tutorial
-	// by looking for taxonomis present. Needed because of the mixing of both in one content type. #hindsight
+	// by looking for taxonomies present. Needed because of the mixing of both in one content type. #hindsight
 	
 	// look first for assignment tags
 	$myterms = wp_get_post_terms( $post_id, 'assignmenttags', array('fields' => 'ids') );
@@ -622,17 +666,18 @@ function is_url_embeddable( $url ) {
 // test by by string matching
 	
 	$allowed_embeds = array(
-					'outube.com/watch?',
-					'outu.be',
-					'lickr.com/photos',
+					'youtube.com/watch?',
+					'youtu.be',
+					'flickr.com/photos',
 					'flic.kr',
-					'imeo.com', 
-					'oundcloud.com',
-					'nstagram.com',
-					'witter.com',
-					'ine.co',
-					'mgur.com',
-					'nimoto.com'
+					'vimeo.com', 
+					'soundcloud.com',
+					'vine.co',				
+					'instagram.com',
+					'twitter.com',
+					'imgur.com',
+					'animoto.com',
+					'giphy.com',
 	);
 	
 	// walk the array til we get a match
@@ -656,7 +701,8 @@ function url_is_video ($url) {
 					'soundcloud.com',
 					'vine.co',
 					'instagram.com',
-					'animoto.com'
+					'animoto.com',
+					'giphy.com'
 	);
 
 
@@ -672,12 +718,9 @@ function url_is_video ($url) {
 }
 
 
-
-
 function get_thing_icon ($pid, $imgsize, $imgclass = "thing-pic") {
 // Display the thumbnail for a thing; assume by default it's for a single assignment (class= 'thing-pic')
 // For an archive view ($imgclass = 'thing-archive') we will use embedded media as icon (if option set)
-	
 	
 	if ( $imgclass == "thing-archive" AND ds106bank_option('media_icon')) {
 		// try to use example media as icon if its embeddable and option set to look for embeddable icon
@@ -712,7 +755,6 @@ function get_example_media ( $pid, $metafieldname='fwp_url' ) {
 
 	$str = ''; // hold output
 	
-	
 	if ( get_post_meta( $pid, $metafieldname , true ) ) {
 		// url for example of assignment
 				
@@ -721,8 +763,7 @@ function get_example_media ( $pid, $metafieldname='fwp_url' ) {
 		// case to handle an example with no URL, return empty string
 		// Just check the first character because people seem to think this is a hash tag!
 		if ($assignmentURL[0] == "#") return ('');
-		
-		
+			
 		if ( url_is_type( $assignmentURL, array( 'mp3' ) ) ) {
 			// option for href to make as a download
 			$download_option = ' download';
@@ -842,7 +883,7 @@ function ds106bank_alm_installed() {
 		return ('The Ajax Load More plugin <strong>is installed</strong> and will be used to sequentially load responses (with the value entered) if there are many of them. Check documentation tab for details on setting up the custom template in the plugin.'); 
 		
 	} else {
-		return ('Ajax Load More plugin <strong>is not installed</strong>. This means all example responses will be loaded on a single ' . THINGNAME . ' and the number entered is ignored. If you start getting many responses, you may want to install this plugin. '); 
+		return ('Ajax Load More plugin <strong>is not installed</strong>. This means all example responses will be loaded on a single ' . ds106bank_option( 'thingname' ) . ' and the number entered is ignored. If you start getting many responses, you may want to install this plugin. '); 
 	}
 }
 
@@ -850,7 +891,7 @@ function ds106bank_alm_installed() {
 
 /****************** FOR CREATIVE COMMONS LICENSING  **************************/	
 function cc_license_html ($license, $author='', $yr='') {
-	// outputs the proper license for a THINGNAME
+	// outputs the proper license for a thingname
 	// $license is abbeviation. author is from post metadatae, Yr is from post date
 	
 	if ( !isset( $license ) or $license == '' ) return '';
@@ -1088,7 +1129,6 @@ function bank106_get_page_id_by_slug( $page_slug ) {
 	}
 }
 
-
 /**
  * Recursively sort an array of taxonomy terms hierarchically. Child categories will be
  * placed under a 'children' member of their parent term.
@@ -1124,9 +1164,9 @@ function make_links_clickable( $text ) {
 function bank106_wp_ratings_installed() {
 	// return status for WP-POSTRATINGS
 	if ( function_exists('the_ratings' ) ) {
-		return ('WP-PostRatings <strong>is installed</strong> and will be applied to each ' . lcfirst(THINGNAME) . ' so visitors can crowdsource it\'s rating or popularity . Check documentation tab for details. To specify the scale and prompt see <a href="' . admin_url( 'admin.php?page=wp-postratings/postratings-options.php') .'">ratings options</a> or <a href="' . admin_url( 'admin.php?page=wp-postratings/postratings-templates.php') .'">ratings display templates</a>.'); 
+		return ('WP-PostRatings <strong>is installed</strong> and will be applied to each ' . lcfirst(ds106bank_option( 'thingname' )) . ' so visitors can crowdsource it\'s rating or popularity . Check documentation tab for details. To specify the scale and prompt see <a href="' . admin_url( 'admin.php?page=wp-postratings/postratings-options.php') .'">ratings options</a> or <a href="' . admin_url( 'admin.php?page=wp-postratings/postratings-templates.php') .'">ratings display templates</a>.'); 
 	} else {
-		return ('WP-PostRatings <strong>is not installed</strong>. To enable public ratings of ' . lcfirst(THINGNAME) . 's install the <a href="http://wordpress.org/plugins/wp-postratings/" target="_blank">WP-PostRatings plugin</a> via the Add New Plugin interface. Check the documentation tab for details on options for display of the ratings.'); 
+		return ('WP-PostRatings <strong>is not installed</strong>. To enable public ratings of ' . lcfirst(ds106bank_option( 'pluralthings' )) . ' install the <a href="http://wordpress.org/plugins/wp-postratings/" target="_blank">WP-PostRatings plugin</a> via the Add New Plugin interface. Check the documentation tab for details on options for display of the ratings.'); 
 	}
 }
 
@@ -1273,7 +1313,7 @@ function bank106_insert_attachment( $file_handler, $post_id) {
 add_shortcode('thingcount', 'getThingCount');
 
 function getThingCount() {
-	return wp_count_posts('assignments')->publish  . ' ' . THINGNAME . 's';
+	return wp_count_posts('assignments')->publish  . ' ' . ds106bank_option( 'pluralthings' );
 }
 
 // ----- short code for number of examples in the bank
