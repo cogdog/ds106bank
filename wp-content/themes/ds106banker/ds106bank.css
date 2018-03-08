@@ -6,7 +6,94 @@
     I'd make a copy of this 'cause any future updates will wipe it out. I should do it
     more elegantly, but oh well                                                         */                                                                                                                                                
                                                                                                                                 
-                                                                           
+/* ------------------------------= UI Prefs =----------------------------------- */
+
+
+
+body, html {
+   font-size: 100%;
+}
+
+
+h1,
+.h1 {
+    font-size: 2.25rem;
+}
+
+h2,
+.h2 {
+    font-size: 1.875rem;
+}
+
+h3,
+.h3 {
+    font-size: 1.5rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.625rem;
+}
+
+h4,
+.h4 {
+    font-size: 1.125rem;
+}
+
+h5,
+.h5 {
+    font-size: .875rem
+}
+
+h6,
+.h6 {
+    font-size: 0.75rem;
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
+
+}
+
+p {
+    margin: 0 0 0.65rem;
+}
+
+blockquote {
+    padding: 0.625rem 1.25rem;
+    margin: 0 0 1.25rem;
+    font-size: 1.09rem;
+}
+
+
+.lead {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+}
+
+.page-header {
+    padding-bottom: 0.56rem;
+    margin: 2.5rem 0 1.25rem;
+}
+
+
+@media (min-width:768px) {
+    .lead {
+        font-size: 1.31rem;
+        line-height: 2rem;
+    }
+}  
+
+
+figure {
+    margin: 1rem 2.5rem
+}  
+
+hr {
+    margin-top: 1.25rem;
+    margin-bottom:  1.25rem;
+}  
+
+ul,
+ol {
+    margin-bottom: 0.625rem;
+}
+                                                                     
 
 /* --------------------------------= General STUFF =----------------------------------- */
 
@@ -24,7 +111,7 @@
 }
 
 p.meta, .post-ratings {
-  font-size: small;
+  font-size: 0.9rem;
 }
 
 p.attribution {
@@ -72,6 +159,11 @@ p.wp-caption-text {
     font-size: 90%;
     padding-bottom: 2px;
     border-bottom: 2px dotted rgb(234, 240, 240)
+}
+
+img#thingthumb {
+    width: 100%;
+    height: auto;
 }
 
 
@@ -213,7 +305,7 @@ article.thing-archive section.post_content p, article.type-assignments #content 
 
 #bank106form  .help-block {
   line-height: 1.1;
-  font-size: 0.9em;
+  font-size: 0.9rem;
   font-style: italic;
 }
 
@@ -224,7 +316,7 @@ article.thing-archive section.post_content p, article.type-assignments #content 
 }
 
 .group-span-filestyle .buttonText {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-variant: normal;
   text-transform: lowercase;
 }
@@ -237,3 +329,6 @@ article.thing-archive section.post_content p, article.type-assignments #content 
 	width: 60%;
 	height: 150px;
 }
+
+
+
