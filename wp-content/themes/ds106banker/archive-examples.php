@@ -6,7 +6,26 @@
 				
 					<div class="page-header">
  						<h1 class="archive_title h2">
-					    	<span><?php _e('All ' . ds106bank_option( 'thingname' ) . ' Responses and ' . ds106bank_option('helpthingname') . 's', "wpbootstrap"); ?> </span>
+ 						
+ 							<?php
+ 							
+ 								switch( ds106bank_option( 'show_ex' ) ) {
+									case 'ex':
+										$title_string = ' Responses';
+										break;
+									case 'tut':
+										$title_string = ' ' . ds106bank_option('helpthingname') . 's';
+										break;
+									case 'both':
+										$title_string = ' Responses and ' . ds106bank_option('helpthingname') . 's';
+										break;	
+									case 'none':
+										$title_string = ' in the universe (check your settings, eh?)';
+										break;						
+ 								}
+ 							
+ 							?>
+					    	<span><?php _e('All ' . ds106bank_option( 'thingname' ) . $title_string , "wpbootstrap"); ?> </span>
 					    </h1>					</div>
 
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>

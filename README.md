@@ -7,7 +7,7 @@ Got a question? Suggestion? Feature Requests? Problem? A surplus of money? Pleas
 ## What Can You Build With This?
 This Wordpress Theme is modeled after the original [DS106 Open Assignment Bank](http://assignments.ds106.us/) developed for the open digital storytelling course [DS106](http://ds106.us).
 
-Other known instances of banks include:
+The banks we know of include:
 
 * [All The Toys](http://www.allthetoys.org/)
 * [Box of Magic Web Tricks](https://cog.dog/roo/box/) Alan Levine, ISS Institute Tour Workshops, Nov 2017
@@ -16,6 +16,7 @@ Other known instances of banks include:
 * [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
 * [Instructional Technology Assignments](http://tcoffman.org/INDT/) INDT501 at University of Mary Washington
 * [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
+* [Ontario Extend Activity Bank](https://extend-bank.ecampusontario.ca/)
 * [OER's for Transitional Learning](http://ctl.openlcc.net/oer/) Lansing Community College
 * [Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
 * [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
@@ -27,7 +28,7 @@ For more details behind how this theme came to be see [related posts on CogDogBl
 
 ## What's New?
 
-
+* Mar 12, 2018: CSS support for [User Interface Options plugin](https://github.com/fluid-project/uio-wordpress-plugin)
 * Oct 16, 2017: New site option to include a general set of instructions to appear when responding to an assignment. In addition, each assignment can include extra instructions that are specific to it. Both of these will appear at the top of the form when used to submit a reponse.
 * June 22, 2017: New Assignment Bank options to make use of Wordpress user accounts to track contributions, either optionally or make it require. In the latter case, submssion forms are hidden until a visitor has logged in.
 * May 30, 2017: Added capability for thin header image atop nav bar that can be added via theme customizer (60px high)
@@ -445,7 +446,8 @@ Because of the way styles are loaded, the typical child theme for the Assignment
 Any custom style over-rides should be added to [style.css](ds106banker/ds106bank.css). If you add additional styles, make a back up copy as updates to this theme will override your edits.
 
 ### Other Suggested plugins
-The following plugins are installed on the [demo site](http://bank.ds106.us/) to create useful sidebar/footer Widgets
+
+The following plugins are useful for a bank.
 
 * [Flexible Post Widget](http://wordpress.org/plugins/flexible-posts-widget/‎) provides a widget that can list the custom post types used in the theme; as used in the footer of the demo site, it can provide a  widget listing of randomly ordered "things" and "examples"
 
@@ -460,6 +462,9 @@ The following plugins are installed on the [demo site](http://bank.ds106.us/) to
 ```
 <input type="hidden" name="post_type" value="assignments" />
 ```
+
+* This theme's stylesheet has been set up to work with the Fluid Project [User Interface Options Wordpress plugin](https://github.com/fluid-project/uio-wordpress-plugin) which adds a series of accessibility options to a site. This is only made available when the plugin is activated.
+
 
 -----
 

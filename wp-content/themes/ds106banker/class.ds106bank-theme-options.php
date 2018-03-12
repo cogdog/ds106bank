@@ -13,6 +13,9 @@ class ds106bank_Theme_Options {
 	/* Initialize */
 	function __construct() {
 
+		// be styling
+		$this->styles();
+		
 		// This will keep track of the checkbox options for the validate_settings function.
 		$this->checkboxes = array();
 		$this->settings = array();
@@ -22,7 +25,7 @@ class ds106bank_Theme_Options {
 		
 		// Sections for the options, always have General and Reset
 		$this->sections['general'] = __( 'General Settings' );
-		$this->sections['types']   = __( ds106bank_option( 'thingname' ) . ' Types' );
+		$this->sections['types']   = __( 'Types of ' . ds106bank_option( 'pluralthings' ) );
 		$this->sections['reset']   = __( 'Reset Options to Defaults' );
 		
 
@@ -53,12 +56,17 @@ class ds106bank_Theme_Options {
 
 	}
 	
-	
 	/* HTML to display the theme options page and it's tabs */
 	public function display_page() {
+		$settings_headings = array('theme_setup' => 'Theme Setup', 'thing_heading' => 'Things', 'notify_heading' => 'Notifications', 'twitter_heading' => 'Twitter', 'thumbnail_heading' => 'Media', 'cc_heading' => 'Licensing', 'ratings_heading' => 'Ratings', 'examples_heading' => 'Responses and Tutorials', 'login_heading' => 'Login', 'syndication_heading' => 'Syndication', 'captcha_heading' => 'Captcha', 'thing_type_heading' => 'Organize Types', 'type_mod_heading' => 'Edit Types', 'reset_heading' => 'Reset Settings');
+		
+		foreach ($settings_headings as $label => $heading) {
+			$nav .= '<a href="#' . $label . '" class="button-primary">' . $heading . '</a>';
+		}
 		
 	 	echo '<div class="wrap">
-		<h1>Assignment Bank Options</h1>';
+		<h1>Assignment Bank Options</h1><p>' . $nav . '</p>' ;
+		
 		
 		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == true ) {
 			echo '<div class="notice notice-success"><p>' . __( 'Theme options updated.' ) . '</p></div>';
@@ -78,7 +86,7 @@ class ds106bank_Theme_Options {
 		
 		// do not forget a button!
 		echo  '<p class="submit"><input name="Submit" type="submit" class="button-primary" value="' . __( 'Save Changes' ) . '" /></p>
-		</form>
+		</form><p>'  . $nav . '</p>
 		</div>';
 		
 		// some extra jQuery suff to make the forms even more spiffier
@@ -114,6 +122,12 @@ class ds106bank_Theme_Options {
 		</script>';
     }
 
+		/* Insert custom CSS */
+		public function styles() {
+			wp_register_style( 'ds106bank-admin', get_stylesheet_directory_uri() . '/ds106bank-options.css' );
+			wp_enqueue_style( 'ds106bank-admin' );
+		}
+    
 	/*  Display documentation in a tab */
 	public function display_docs() {	
 		// This displays on the "Documentation" tab. 
@@ -124,7 +138,7 @@ class ds106bank_Theme_Options {
 		<a class="nav-tab" href="?page=ds106bank-options">Settings</a>
 		<a class="nav-tab nav-tab-active" href="?page=ds106bank-docs">Documentation</a></h2>';
 		
-		// suck in a whack of HTML
+		// doc tab content in HTML
 		include( get_stylesheet_directory() . '/includes/ds106bank-theme-options-docs.php');
 		
 		echo '</div>';		
@@ -134,14 +148,39 @@ class ds106bank_Theme_Options {
 
 	/* Define all settings and their defaults */
 	public function get_settings() {
-	
-		/* General Settings
-		===========================================*/
-	
+		
+		// ---------- tool to make the necessary pages
+		$this->settings['theme_setup'] = array(
+			'section' => 'general',
+			'title'   => '', // Not used for headings.
+			'desc'	 => 'Theme Setup',
+			'std'    => 'When first set up or at any time check to <a href="' . admin_url('admin-post.php?action=make_bank_pages') . '" target="_blank" class="button-secondary">Create Theme Specific Pages</a>.',
+			'type'    => 'heading'
+		);
+		
+		
+		// ---------- The Things
+		
+		$this->settings['thing_heading'] = array(
+			'section' => 'general',
+			'title'   => '', // Not used for headings.
+			'desc'	 => 'Things in this Bank',
+			'std'    => '',
+			'type'    => 'heading'
+		);		
+
 		$this->settings['thingname'] = array(
 			'title'   => __( 'Name for Things in the Bank' ),
-			'desc'    => __( 'What is the name for the kind of thing banked here? Assignment? Challenge? Task? Must be singular and should not contain numbers (0-9).' ),
+			'desc'    => __( 'What is the name for the kind of thing banked here? Assignment? Challenge? Task? Must be singular and should not contain numbers (0-9) or spaces.' ),
 			'std'     => 'Assignment',
+			'type'    => 'text',
+			'section' => 'general'
+		);
+		
+		$this->settings['pluralthings'] = array(
+			'title'   => __( 'Plural Name for the Things' ),
+			'desc'    => __( 'Usually it\'s as simple as adding an "s" but what if it ends in "y"? Or is some weird Latin word?' ),
+			'std'     => 'Assignments',
 			'type'    => 'text',
 			'section' => 'general'
 		);
@@ -149,58 +188,24 @@ class ds106bank_Theme_Options {
 		$this->settings['new_thing_status'] = array(
 			'section' => 'general',
 			'title'   => __( 'Status For New Things' ),
-			'desc'    => __( 'Set to draft to moderate submissions via web form' ),
+			'desc'    => __( 'Set to draft to moderate submissions via web form.' ),
 			'type'    => 'radio',
 			'std'     => 'publish',
 			'choices' => array(
 				'publish' => 'Publish immediately',
 				'draft' => 'Set to draft',
 			)
-		);		
- 
- 		$this->settings['thing_order'] = array(
-			'section' => 'general',
-			'title'   => __( 'Display Order' ),
-			'desc'    => __( 'On the main index, the order in which ' . lcfirst(THINGNAME) . 's are listed' ),
-			'type'    => 'radio',
-			'std'     => 'name',
-			'choices' => array(
-				'name' => 'Title',
-				'id' => 'Date Created',
-				'count' => 'Count',
-			)
-		);		
-
- 		$this->settings['thing_orderby'] = array(
-			'section' => 'general',
-			'title'   => __( 'Display Order Sorting' ),
-			'desc'    => __( 'Which to list first?' ),
-			'type'    => 'radio',
-			'std'     => 'ASC',
-			'choices' => array(
-				'ASC' => 'Ascending',
-				'DESC' => 'Descending',
-			)
-		);		
-
-		$this->settings['exlen'] = array(
-			'title'   => __( 'Excerpt Length' ),
-			'desc'    => __( 'Number of words to show for content when displayed on an index or archive page' ),
-			'std'     => '55',
-			'type'    => 'text',
-			'section' => 'general'
 		);
-		
 
 		$this->settings['use_thing_cats'] = array(
 			'section' => 'general',
-			'title'   => __( 'Use Categories for ' . THINGNAME . 's' ),
+			'title'   => __( 'Use Categories for ' . ds106bank_option( 'pluralthings' ) ),
 			'desc'    => __( 'Offer another way to organize them across types. You can present available categories on the form to let users assign them, or do it on the back end as a task for site admins.'),
 			'type'    => 'radio',
 			'std'     => '0',
 			'choices' => array (
 							'0' => 'No, do not use categories',
-							'1' => 'Yes, and let ' .  THINGNAME . ' creators assign categories',
+							'1' => 'Yes, and let ' .  ds106bank_option( 'thingname' ) . ' creators assign categories',
 							'2' => 'Yes, but leave it for admins to assign categories'
 					)
 		);
@@ -212,31 +217,41 @@ class ds106bank_Theme_Options {
 			'type'    => 'text',
 			'section' => 'general'
 		);
-		
-		// ------- login options		
-		$this->settings['login_heading'] = array(
+
+		// ------- email notification options		
+		$this->settings['notify_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => 'Login Options',
-			'std'    => '',
+			'desc'	 => 'Email Notifications',
+			'std'    => 'If the option <strong>Status for New Things</strong> is <code>Publish Immediately</code>, checking a box below will send messages when something new is published; for  <code>Save as Draft</code> the notification will alert you to moderate the item.',
 			'type'    => 'heading'
 		);
 		
-		$this->settings['use_wp_login'] = array(
-			'section' => 'general',
-			'title'   => __( 'Use Wordpress accounts for adding responses and/or items to the bank.'),
-			'desc'    => __( 'Option to use and/or require a login for submissions. An individual\'s work can be tracked via <code>' . home_url() . '/author/' . '&lt;username&gt;</code>'),
-			'type'    => 'radio',
-			'std'     => '0',
-			'choices' => array (
-							'0' => 'Do not use Wordpress logins',
-							'1' => 'Yes, but make it optional',
-							'2' => 'Yes, and make it required'
-					)
+		$this->settings['notify'] = array(
+			'title'   => __( 'Addresses to Notify' ),
+			'desc'    => __( 'Send notifications to all these email addresses (separate multiple ones wth commas). ' ),
+			'std'     => '',
+			'type'    => 'text',
+			'section' => 'general'
 		);
 
 
+		$this->settings['notify_things'] = array(
+			'section' => 'general',
+			'title'   => __( 'Submitted new ' . lcfirst( ds106bank_option( 'pluralthings' ) ) ),
+			'desc'    => __( 'Notify if moderation required / when published' ),
+			'type'    => 'checkbox',
+			'std'     => 0 // Set to 1 to be checked by default, 0 to be unchecked by default.
+		);
 
+		$this->settings['notify_responses'] = array(
+			'section' => 'general',
+			'title'   => __( 'Responses to ' . lcfirst( ds106bank_option( 'pluralthings' ) ) ),
+			'desc'    => __( 'Notify if moderation required / when published' ),
+			'type'    => 'checkbox',
+			'std'     => 0 // Set to 1 to be checked by default, 0 to be unchecked by default.
+		);
+		
 		// ------- twitter options		
 		$this->settings['twitter_heading'] = array(
 			'section' => 'general',
@@ -267,7 +282,7 @@ class ds106bank_Theme_Options {
 			'section' => 'general'
 		);
 		
-		// ------- media- thumbnaiil sizes, default image
+		// ---------- media- thumbnail sizes, default image
 		$this->settings['thumbnail_heading'] = array(
 		'section' => 'general',
 		'title' 	=> '' ,// Not used for headings.
@@ -293,9 +308,9 @@ class ds106bank_Theme_Options {
 		);
 		
 		$this->settings['def_thumb'] = array(
-			'title'   => __( 'Set default ' . lcfirst(THINGNAME) . ' thumbnail image' ),
+			'title'   => __( 'Set default ' . lcfirst(ds106bank_option( 'thingname' )) . ' thumbnail image' ),
 			'desc'    => __( 'This image will be used if none is defined.' ),
-			'std'     => 'Default ' . lcfirst(THINGNAME) . ' Thumbnail',
+			'std'     => 'Default ' . lcfirst(ds106bank_option( 'thingname' )) . ' Thumbnail',
 			'type'    => 'medialoader',
 			'section' => 'general'
 		);
@@ -321,12 +336,13 @@ class ds106bank_Theme_Options {
 				'1' => 'Yes'
 			)
 		);		
+
 		
-		// ------- creative commons options		
+		// ---------- creative commons options		
 		$this->settings['cc_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => 'Apply Creative Commons to each ' . THINGNAME,
+			'desc'	 => 'Apply Creative Commons to each ' . ds106bank_option( 'thingname' ),
 			'std'    => '',
 			'type'    => 'heading'
 		);
@@ -339,14 +355,14 @@ class ds106bank_Theme_Options {
 			'std'     => 'site',
 			'choices' => array(
 				'none' => 'No Creative Commons',
-				'site' => 'Apply one license to every ' . lcfirst(THINGNAME),
-				'user' => 'Enable users to choose license when submitting  a ' . lcfirst(THINGNAME)
+				'site' => 'Apply one license to every ' . lcfirst(ds106bank_option( 'thingname' )),
+				'user' => 'Enable users to choose license when submitting  a ' . lcfirst(ds106bank_option( 'thingname' ))
 			)
 		);
 		
 		$this->settings['cc_site'] = array(
 			'section' => 'general',
-			'title'   => __( 'License for Every ' . THINGNAME),
+			'title'   => __( 'License for Every ' . ds106bank_option( 'thingname' )),
 			'desc'    => __( 'Choose a license that will appear sitewide' ),
 			'type'    => 'select',
 			'std'     => 'by',
@@ -361,11 +377,11 @@ class ds106bank_Theme_Options {
 			)
 		);
 		
-		// ------- rating options
+		// ---------- rating options
 		$this->settings['ratings_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => THINGNAME . ' Ratings',
+			'desc'	 => ds106bank_option( 'thingname' ) . ' Ratings',
 			'std'    => bank106_wp_ratings_installed(),
 			'type'    => 'heading'
 		);
@@ -373,29 +389,29 @@ class ds106bank_Theme_Options {
 		$this->settings['difficulty_rating'] = array(
 			'section' => 'general',
 			'title'   => __( 'Allow Author Difficulty Rating' ),
-			'desc'    => __( 'When a new ' . lcfirst(THINGNAME) . ' is created, author assigns a 1-5 difficulty rating shown on the entry' ),
+			'desc'    => __( 'When a new ' . lcfirst(ds106bank_option( 'thingname' )) . ' is created, author assigns a 1-5 difficulty rating shown on the entry' ),
 			'type'    => 'checkbox',
 			'std'     => 0 // Set to 1 to be checked by default, 0 to be unchecked by default.
 		);
 
-		// ------- example setup options
+		// ---------- example setup options
 		$this->settings['examples_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => 'Settings for ' . THINGNAME . ' Examples and Tutorials',
+			'desc'	 => 'Settings for ' . ds106bank_option( 'thingname' ) . ' Responses and Tutorials',
 			'std'    => '',
 			'type'    => 'heading'
 		);
 
 		$this->settings['show_ex'] = array(
 			'section' => 'general',
-			'title'   => __( 'Display on Single ' . THINGNAME ),
-			'desc'    => __( 'Enable display of associated examples and/or tutorials on the single view (they can still be submitted but you may choose not to have them listed)' ),
+			'title'   => __( 'Display on Single ' . ds106bank_option( 'thingname' ) ),
+			'desc'    => __( 'Enable display of associated responses and/or tutorials on the single item view' ),
 			'type'    => 'radio',
 			'std'     => 'both',
 			'choices' => array(
-				'both' => 'Examples and Tutorials',
-				'ex' => 'Examples only',
+				'both' => 'Responses and Tutorials',
+				'ex' => 'Responses only',
 				'tut' => 'Tutorials only',
 				'none' => 'Neither'
 			)
@@ -414,34 +430,31 @@ class ds106bank_Theme_Options {
 
 		$this->settings['example_via_form'] = array(
 			'section' => 'general',
-			'title'   => __( 'Submit examples directly' ),
-			'desc'    => __( 'Allow visitors to submit examples via web form' ),
+			'title'   => __( 'Submit responses directly' ),
+			'desc'    => __( 'Allow visitors to submit responses via web form' ),
 			'type'    => 'checkbox',
 			'std'     => 1 // Set to 1 to be checked by default, 0 to be unchecked by default.
 		);
 
 		$this->settings['link_examples'] = array(
 			'section' => 'general',
-			'title'   => __( 'Link to Form Submitted Examples'),
-			'desc'    => __( 'Link to examples external or show as entry (for longer type responses)'),
+			'title'   => __( 'Link to Form Submitted Responses'),
+			'desc'    => __( 'Link to responses external or show as entry (for longer type responses)'),
 			'type'    => 'radio',
 			'std'     => '0',
 			'choices' => array (
-							'1' => 'No, links go to example URL',
+							'1' => 'No, links go to response URL',
 							'0' => 'Yes, links go to entry on the bank site',
 					)
 		);
 
 		$this->settings['example_gen'] = array(
-			'title'   => __( 'Example Form Instructions' ),
-			'desc'    => __( 'Any additional details that should be added to the entry form for every submitted response (' . THINGNAME . ' specific instructions can also be added per item).' ),
+			'title'   => __( 'Response Form Instructions' ),
+			'desc'    => __( 'Any additional details that should be added to the entry form for every submitted response (' . ds106bank_option( 'thingname' ) . ' specific instructions can also be added per item).' ),
 			'std'     => '',
 			'type'    => 'textarea',
 			'section' => 'general'
 		);
-
-
-
 
 
  		// Build array to hold options for select, an array of published pages on the site
@@ -455,8 +468,8 @@ class ds106bank_Theme_Options {
  
 		$this->settings['example_form_page'] = array(
 			'section' => 'general',
-			'title'   => __( 'Page for Adding Examples/Tutorials'),
-			'desc'    => __( 'Existing page for form to add new examples; one using <strong>Submit Example/Tutorial Form</strong> as template' ),
+			'title'   => __( 'Page for Adding Responses/Tutorials'),
+			'desc'    => __( 'Existing page for form to add new responses; one using <strong>Submit Response/Tutorial Form</strong> as template' ),
 			'type'    => 'select',
 			'std'     => '--',
 			'choices' => $page_options
@@ -464,8 +477,8 @@ class ds106bank_Theme_Options {
 
 		$this->settings['new_example_status'] = array(
 			'section' => 'general',
-			'title'   => __( 'Status For New Examples' ),
-			'desc'    => __( 'How new examples added are processed when submitted via a form' ),
+			'title'   => __( 'Status For New Responses' ),
+			'desc'    => __( 'How new responses added are processed when submitted via a form' ),
 			'type'    => 'radio',
 			'std'     => 'draft',
 			'choices' => array(
@@ -481,13 +494,36 @@ class ds106bank_Theme_Options {
 			'type'    => 'text',
 			'section' => 'general'
 		);
+
+
+		// ---------- login options		
+		$this->settings['login_heading'] = array(
+			'section' => 'general',
+			'title'   => '', // Not used for headings.
+			'desc'	 => 'Login Options',
+			'std'    => '',
+			'type'    => 'heading'
+		);
 		
-		// ------- syndication options
+		$this->settings['use_wp_login'] = array(
+			'section' => 'general',
+			'title'   => __( 'Use Wordpress accounts for adding responses and/or items to the bank.'),
+			'desc'    => __( 'Option to use and/or require a login for submissions. An individual\'s work can be tracked via <code>' . home_url() . '/author/' . '&lt;username&gt;</code>'),
+			'type'    => 'radio',
+			'std'     => '0',
+			'choices' => array (
+							'0' => 'Do not use Wordpress logins',
+							'1' => 'Yes, but make it optional',
+							'2' => 'Yes, and make it required'
+					)
+		);
+		
+		// ---------- syndication options
 		$this->settings['syndication_heading'] = array(
 			'section' => 'general',
 			'title'   => '', // Not used for headings.
-			'desc'	 => 'Syndication for Examples',
-			'std'    => 'Choose how/if to use Feed WordPress to aggregate examples from either an internal aggregator on this site or from an external source.',
+			'desc'	 => 'Syndication for Responses',
+			'std'    => 'Choose how/if to use Feed WordPress to aggregate responses from either an internal aggregator on this site or from an external source.',
 			'type'    => 'heading'
 		);
 			
@@ -498,8 +534,8 @@ class ds106bank_Theme_Options {
 			'type'    => 'radio',
 			'std'     => 'none',
 			'choices' => array(
-				'none' => 'No syndication. Examples are added only via web form (if enabled above) or only via WordPress Admin.',
-				'internal' => 'Use a local install of Feed Wordpress to aggregate examples to this site.',
+				'none' => 'No syndication. Responses are added only via web form (if enabled above) or only via WordPress Admin.',
+				'internal' => 'Use a local install of Feed Wordpress to aggregate responses to this site.',
 				'external' => 'Syndicate from an external site that is already aggregating participant content.', 
 			)
 		);
@@ -507,7 +543,7 @@ class ds106bank_Theme_Options {
 		// settings only if external syndication mode 	
 		$this->settings['extra_tag'] = array(
 			'title'   => __( 'Required Tag' ),
-			'desc'    => __( 'Only used for external syndication option. Tag for examples to be externally syndicated. This will be displayed on each assignment and will also define the feed that needs to be added to local install of Feed WordPress.' ),
+			'desc'    => __( 'Only used for external syndication option. Tag for responses to be externally syndicated. This will be displayed on each assignment and will also define the feed that needs to be added to local install of Feed WordPress.' ),
 			'std'     => 'bank106',
 			'type'    => 'text',
 			'section' => 'general'
@@ -529,7 +565,7 @@ class ds106bank_Theme_Options {
 			'section' => 'general'
 		);
 		
-		// ------- captcha options, if we need 'em
+		// ---------- captcha options, if we need 'em
 		
 		$this->settings['captcha_heading'] = array(
 		'section' => 'general',
@@ -584,25 +620,80 @@ class ds106bank_Theme_Options {
 
 		
 		$this->settings['thing_type_heading'] = array(
-		'section' => 'general',
-		'title' 	=> '' ,// Not used for headings.
-		'desc'   => 'Types of ' . THINGNAME . 's', 
-		'std'    => 'Create the organzation of different kinds of ' . THINGNAME . 's',
-		'type'    => 'heading'
+			'section' => 'types',
+			'title' 	=> '' ,// Not used for headings.
+			'desc'   =>  ds106bank_option( 'type_name' ) . ' Organization', 
+			'std'    => 'Identify different types of ' . lcfirst( ds106bank_option( 'pluralthings' ) ) . ' and how they are ordered in index pages',
+			'type'    => 'heading'
 		);		
 
+		$this->settings['type_name'] = array(
+			'title'   => __( 'Label for the Types of Things' ),
+			'desc'    => __( 'Things are organized into groups defined below. What should the name for these? (singular)' ),
+			'std'     => 'Type',
+			'type'    => 'text',
+			'section' => 'types'
+		);		
+
+		// note, this is misnamed, it ought to be "type_order" Sue me.
+ 		$this->settings['thing_order'] = array(
+			'section' => 'types',
+			'title'   => __( 'Type Display Order' ),
+			'desc'    => __( 'On the front page, the order in which types of things are listed' ),
+			'type'    => 'radio',
+			'std'     => 'name',
+			'choices' => array(
+				'name' => 'Title',
+				'id' => 'Date Created',
+				'count' => 'Count',
+			)
+		);		
+
+	// note, this is misnamed, it ought to be "type_orderny" Sue me again.
+ 		$this->settings['thing_orderby'] = array(
+			'section' => 'types',
+			'title'   => __( 'Type Order Sorting' ),
+			'desc'    => __( 'On the front page, which to list first?' ),
+			'type'    => 'radio',
+			'std'     => 'ASC',
+			'choices' => array(
+				'ASC' => 'Ascending',
+				'DESC' => 'Descending',
+			)
+		);	
+		
+	
+		$this->settings['exlen'] = array(
+			'title'   => __( 'Excerpt Length' ),
+			'desc'    => __( 'Number of words to show for the descriptions of the types of things used on the front page and archives.' ),
+			'std'     => '55',
+			'type'    => 'text',
+			'section' => 'types'
+		);
+				
+
+		$this->settings['type_mod_heading'] = array(
+			'section' => 'types',
+			'title' 	=> '' ,// Not used for headings.
+			'desc'   =>  ds106bank_option( 'type_name' ) . ' Editing', 
+			'std'    => 'Edit names, desciptions, and thumbnail images',
+			'type'    => 'heading'
+		);		
+	
+		
 		// lets get all the existing assignment types
 		$assigntypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
+		
 		$i = 0;
 
 		foreach ( $assigntypes as $atype ) {
 			$i++;
 			$setting_name = 'thing_type_' . $atype->term_id;
 				
-			// ------- settings for each type of thing: name, delete option, description, thumbnail 			
+			//  settings for each type of thing: name, delete option, description, thumbnail 			
 			$this->settings["$setting_name"] = 
 				array(
-					'title'   => __( THINGNAME . ' Type #' . $i ),
+					'title'   => __( ds106bank_option( 'thingname' ) . ' Type #' . $i ),
 					'desc'    => __( '' ),
 					'std'     =>  '',
 					'type'    => 'text',
@@ -611,7 +702,7 @@ class ds106bank_Theme_Options {
 			
 			$this->settings['del_' . $setting_name] = array(
 				'section' => 'types',
-				'title'   => __( 'Delete this type' ),
+				'title'   => __( 'Delete this Type' ),
 				'desc'    => __( 'Be careful, this cannot be undone!'),
 				'type'    => 'checkbox',
 				'std'     => 0 
@@ -619,36 +710,37 @@ class ds106bank_Theme_Options {
 				
 			$this->settings[$setting_name . '_descrip' ] = 
 				array(
-					'title'   => __( 'Short Description'),
+					'title'   => __( 'Short Description of this Type' ),
 					'desc'    => __( '' ),
 					'std'     =>  '',
 					'type'    => 'textarea',
 					'section' => 'types'
 				);
 				
-			$this->settings[$setting_name . '_thumb'] = array(
-			'title'   => __( ucfirst($atype->name) . ' Thumbnail' ),
-			'desc'    => __( '<hr /><p>&nbsp;</p>' ),
-			'std'     =>  'http://placehold.it/' . THUMBW . 'x' . THUMBH,
-			'type'    => 'medialoader',
-			'section' => 'types'
-			);
+			$this->settings[$setting_name . '_thumb'] = 
+				array(
+					'title'   => __( ucfirst($atype->name) . ' Thumbnail' ),
+					'desc'    => __( '<hr /><p>&nbsp;</p>' ),
+					'std'     =>  'http://placehold.it/' . THUMBW . 'x' . THUMBH,
+					'type'    => 'medialoader',
+					'section' => 'types'
+				);
 			
 		}
-		
+	
 		// ------- field so users can add new types of things
 		$this->settings['new_type_heading'] = array(
 			'section' => 'types',
 			'title'   => '', // Not used for headings.
-			'desc'    => 'Create New ' . THINGNAME . ' Types',
-			'std'	  => 'Description and thumbnails can be added after saving changes. If the type already exists, a repeated name will be ignored.', 
+			'desc'    => 'Create New Types',
+			'std'	  => 'Description and thumbnails can be added after saving changes. If one of the same name exists, a repeated name will be ignored.', 
 			'type'    => 'heading'
 		);
 		
 		$this->settings['new_types'] = array(
-			'title'   => __( 'Names for new type(s)' ),
+			'title'   => __( 'Names for New Types' ),
 			'desc'    => __( 'Enter new names, one per line' ),
-			'std'     => 'New Type Name',
+			'std'     => 'Name of A New Type',
 			'type'    => 'textarea',
 			'section' => 'types'
 	);
@@ -659,8 +751,8 @@ class ds106bank_Theme_Options {
 		$this->settings['reset_heading'] = array(
 			'section' => 'reset',
 			'title'   => '', // Not used for headings.
-			'desc'    => 'Reset Settings',
-			'std'	  => 'Use with great care!', 
+			'desc'    => 'With Great Power Comes...',
+			'std'	  => 'Be careful with this powerful checkbox, there is no undoing.', 
 			'type'    => 'heading'
 		);
 		
@@ -672,19 +764,19 @@ class ds106bank_Theme_Options {
 			'type'    => 'checkbox',
 			'std'     => 0,
 			'class'   => 'warning', // Custom class for CSS
-			'desc'    => __( 'Check this box and click "Save Changes" below to reset options to their defaults.' )
+			'desc'    => __( 'Check this box then click "Save Changes" below to reset all options to their defaults.' )
 		);
 	}
 
 	public function display_general() {
 		// section heading for general setttings
-		echo '<p>These settings manage the behavior and appearance of your bank. There are quite a few of them!</p>';		
+		echo '<p>These settings manage the behavior and appearance of your bank. Here they may be referred to as "Things" that are organized into "Types." As you can see there are quite a few of knobs here to twiddle!</p>';		
 	}
 
 
 	public function display_types() {
 		// section heading for assignment type setttings
-		echo '<p>Add and edit the titles, icons, and descriptions for the types of items in your bank.</p>';
+		echo '<p>Add and edit the titles, icons, and descriptions for the types of things in your bank. You can also organize how they are ordered when listed and also change the name of them from "Type" to a more approporiate name for the groups of Things.</p>';
 
 	}
 
@@ -716,7 +808,7 @@ class ds106bank_Theme_Options {
 		switch ( $type ) {
 		
 			case 'heading':
-				echo '<tr><td colspan="2" class="alternate"><h3>' . $desc . '</h3><p>' . $std . '</p></td></tr>';
+				echo '<tr><td colspan="2" class="alternate"><h3 id="' . $id . '">' . $desc . '</h3><p>' . $std . '</p></td></tr>';
 				break;
 
 			case 'checkbox':
@@ -764,13 +856,13 @@ class ds106bank_Theme_Options {
 			case 'medialoader':
 					
 				if ( strpos ( $options[$id], 'http') !==false ) {
-					echo '<img id="previewimage_' . $id . '" src="' . $options[$id] . '" width="' . THUMBW . '" height="' . THUMBH . '" alt="default thumbnail" />';
+					echo '<img id="previewimage_' . $id . '" src="' . $options[$id] . '" width="' . (THUMBW / 2) . '" height="' . (THUMBH / 2) . '" alt="default thumbnail" />';
 				} else {
-					echo '<img id="previewimage_' . $id . '" src="http://placehold.it/' . THUMBW . 'x' . THUMBH . '" alt="default thumbnail" />';
+					echo '<img id="previewimage_' . $id . '" src="http://placehold.it/' . (THUMBW / 2) . 'x' . (THUMBH / 2) . '" alt="default thumbnail" />';
 				}
 
 				echo '<input type="hidden" name="ds106banker_options[' . $id . ']" id="' . $id . '" value="' . esc_attr( $options[$id] ) . '" />
-  <br /><input type="button" class="upload_image_button button-primary" name="_ds106banker_button' . $id .'" id="_ds106banker_button' . $id .'" data-options_id="' . $id  . '" data-uploader_title="Set ' .  THINGNAME . ' Thumbnail" data-uploader_button_text="Select Thumbnail" value="Set/Change Thumbnail" />
+  <br /><input type="button" class="upload_image_button button-primary" name="_ds106banker_button' . $id .'" id="_ds106banker_button' . $id .'" data-options_id="' . $id  . '" data-uploader_title="Set ' .  ds106bank_option( 'thingname' ) . ' Thumbnail" data-uploader_button_text="Select Thumbnail" value="Set/Change Thumbnail" />
 </div><!-- uploader -->';
 				
 				if ( $desc != '' )
@@ -877,8 +969,8 @@ class ds106bank_Theme_Options {
 			$options = get_option( 'ds106bank_options' );
 				
 			// has the thing name changed? If so we need to update the taxonmy terms
-			if ( $input['thingname'] !=  THINGNAME  ) {
-				bank106_update_tax( THINGNAME, $input['thingname'] );
+			if ( $input['thingname'] !=  ds106bank_option( 'thingname' )  ) {
+				bank106_update_tax( ds106bank_option( 'thingname' ), $input['thingname'] );
 			}
 			
 			// has thumbnail sizes changed? If so, update option for thumbnail sizes
