@@ -93,7 +93,7 @@ get_header(); ?>
 					$found_things = $wp_query->found_posts;				
 					// Because grammar
 					if ( $found_things == 1 ) {
-						$plural = ds106bank_option( 'thingnames' );
+						$plural = ds106bank_option( 'thingname' );
 						$verb = "is";
 					} else {
 						$plural = ds106bank_option( 'pluralthings' );
