@@ -12,10 +12,10 @@
 						
 						if ( $the_tag[0] == '@' ) {
 							// this is a twitter tag
-							echo THINGNAME . "s Created by $the_tag";
+							echo ds106bank_option( 'pluralthings' ) . "s Created by $the_tag";
 						} else {
 							// just a regular tag
-							echo THINGNAME . 's Tagged "' . $the_tag . '"';
+							echo ds106bank_option( 'pluralthings' ) . ' Tagged "' . $the_tag . '"';
 						}
 						?>
 						
@@ -25,15 +25,16 @@
 					$found_things = $wp_query->found_posts;				
 					// Because grammar
 					if ( $found_things == 1 ) {
-						$plural = '';
+						$tagged_name = ds106bank_option( 'thingname' );
 						$verb = "is";
 					} else {
-						$plural = 's';
+					
+						$tagged_name = ds106bank_option( 'pluralthings' );
 						$verb = "are";
 					}
 					?>
 
-						<p><p>There <?php echo $verb?> <strong><?php echo $found_things;?></strong>  <?php echo  THINGNAME . $plural?> with this tag.
+						<p>There <?php echo $verb?> <strong><?php echo $found_things;?></strong>  <?php echo  $tagged_name?> with this tag.
 						
 					</div>
 
@@ -97,7 +98,7 @@
 					
 						<section class="post_content">
 						
-							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo THINGNAME?>s</a></a>
+							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo ds106bank_option( 'pluralthings' )?></a></a>
 							
 							<?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					

@@ -822,7 +822,7 @@ function update_assignment_meta($id, $example_count, $tutorial_count) {
 // update custom post meta to track the views and the number of examples done for each assignment
 // called on each view of an assignment
 
-	// get current value, if it does nto exist, then 0
+	// get current value, if it does not exist, then 0
 	$visit_count = ( get_post_meta( $id, 'assignment_visits', true ) ) ? get_post_meta( $id, 'assignment_visits', true ) : 0; 
 	$visit_count++;
 	
