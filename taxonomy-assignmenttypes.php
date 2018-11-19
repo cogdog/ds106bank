@@ -9,6 +9,8 @@ $sortedby =  ( isset( $wp_query->query_vars['srt'] ) ) ? $wp_query->query_vars['
 $use_public_ratings = function_exists('the_ratings');
 $use_difficulty = ds106bank_option('difficulty_rating');
 
+$assignment_difficulty = '';
+
 // we are looking for a random assignment?
 if ($sortedby  == 'random') {
 

@@ -300,7 +300,7 @@ function ds106bank_enqueue_options_scripts() {
 	wp_enqueue_media();
 	
 	// custom jquery for the options admin screen
-	wp_register_script( 'bank106_options_js' , get_stylesheet_directory_uri() . '/js/jquery.options.js', array( 'jquery' ), '1.0', TRUE );
+	wp_register_script( 'bank106_options_js' , get_template_directory_uri() . '/js/jquery.options.js', array( 'jquery' ), '1.0', TRUE );
 	wp_enqueue_script( 'bank106_options_js' );
 }
 
@@ -832,11 +832,9 @@ function get_example_media ( $pid, $metafieldname='fwp_url' ) {
 		// case to handle an example with no URL, return empty string
 		// Just check the first character because people seem to think this is a hash tag!
 		if ($assignmentURL[0] == "#") return ('');
-			
-		if ( url_is_type( $assignmentURL, array( 'mp3' ) ) ) {
-			// option for href to make as a download
-			$download_option = ' download';
-		}
+		
+		// add to link for mp3 links		
+		$download_option = ( url_is_type( $assignmentURL, array( 'mp3' ) ) ) ? ' download' : '';
 
 		// make header
 		$str .= '<p class="example-url"><strong>Example for "' . get_the_title($pid) . '":</strong><br /><a href="' . $assignmentURL . '"' . $download_option . '>' . $assignmentURL  . ' </a></p>';
@@ -1270,29 +1268,29 @@ function ds106bank_enqueue_add_thing_scripts() {
 	wp_enqueue_script( 'suggest' );
 
     // custom jquery for the add thing/assignment form
-	wp_register_script( 'bank106_add_thing_js' , get_stylesheet_directory_uri() . '/js/jquery.add-thing.js', array( 'jquery' ), '1.0', TRUE );
+	wp_register_script( 'bank106_add_thing_js' , get_template_directory_uri() . '/js/jquery.add-thing.js', array( 'jquery' ), '1.0', TRUE );
 	wp_enqueue_script( 'bank106_add_thing_js' );
 
 	// add scripts for fancybox (used for previews of submitted things) 
 	//-- h/t http://code.tutsplus.com/tutorials/add-a-responsive-lightbox-to-your-wordpress-theme--wp-28100
-	wp_register_script( 'fancybox', get_stylesheet_directory_uri() . '/includes/lightbox/js/jquery.fancybox.pack.js', array( 'jquery' ), false, true );
+	wp_register_script( 'fancybox', get_template_directory_uri() . '/includes/lightbox/js/jquery.fancybox.pack.js', array( 'jquery' ), false, true );
 	wp_enqueue_script( 'fancybox' );
 
 	// Lightbox formatting for preview screated with rich text editor
-	wp_register_script( 'lightbox_thing', get_stylesheet_directory_uri() . '/includes/lightbox/js/lightbox_thing.js', array( 'fancybox' ), '1.1', null , '1.0', TRUE );
+	wp_register_script( 'lightbox_thing', get_template_directory_uri() . '/includes/lightbox/js/lightbox_thing.js', array( 'fancybox' ), '1.1', null , '1.0', TRUE );
 	wp_enqueue_script( 'lightbox_thing' );
 	
 	// fancybox styles
-	wp_register_style( 'lightbox-style', get_stylesheet_directory_uri() . '/includes/lightbox/css/jquery.fancybox.css' );
+	wp_register_style( 'lightbox-style', get_template_directory_uri() . '/includes/lightbox/css/jquery.fancybox.css' );
 	wp_enqueue_style( 'lightbox-style' );
 	
 	// Bootstrap filestyle for nice uploads of files
-	wp_register_script( 'filestyle', get_stylesheet_directory_uri() . '/js/bootstrap-filestyle.js', array( 'jquery' ), false, true );
+	wp_register_script( 'filestyle', get_template_directory_uri() . '/js/bootstrap-filestyle.js', array( 'jquery' ), false, true );
 	wp_enqueue_script( 'filestyle' );
 
 	
 	// used to display formatted dates
-	wp_register_script( 'moment' , get_stylesheet_directory_uri() . '/js/moment.js', null, '1.0', TRUE );
+	wp_register_script( 'moment' , get_template_directory_uri() . '/js/moment.js', null, '1.0', TRUE );
 	wp_enqueue_script( 'moment' );
 
 }
@@ -1305,16 +1303,16 @@ function ds106bank_enqueue_add_ex_scripts() {
 	wp_enqueue_script( 'suggest' );
 
     // custom jquery for the example form
-	wp_register_script( 'bank106_add_example_js' , get_stylesheet_directory_uri() . '/js/jquery.add-example.js', array( 'jquery' ), '1.1', TRUE );
+	wp_register_script( 'bank106_add_example_js' , get_template_directory_uri() . '/js/jquery.add-example.js', array( 'jquery' ), '1.1', TRUE );
 	wp_enqueue_script( 'bank106_add_example_js' );
 
 	// add scripts for fancybox (used for previews of submitted examples) 
 	//-- h/t http://code.tutsplus.com/tutorials/add-a-responsive-lightbox-to-your-wordpress-theme--wp-28100
-	wp_register_script( 'fancybox', get_stylesheet_directory_uri() . '/includes/lightbox/js/jquery.fancybox.pack.js', array( 'jquery' ), false, true );
+	wp_register_script( 'fancybox', get_template_directory_uri() . '/includes/lightbox/js/jquery.fancybox.pack.js', array( 'jquery' ), false, true );
 	wp_enqueue_script( 'fancybox' );
 	
 	// fancybox styles
-	wp_register_style( 'lightbox-style', get_stylesheet_directory_uri() . '/includes/lightbox/css/jquery.fancybox.css' );
+	wp_register_style( 'lightbox-style', get_template_directory_uri() . '/includes/lightbox/css/jquery.fancybox.css' );
 	wp_enqueue_style( 'lightbox-style' );
 	
 }
@@ -1323,11 +1321,11 @@ function ds106bank_enqueue_add_ex_scripts() {
 function ds106bank_enqueue_richtext_scripts() {
 
 	// Lightbox formatting for previews of examples created with rich text editor
-	wp_register_script( 'lightbox_richtext', get_stylesheet_directory_uri() . '/includes/lightbox/js/lightbox_richtext.js', array( 'fancybox' ), '1.1', null , '1.0', TRUE );
+	wp_register_script( 'lightbox_richtext', get_template_directory_uri() . '/includes/lightbox/js/lightbox_richtext.js', array( 'fancybox' ), '1.1', null , '1.0', TRUE );
 	wp_enqueue_script( 'lightbox_richtext' );
 
     // used to displaye formatted dates
-	wp_register_script( 'moment' , get_stylesheet_directory_uri() . '/js/moment.js', null, '1.0', TRUE );
+	wp_register_script( 'moment' , get_template_directory_uri() . '/js/moment.js', null, '1.0', TRUE );
 	wp_enqueue_script( 'moment' );
 
 }
@@ -1336,7 +1334,7 @@ function ds106bank_enqueue_richtext_scripts() {
 function ds106bank_enqueue_simpletext_scripts() {
 
 	//  Lightbox formatting for previews of responses/tutorials linked externally (simple text editor)
-	wp_register_script( 'lightbox_simpletext', get_stylesheet_directory_uri() . '/includes/lightbox/js/lightbox_simpletext.js', array( 'fancybox' ), '1.1', null , '1.0', TRUE );
+	wp_register_script( 'lightbox_simpletext', get_template_directory_uri() . '/includes/lightbox/js/lightbox_simpletext.js', array( 'fancybox' ), '1.1', null , '1.0', TRUE );
 	wp_enqueue_script( 'lightbox_simpletext' );
 
 }

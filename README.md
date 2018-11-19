@@ -98,6 +98,8 @@ This ds106 Assignment Bank Theme is built on and now (as of Nov 18, 2018) includ
 
 It is pretty basic on design, but hopefully flexible to your use cases. The design allows you to create a site where the front of the site is the menu of types of things, but that could also be an internal page, and a normal blog flow can be front and center. The theme does not create any of the navigation menus for you, but you will find suggestions as to the types of things you can make available via the built in Wordpress menu editor.
 
+To make a child theme, when you create your `style.css` reference `ds106bank` as the template, but do not include or enque the stylesheet (it is not used, all the main styles are done from bootstrap files). Do copy the ds106bank.css one to your child theme directory, and add your custom styles there.
+
 ## Requirements
 A self hosted Wordpress hosted site (in other words "you cannot use this on Wordpress.com").  This theme can work on a multisite or as a single install. Depending on how you wish to run the site, you might install plugins below. You will also find suggestions for Widgets that are useful for sidebars and footers.
 

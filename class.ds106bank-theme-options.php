@@ -128,7 +128,7 @@ class ds106bank_Theme_Options {
 
 		/* Insert custom CSS */
 		public function styles() {
-			wp_register_style( 'ds106bank-admin', get_stylesheet_directory_uri() . '/ds106bank-options.css' );
+			wp_register_style( 'ds106bank-admin', get_template_directory_uri() . '/ds106bank-options.css' );
 			wp_enqueue_style( 'ds106bank-admin' );
 		}
     

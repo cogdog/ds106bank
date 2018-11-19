@@ -1,4 +1,7 @@
 <?php
+	// defaults
+	$signin = '';
+
 	// unique assignment/tutorial tags
 	$my_assignment_tag = ds106bank_option( 'thingname' ) . $post->ID;
 	$my_tutorial_tag = 'Tutorial' . $post->ID;
