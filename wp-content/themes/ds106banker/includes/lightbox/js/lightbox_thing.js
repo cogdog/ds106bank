@@ -42,12 +42,10 @@ function nl2br (str, is_xhtml) {
     // Initialize the Lightbox for any links with the 'fancybox' class
 	$(".fancybox").fancybox({
 
-        maxWidth        : 1024,
-        maxHeight       : 780,	
-		fitToView	: false,
-		width		: '90%',
-		height		: '90%',
+		maxWidth	: 0.85 * window.innerWidth,
+		autoHeight	: true,
 		autoSize	: false,
+		fitToView	: false,
 		closeClick	: false,
 		openEffect  : 'fade',
 		closeEffect : 'fade',
@@ -102,9 +100,26 @@ function nl2br (str, is_xhtml) {
                 thingcats.push(capitalizeEachWord(ts));
             });
           
+          // start building output
+           var  output = '<div class="col-sm-3"><div class="thing-icon-single"><img src="' + $('#thingthumb').attr('src')  + '"></div></div><div class="col-sm-8" ><h1 class="single-title assignment-header">' + $('#assignmentTitle').val() + '</h1>' + myRatings + '<br />' + adiff + '<br />Created <strong><time>' + moment().format('MMM D, YYYY') + '</time></strong> by <strong>' + $('#submitterName').val() + '</strong><br />Number of views: <strong>0</strong></p><p>' + $('#thing_type_hole').data( "typelabel" ) + ': ' + thingtypes.join(", ");
+           
+           // check if we are using categories
+           
+           if ( $('#thing_cat_hole').length )   output +=  '<br />' + $('#thing_cat_hole').data( "catlabel" )  + ': ' + thingcats.join(", ") 
+           
+            output += '<br/><span class="tags">Tags: ' + wp_tags( $('#assignmentTags').val());
+           
+           // add twitter name as tag 
+           if ( $('#submitterTwitter').val() ) output +=  tagd + $('#submitterTwitter').val();
+           
+           // add content from rich text editor
+            output += '</span></p></div>	<div class="col-sm-8 clearfix">' +   nl2br(tinymce.get('assignmentDescriptionHTML').getContent());
             
+            if ( $('#assignmentExtras').val() )  output += '<div class="col-sm-offset-1 col-sm-9"><div class="alert alert-info" role="alert">'  +  replaceURLWithHTMLLinks($('#assignmentExtras').val()) + '</div></div>';
+           
+			output += '</div><div class="col-md-4" id="examplemedia"><strong>Example for "' + $('#assignmentTitle').val() + '"</strong><br /><a href="' + $('#assignmentURL').val() + '">' + $('#assignmentURL').val() + '</a><br />' + myEmbed + '</div>';
 			
-			this.content = '<div class="col-sm-3"><div class="thing-icon-single"><img src="' + $('#thingthumb').attr('src')  + '"></div></div><div class="col-sm-8" ><h1 class="single-title assignment-header">' + $('#assignmentTitle').val() + '</h1>' + myRatings + '<br />' + adiff + '<br />Created <strong><time>' + moment().format('MMM D, YYYY') + '</time></strong> by <strong>' + $('#submitterName').val() + '</strong><br />Number of views: <strong>0</strong></p><p>Type: ' + thingtypes.join(", ") + '<br />' + $('#thing_cat_hole').data( "catlabel" )  + ': ' + thingcats.join(", ") + '<br/><span class="tags">Tags: ' + wp_tags( $('#assignmentTags').val() + tagd + $('#submitterTwitter').val()) + '</span></p></div>	<div class="col-sm-8 clearfix">' + nl2br($('#assignmentDescriptionHTML').val()) + '<div class="col-sm-offset-1 col-sm-9"><div class="alert alert-info" role="alert">' +  replaceURLWithHTMLLinks($('#assignmentExtras').val()) + '</div></div></div><div class="col-md-4" id="examplemedia"><strong>Example for "' + $('#assignmentTitle').val() + '"</strong><br /><a href="' + $('#assignmentURL').val() + '">' + $('#assignmentURL').val() + '</a><br />' + myEmbed + '</div>';
+			this.content = output;
 			
 			$('#submitassignment').removeClass( "disabled" );
 		},

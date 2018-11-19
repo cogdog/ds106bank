@@ -5,6 +5,8 @@ Creates a new thing for a ds106 bank like site from user input via web form.
 
 */
 
+global $post;
+
 // enqueue jquery for this form
 add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_add_thing_scripts' );
 
@@ -31,21 +33,22 @@ $use_thing_cats = ds106bank_option('use_thing_cats');
 $use_wp_login = ds106bank_option('use_wp_login');
 
 
+
 // ----- set defaults ---------------------
 // set af default rating values
 
 // mmm cookies
-$submitterTwitter = $_COOKIE["bank106twitter"];
-$submitterName = $_COOKIE["bank106name"];
-$submitterEmail = $_COOKIE["bank106email"];
-
+if ( isset($_COOKIE["bank106twitter"] )) $submitterTwitter = $_COOKIE["bank106twitter"];
+if ( isset($_COOKIE["bank106name"] ))  $submitterName = $_COOKIE["bank106name"];
+if ( isset($_COOKIE["bank106email"] ))  $submitterEmail = $_COOKIE["bank106email"];
 
 $assignmentRating = 3;    	// default public rating
 $assignmentDifficulty = 3;  // default author rating
-$assignmentURL = ''; 		// start it empty, baby
+
+$assignmentURL = $assignmentTitle = $assignmentDescription = $assignmentType = $assignmentTags = $assignment_thumb_id = $assignmentExtras = $assignmentInstructions = $sub_type = $use_public_ratings =  $assignmentCategories = $assignmentCC = ''; 		// start it empty, baby
 $errors = array(); 			// holder for bad form entry warnings
 
-$feedback_msg = '<div class="alert alert-info" role="alert">Create a new ' . lcfirst(THINGNAME) . ' right here! Enter all required information below and <a href="#prettybuttons" style="text-decoration: underline">use the buttons below</a> to <a href="#" class="btn btn-primary btn-xs disabled">update</a> your information to verify it. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to make it look beautiful (get it right, you will not be able to edit it later). Once you are happy with it, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form for the last time and it will be saved to this site.';
+$feedback_msg = '<div class="alert alert-info" role="alert">Create a new ' . lcfirst(ds106bank_option( 'thingname' )) . ' right here! Enter all required information below and <a href="#prettybuttons" style="text-decoration: underline">use the buttons below</a> to <a href="#" class="btn btn-primary btn-xs disabled">update</a> your information to verify it. Then you can modify and <a href="#" class="btn btn-warning btn-xs disabled">preview</a> as much as necessary to make it look beautiful (get it right, you will not be able to edit it later). Once you are happy with it, <a href="#" class="btn btn-success btn-xs disabled">submit</a> the form for the last time and it will be saved to this site.';
 
 $previewBtnState = ' disabled';
 $submitBtnState = ' disabled';
@@ -57,7 +60,7 @@ if ( is_user_logged_in() ) {
 	
 	$current_user = wp_get_current_user();
 	
-	$feedback_msg .= '<br /><br />All ' . THINGNAME . 's submitted here will be associated with your current login in as <strong>' . $current_user->display_name . '</strong>.' ;
+	$feedback_msg .= '<br /><br />All ' . ds106bank_option( 'pluralthings' ) . ' submitted here will be associated with your current login in as <strong>' . $current_user->display_name . '</strong>.' ;
 
 	
 } else {
@@ -67,14 +70,14 @@ if ( is_user_logged_in() ) {
 		// WP login optional
 		
 		
-		$feedback_msg .= '<br /><br />Logging in to this site is not required, but if you wish to have all  ' . THINGNAME . 's created  associated with your name ' . sprintf( '<a href="%s" class="btn btn-primary btn-xs">%s</a>', wp_login_url( get_permalink( ) ), __( 'sign in now' ) );  
+		$feedback_msg .= '<br /><br />Logging in to this site is not required, but if you wish to have all  ' . ds106bank_option( 'pluralthings' ) . ' created  associated with your name ' . sprintf( '<a href="%s" class="btn btn-primary btn-xs">%s</a>', wp_login_url( get_permalink( ) ), __( 'sign in now' ) );  
 	
 	// WP login requred
 	} elseif ( $use_wp_login == 2 ) {
 		$must_login = true;
 		
 		// feedback message now an alert
-		$feedback_msg = '<div class="alert alert-danger" role="alert"> You must sign in to ' . bloginfo( 'name' ) . ' to add a '  . THINGNAME .  ' to this site. ' . sprintf( '<a href="%s" class="btn btn-primary btn-xs">%s</a>', wp_login_url( get_permalink( ) ), __( 'sign in now' ) );
+		$feedback_msg = '<div class="alert alert-danger" role="alert"> You must sign in to ' . bloginfo( 'name' ) . ' to add a '  . ds106bank_option( 'thingname' ) .  ' to this site. ' . sprintf( '<a href="%s" class="btn btn-primary btn-xs">%s</a>', wp_login_url( get_permalink( ) ), __( 'sign in now' ) );
 	}
 		
 }
@@ -111,11 +114,11 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		$submitterEmail = 			sanitize_email( $_POST['submitterEmail'] ); 
  		$assignmentDescription = 	$_POST['assignmentDescription'];
  		$assignmentType = 			$_POST['assignmentType'];
- 		$assignmentCategories = 	$_POST['assignmentCategories'];
- 		$assignmentRating = 		$_POST['assignmentRating'];	
- 		$assignmentDifficulty = 	$_POST['assignmentDifficulty'];		
+ 		if ( isset( $_POST['assignmentCategories'] ) )  $assignmentCategories = 	$_POST['assignmentCategories'];
+ 		if ( isset( $_POST['assignmentRating'] ) ) $assignmentRating = $_POST['assignmentRating'];	
+ 		if ( isset( $_POST['assignmentDifficulty'] ) ) $assignmentDifficulty = 	$_POST['assignmentDifficulty'];		
  		$assignmentURL = 			esc_url( trim($_POST['assignmentURL']), array('http', 'https') ); 
- 		$assignmentCC = 			$_POST['assignmentCC'];
+ 		if ( isset( $_POST['assignmentCC'] ) ) $assignmentCC = $_POST['assignmentCC'];
  		$assignmentExtras = 		stripslashes(sanitize_text_field( $_POST['assignmentExtras'] ));
  		$assignment_thumb_id = 		$_POST['assignment_thumb_id'];
  		
@@ -138,7 +141,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 		if ( $_FILES ) {
 			
 			foreach ( $_FILES as $file => $array ) {
-				$newupload = bank106_insert_attachment( $file, $post_id );
+				$newupload = bank106_insert_attachment( $file, $post->ID );
 				if ($newupload) $assignment_thumb_id = $newupload;
 				
 			}
@@ -146,7 +149,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  			
  		// let's do some validation, store an error message for each problem found
 	
- 		if ( $assignmentTitle == '' ) $errors['assignmentTitle'] = '<span class="label label-danger">' . THINGNAME . ' Title Missing</span> - please enter a descriptive title.';
+ 		if ( $assignmentTitle == '' ) $errors['assignmentTitle'] = '<span class="label label-danger">' . ds106bank_option( 'thingname' ) . ' Title Missing</span> - please enter a descriptive title.';
  		if ( $submitterName == '' ) $errors['submitterName'] = '<span class="label label-danger">Name Missing</span>- enter your name so we can give you credit';
  		if ( $submitterEmail == '' ) {
  			$errors['submitterEmail'] = '<span class="label label-danger">Email Address Missing</span>- Enter your email in case we have to contact you.';
@@ -164,17 +167,17 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		}
 	
  		// arbitrary and puny string length to be considered a reasonable descriptions
- 		if ( strlen( $assignmentDescription ) < 10 )  $errors['assignmentDescription'] = '<span class="label label-danger">Description Missing or Too Short</span>- please provide a full description that will help someone complete this ' . lcfirst(THINGNAME) . '. You might need a sentence or two.';
+ 		if ( strlen( $assignmentDescription ) < 10 )  $errors['assignmentDescription'] = '<span class="label label-danger">Description Missing or Too Short</span>- please provide a full description that will help someone complete this ' . lcfirst(ds106bank_option( 'thingname' )) . '. You might need a sentence or two.';
  		
- 		if ( empty( $assignmentType ) ) $errors['assignmentType'] = '<span class="label label-danger">' .  THINGNAME . ' Type Not Selected</span>- select at least one type of ' . lcfirst(THINGNAME);
+ 		if ( empty( $assignmentType ) ) $errors['assignmentType'] = '<span class="label label-danger">' .  ds106bank_option( 'thingname' ) . ' Type Not Selected</span>- select at least one type of ' . lcfirst(ds106bank_option( 'thingname' ));
  		 		
  		// check selection of license option
  		if ($assignmentCC == '--')  {
- 			$errors['assignmentCC'] = '<span class="label label-danger">Creative Commons License not Selected</span>- Choose the license you wish to attach to thie ' . lcfirst(THINGNAME);	 
+ 			$errors['assignmentCC'] = '<span class="label label-danger">Creative Commons License not Selected</span>- Choose the license you wish to attach to thie ' . lcfirst(ds106bank_option( 'thingname' ));	 
  		}
  		
 		if ($assignmentURL == '') {
- 				$errors['assignmentURL'] = '<span class="label label-danger">URL Missing or not Entered Correctly</span>-  please enter the full URL where the example for this ' .  lcfirst(THINGNAME) . ' can be found- it must start with "http://"';	 
+ 				$errors['assignmentURL'] = '<span class="label label-danger">URL Missing or not Entered Correctly</span>-  please enter the full URL where the example for this ' .  lcfirst(ds106bank_option( 'thingname' )) . ' can be found- it must start with "http://"';	 
  		} // end url CHECK 	
  					
  		// check captcha
@@ -206,7 +209,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  		
  			// set up stuff if we are just doing a preview
  			$previewBtnState = '';
- 			$feedback_msg = '<div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-thumbs-up""></span> The information for this new ' . THINGNAME . ' seems to be ok! Now you can preview your entry; continue to edit and modify until you think it is ready. You must <a href="#" class="btn btn-warning btn-xs disabled">preview</a> at least once to activate the submit button. Note that if you change the URL, you will have to click the <a href="#" class="btn btn-primary btn-xs disabled">update</a> button again to refresh its content.</div>';
+ 			$feedback_msg = '<div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-thumbs-up""></span> The information for this new ' . ds106bank_option( 'thingname' ) . ' seems to be ok! Now you can preview your entry <a href="#prettybuttons" style="text-decoration: underline">using the buttons below</a>. Continue to edit and modify until you think it is ready. You must <a href="#" class="btn btn-warning btn-xs disabled">preview</a> at least once to activate the submit button. Note that if you change the URL, you will have to click the <a href="#" class="btn btn-primary btn-xs disabled">update</a> button again to refresh its content.</div>';
  			
  			
  			$assignmentDescription = oembed_filter( $assignmentDescription );
@@ -287,18 +290,18 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 						$assignmentLink = get_permalink( $post_id );
 				
 						// feedback success
-						$feedback_msg = '<div class="alert alert-success" role="alert">The new ' . THINGNAME . ' has been created. Check out <a href="' . get_permalink( $post_id ) . '" class="alert-link">' . $assignmentTitle . '</a> or you can <a href="' . get_permalink( $current_ID ) .'"  class="alert-link">create another ' . lcfirst(THINGNAME) . '</a>.</div>';  
+						$feedback_msg = '<div class="alert alert-success" role="alert">The new ' . ds106bank_option( 'thingname' ) . ' has been created. Check out <a href="' . get_permalink( $post_id ) . '" class="alert-link">' . $assignmentTitle . '</a> or you can <a href="' . get_permalink( $current_ID ) .'"  class="alert-link">create another ' . lcfirst(ds106bank_option( 'thingname' )) . '</a>.</div>';  
 					
 					} else {
 						// feedback if new things are set to draft
-						$feedback_msg = '<div class="alert alert-success" role="alert">Your new ' . THINGNAME . ', "' . $assignmentTitle . '" has been created. Once it has been approved it will appear on this site. Do you want to <a href="' . get_permalink( $current_ID ) .'"  class="alert-link">create another ' . lcfirst(THINGNAME) . '</a>?</div>';  
+						$feedback_msg = '<div class="alert alert-success" role="alert">Your new ' . ds106bank_option( 'thingname' ) . ', "' . $assignmentTitle . '" has been created. Once it has been approved it will appear on this site. Do you want to <a href="' . get_permalink( $current_ID ) .'"  class="alert-link">create another ' . lcfirst(ds106bank_option( 'thingname' )) . '</a>?</div>';  
 				
 					}
  
 				} else {
 			
 					// generic error of post creation failed
-					$feedback_msg = '<div class="alert alert-danger" role="alert">ERROR: the new ' . lcfirst(THINGNAME) . ' could not be created. We are not sure why, but let someone know.</div>';
+					$feedback_msg = '<div class="alert alert-danger" role="alert">ERROR: the new ' . lcfirst(ds106bank_option( 'thingname' )) . ' could not be created. We are not sure why, but let someone know.</div>';
 				} // end if ($post_id)
 			} // end if isset submit button	
 		} // end count errors
@@ -352,7 +355,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					<?php echo $feedback_msg?>	
 				</div>
 			
-			<?php if (!$post_id and !$must_login) : //hide form if we had success ?>
+			<?php if (!isset($post_id) and !isset($must_login)) : //hide form if we had success ?>
 			
 				<form action="" id="bank106form" class="bank106form" method="post" action="" autocomplete="on" enctype="multipart/form-data">
 	
@@ -360,14 +363,14 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 		
 				<div class="col-sm-12">
 					<div class="form-group<?php if (array_key_exists("assignmentTitle",$errors)) echo ' has-error ';?>">
-						<label for="assignmentTitle"><?php _e( 'Title for this ' . ucfirst(THINGNAME), 'wpbootstrap' ) ?></label>
+						<label for="assignmentTitle"><?php _e( 'Title for this ' . ucfirst(ds106bank_option( 'thingname' )), 'wpbootstrap' ) ?></label>
 						<input type="text" name="assignmentTitle" id="assignmentTitle" value="<?php  echo $assignmentTitle; ?>" class="form-control" tabindex="1" placeholder="Enter a title" aria-describedby="titleHelpBlock" />
-						<span id="titleHelpBlock" class="help-block">Enter a title that describes this <?php echo THINGNAME?> so that it might make a curious visitor want to read more about it.</span>
+						<span id="titleHelpBlock" class="help-block">Enter a title that describes this <?php echo ds106bank_option( 'thingname' )?> so that it might make a curious visitor want to read more about it.</span>
 					</div>
 			
 					<div class="form-group<?php if (array_key_exists("assignmentDescription",$errors)) echo ' has-error ';?>">
-							<label for="assignmentDescription"><?php _e( 'Full Description for this '  . ucfirst(THINGNAME), 'wpbootstrap') ?></label>
-							<span id="assignmentHelpBlock" class="help-block">Use the rich text editor to compose everything someone might need to complete this <?php echo THINGNAME?>. See  <a href="https://make.wordpress.org/support/user-manual/content/editors/visual-editor/" target="_blank">documentation for using the editing tools</a> (link will open in a new tab/window). To embed media from YouTube, vimeo, instagram, SoundCloud, Twitter, flickr, just put the URL for its source page as plain text on a blank line. When your <?php echo THINGNAME?> is published the link will be replaced by a media embed.</span>
+							<label for="assignmentDescription"><?php _e( 'Full Description for this '  . ucfirst(ds106bank_option( 'thingname' )), 'wpbootstrap') ?></label>
+							<span id="assignmentHelpBlock" class="help-block">Use the rich text editor to compose everything someone might need to complete this <?php echo ds106bank_option( 'thingname' )?>. See  <a href="https://make.wordpress.org/support/user-manual/content/editors/visual-editor/" target="_blank">documentation for using the editing tools</a> (link will open in a new tab/window). To embed media from YouTube, vimeo, instagram, SoundCloud, Twitter, flickr, just put the URL for its source page as plain text on a blank line. When your <?php echo ds106bank_option( 'thingname' )?> is published the link will be replaced by a media embed.</span>
 							<?php
 								// set up for inserting the WP post editor
 								$settings = array( 'textarea_name' => 'assignmentDescription',  'tabindex'  => "3", 'media_buttons' => false, 'textarea_rows' => 8);
@@ -379,8 +382,9 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 
 				<div class="col-sm-6 clearfix">
 		
-					<div class="form-group<?php if (array_key_exists("assignmentType",$errors)) echo ' has-error ';?>">
-						<label for="assignmentType"><?php _e( 'Type of ' . THINGNAME , 'wpbootstrap' ) ?></label>
+					
+					<div class="form-group<?php if (array_key_exists("assignmentType",$errors)) echo ' has-error ';?>" id="thing_type_hole" data-typelabel="<?php echo ds106bank_option( 'type_name' ) ?>">
+						<label for="assignmentType"><?php _e( ds106bank_option( 'thingname' ) . ' ' . ds106bank_option( 'type_name' )  , 'wpbootstrap' )  ?></label>
 						<span id="assignmentTypeHelpBlock" class="help-block">Choose at least one.</span>
 					
 						<?php 
@@ -398,10 +402,11 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  
  					<?php if ( $use_thing_cats == 1 ): // offer only if categories in use and set for users to select ?>
  					
+ 					
  					<!-- hack of a way to send the category label to jQuery for the preview -->
  					<div class="form-group" id="thing_cat_hole" data-catlabel="<?php echo ds106bank_option( 'thing_cat_name' ) ?>">
  					
- 					<label for="assignmentCategories"><?php _e( THINGNAME . ' ' . ds106bank_option( 'thing_cat_name' ) , 'wpbootstrap' ) ?></label>
+ 					<label for="assignmentCategories"><?php _e( ds106bank_option( 'thingname' ) . ' ' . ds106bank_option( 'thing_cat_name' ) , 'wpbootstrap' ) ?></label>
  					<span id="assignmentCategoriesHelpBlock" class="help-block">Choose any/all that apply.</span>
  					 					
  					<?php  
@@ -425,7 +430,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
  					<?php endif; // for cats in use. Meow ?>
  
 					<div class="form-group<?php if (array_key_exists("assignmentTags",$errors)) echo ' has-error ';?>">
-						<label for="assignmentTags"><?php _e( 'Tags that describe this ' . THINGNAME . ' (optional)', 'wpbootstrap' ) ?></label>
+						<label for="assignmentTags"><?php _e( 'Tags that describe this ' . ds106bank_option( 'thingname' ) . ' (optional)', 'wpbootstrap' ) ?></label>
 
 						<input type="text" name="assignmentTags" class="form-control" id="assignmentTags" value="<?php echo $assignmentTags; ?>" tabindex="4" aria-describedby="tagHelpBlock" />
 						<span id="tagHelpBlock" class="help-block">All tags must be a single word; separate each tag with a comma or a space.</span>
@@ -434,7 +439,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					<?php if ( $use_difficulty_rating ) :?>
 						<div class="form-group">
 							<label for="assignmentDifficulty"><?php _e( 'Difficulty Rating' , 'wpbootstrap' ) ?></label>
-							<span id="assignmentDifficultyHelpBlock" class="help-block">As the creator of this <?php echo THINGNAME?> you can assign a difficulty rating that is displayed when it is viewed.</span>
+							<span id="assignmentDifficultyHelpBlock" class="help-block">As the creator of this <?php echo ds106bank_option( 'thingname' )?> you can assign a difficulty rating that is displayed when it is viewed.</span>
 						
 							<?php 
 								// labels for ratings, might make this an option one day!
@@ -458,7 +463,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 	?>
 						<div class="form-group">
 							<label for="assignmentRating"><?php _e( 'Initial Public Rating' , 'wpbootstrap' ) ?></label>
-							<span id="twitterHelpBlock" class="help-block">Any visitor can rate this <?php echo THINGNAME?> on the scale shown below. Give it an initial seed value.</span>
+							<span id="twitterHelpBlock" class="help-block">Any visitor can rate this <?php echo ds106bank_option( 'thingname' )?> on the scale shown below. Give it an initial seed value.</span>
 			
 							<?php
 							// get wp-ratings settings
@@ -484,14 +489,14 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 					<div class="col-sm-6">
 
 						<div class="form-group<?php if (array_key_exists("assignmentURL",$errors)) echo ' has-error ';?>">
-								<label for="assignmentURL"><?php _e( 'Web address for an example of this ' . THINGNAME, 'wpbootstrap' )?> <a href="<?php echo $assignmentURL?>" class="btn btn-xs btn-warning" id="testURL" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Test Link</a></label>
+								<label for="assignmentURL"><?php _e( 'Web address for an example of this ' . ds106bank_option( 'thingname' ), 'wpbootstrap' )?> <a href="<?php echo $assignmentURL?>" class="btn btn-xs btn-warning" id="testURL" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Test Link</a></label>
 								<input type="url" name="assignmentURL" id="assignmentURL" class="form-control" value="<?php echo $assignmentURL; ?>" tabindex="13" placeholder="http://" aria-describedby="urlHelpBlock" /> 
-								<span id="urlHelpBlock" class="help-block">Enter the URL that is the example for the <?php echo THINGNAME?> you are editing. If the link is an mp3 file or is on YouTube, vimeo, soundcloud, or flickr, then it will be embedded; otherwise it will be linked. Please test the link to make sure it works.</span>
+								<span id="urlHelpBlock" class="help-block">Enter the URL that is the example for the <?php echo ds106bank_option( 'thingname' )?> you are editing. If the link is an mp3 file or is on YouTube, vimeo, soundcloud, or flickr, then it will be embedded; otherwise it will be linked. Please test the link to make sure it works.</span>
 						</div>		
 					
 						<div class="form-group">
 							<label for="uploadThumb"><?php _e( 'Upload Thumbnail Image', 'wpbootstrap' )?></label>
-							<span id="uploadHelpBlock" class="help-block">Upload a JPG or PNG image to represent your <?php echo THINGNAME?> in place of the default image below. Please use an image size larger than <?php echo THUMBW?>x<?php echo THUMBH?> pixels (it will be center cropped to these proportions). </span>
+							<span id="uploadHelpBlock" class="help-block">Upload a JPG or PNG image to represent your <?php echo ds106bank_option( 'thingname' )?> in place of the default image below. Please use an image size larger than <?php echo THUMBW?>x<?php echo THUMBH?> pixels (it will be center cropped to these proportions). </span>
 						
 							<?php 
 						
@@ -509,7 +514,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 						
 						<div class="form-group">
 							<label for="assignmentExtras"><?php _e( 'Extra Information' , 'wpbootstrap' ) ?></label>
-							<span id="extrasHelpBlock" class="help-block">Use this field to append additional end notes for this <?php echo THINGNAME?> such as an attribution for the thumbnail image or other credits. Any  HTML will be removed but URLs will be converted to hyperlinks.</span>
+							<span id="extrasHelpBlock" class="help-block">Use this field to append additional end notes for this <?php echo ds106bank_option( 'thingname' )?> such as an attribution for the thumbnail image or other credits. Any  HTML will be removed but URLs will be converted to hyperlinks.</span>
 							
 							<textarea name="assignmentExtras" id="assignmentExtras" rows="4" class="form-control" tabindex="15"  aria-describedby="extrasHelpBlock"><?php  echo $assignmentExtras; ?></textarea>	
 						
@@ -517,7 +522,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 						
 						<?php if ( ds106bank_option('example_via_form') ) : // use only if doing form subs?>
 						<div class="form-group">
-							<label for="assignmentInstructions"><?php echo THINGNAME?><?php _e(' Specific Information' , 'wpbootstrap' ) ?></label>
+							<label for="assignmentInstructions"><?php echo ds106bank_option( 'thingname' )?><?php _e(' Specific Information' , 'wpbootstrap' ) ?></label>
 							<span id="extrasHelpBlock" class="help-block">Insert instructions that are individualized for this item that will appear above the form for adding a response</span>
 							
 							<textarea name="assignmentInstructions" id="assignmentInstructions" rows="4" class="form-control" tabindex="16"  aria-describedby="extrasHelpBlock"><?php  echo $assignmentInstructions; ?></textarea>	
@@ -534,11 +539,11 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 							<?php if ($my_cc_mode == 'site') :?>
 					
 							<label for="assignmentCC"><?php _e( 'Creative Commons License Applied', 'wpbootstrap' )?></label>
-								<span class="help-block">All <?php echo lcfirst(THINGNAME)?>s added to this site will be licensed</span>
+								<span class="help-block">All <?php echo lcfirst(ds106bank_option( 'thingname'))?> added to this site will be licensed</span>
 								<p class="form-control-static"><?php echo cc_license_html(ds106bank_option( 'cc_site' ));?></p>
 				
 							<?php elseif  ($my_cc_mode == 'user') :?>
-								<label for="assignmentCC"><?php _e( 'Choose a license to apply to this ' . THINGNAME, 'wpbootstrap' )?></label>
+								<label for="assignmentCC"><?php _e( 'Choose a license to apply to this ' . ds106bank_option( 'thingname' ), 'wpbootstrap' )?></label>
 								<select name="assignmentCC" id="assignmentCC" class="form-control">
 								<option value="--">Select...</option>
 								<?php echo cc_license_select_options( $assignmentCC )?>
@@ -579,7 +584,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				<?php wp_nonce_field( 'bank106_form_add_assignment', 'bank106_form_add_assignment_submitted' ); ?>
 			
 				<!-- hidden data stored for preview use -->
-				<input type="hidden" id="thingName" value="<?php echo THINGNAME?>" />
+				<input type="hidden" id="thingName" value="<?php echo ds106bank_option( 'thingname' )?>" />
 				<input type="hidden" name="assignment_thumb_id"  value="<?php echo $assignment_thumb_id?>" />
 				<input type="hidden" id="embedMedia" value="<?php echo htmlentities( get_media_embedded ( $assignmentURL ))?>" />
 		
@@ -608,7 +613,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 				<?php endif?>
 					
 				<div class="form-group" id="prettybuttons">
-					<label for="submitassignment"><?php _e( 'Review and Submit this ' . THINGNAME, 'wpbootstrap' )?></label>
+					<label for="submitassignment"><?php _e( 'Review and Submit this ' . ds106bank_option( 'thingname' ), 'wpbootstrap' )?></label>
 					
 					<div class="row"> <!-- submit buttons row -->
 						<div class="col-xs-4 col-md-3">
@@ -621,7 +626,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 						</div>
 						
 						<div class="col-xs-4 col-md-3">
-						<a href="#preview" class="fancybox btn btn-warning <?php echo $previewBtnState?>" title="Preview of your <?php echo lcfirst(THINGNAME)?>; it has not yet been saved. Urls for embeddable media will render when saved."><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Preview</a>
+						<a href="#preview" class="fancybox btn btn-warning <?php echo $previewBtnState?>" title="Preview of your <?php echo lcfirst(ds106bank_option( 'thingname' ))?>; it has not yet been saved. Urls for embeddable media will render when saved."><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Preview</a>
 						</div>
 						<div class="col-xs-8 col-md-9">
 							<span class="help-block">Generate a preview of your submission. If the body content does not change, try clicking "Update" agan.</span>
@@ -634,7 +639,7 @@ if ( isset( $_POST['bank106_form_add_assignment_submitted'] ) && wp_verify_nonce
 							</button>
 						</div>
 						<div class="col-xs-8 col-md-9">
-							<span class="help-block">Once every thing looks good, submit this <?php echo lcfirst(THINGNAME)?> to the site.</span>
+							<span class="help-block">Once every thing looks good, submit this <?php echo lcfirst(ds106bank_option( 'thingname' ))?> to the site.</span>
 						</div>
 					</div>	<!-- end submit buttons row -->									
 

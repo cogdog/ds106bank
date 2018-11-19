@@ -159,6 +159,27 @@ function ds106bank_custom_header_setup() {
     add_theme_support( 'custom-header', $args );
 }
 
+// ----- a cleaner dashboard is a happier one, remove Posts from side menu
+function bank106_remove_menus() {
+  
+  remove_menu_page( 'edit.php' );                   //Posts
+  remove_menu_page( 'upload.php' );                 //Media
+  
+}
+add_action( 'admin_menu', 'bank106_remove_menus' );
+
+
+
+function bank106_remove_wp_nodes() 
+{
+    global $wp_admin_bar;   
+    $wp_admin_bar->remove_node( 'new-post' );
+    $wp_admin_bar->remove_node( 'new-link' );
+    $wp_admin_bar->remove_node( 'new-media' );
+}
+
+add_action( 'admin_bar_menu', 'bank106_remove_wp_nodes', 999 );
+
 
 // ----- create action to handle request for theme specific page setup
 
@@ -308,10 +329,11 @@ function post_type_assignments() {
 							'not_found' =>  'No things to do found',
 							'not_found_in_trash' => 'No things to do found in Trash', 
 						),
-						'description' => __('Tasks, assignments, lessons in the bank'),
+						'description' => __('Tasks, assignments, items in the bank'),
 						'public' => true,
 						'show_ui' => true,
 						'menu_position' => 5,
+						'menu_icon' => 'dashicons-welcome-widgets-menus',
 						'show_in_nav_menus' => true,
 						'supports'  => array(
 									'title',
@@ -358,6 +380,7 @@ function post_type_assignments() {
 						'public' => true,
 						'show_ui' => true,
 						'menu_position' => 5,
+						'menu_icon' => 'dashicons-migrate',
 						'show_in_nav_menus' => true,
 						'supports'  => array(
 									'title',
@@ -411,6 +434,54 @@ function bank106_custom_examples_column( $column, $post_id ) {
         
 }
 
+// edit the post editing admin messages to reflect use of Collectables
+// h/t http://www.joanmiquelviade.com/how-to-change-the-wordpress-post-updated-messages-of-the-edit-screen/
+
+function bank106_thing_updated_messages ( $msg ) {
+    $msg[ 'assignments' ] = array (
+     0 => '', // Unused. Messages start at index 1.
+	 1 => "Thing to do updated.",
+	 2 => 'Custom fieldupdated.',  // Probably better do not touch
+	 3 => 'Custom field deleted.',  // Probably better do not touch
+
+	 4 => "Thing to do updated.",
+	 5 => "Thing to do restored to revision",
+	 6 => "Thing to do published.",
+
+	 7 => "Thing to do saved.",
+	 8 => "Thing to do submitted.",
+	 9 => "Thing to do scheduled.",
+	10 => "Thing to do draft updated.",
+    );
+    return $msg;
+}
+
+add_filter( 'post_updated_messages', 'bank106_thing_updated_messages', 10, 1 );
+
+
+function bank106_examples_updated_messages ( $msg ) {
+    $msg[ 'examples' ] = array (
+     0 => '', // Unused. Messages start at index 1.
+	 1 => "Response updated.",
+	 2 => 'Custom field updated.',  // Probably better do not touch
+	 3 => 'Custom field deleted.',  // Probably better do not touch
+
+	 4 => "Response updated.",
+	 5 => "Response restored to revision",
+	 6 => "Response published.",
+
+	 7 => "Response saved.",
+	 8 => "Response submitted.",
+	 9 => "Response scheduled.",
+	10 => "Response draft updated.",
+    );
+    return $msg;
+}
+
+add_filter( 'post_updated_messages', 'bank106_examples_updated_messages', 10, 1 );
+
+
+
 // ----- set unique tags on saving an assignment 
 add_action( 'save_post', 'set_assignment_tag');
 
@@ -420,7 +491,8 @@ function set_assignment_tag( $post_id ) {
 	// code from http://codex.wordpress.org/Plugin_API/Action_Reference/save_post
 
 	// skip if not an assignment post type or it is a revision
-	if  ( $_POST['post_type'] != 'assignments' or wp_is_post_revision( $post_id ) ) return;
+	
+	if ( isset( $_POST['post_type']  ) AND ( $_POST['post_type'] != 'assignments' or wp_is_post_revision( $post_id ) ) ) return;
 	
     /* Request passes all checks; update the things's taxonomy */
 	update_assignment_tags( $post_id );
@@ -822,7 +894,7 @@ function update_assignment_meta($id, $example_count, $tutorial_count) {
 // update custom post meta to track the views and the number of examples done for each assignment
 // called on each view of an assignment
 
-	// get current value, if it does not exist, then 0
+	// get current value, if it does nto exist, then 0
 	$visit_count = ( get_post_meta( $id, 'assignment_visits', true ) ) ? get_post_meta( $id, 'assignment_visits', true ) : 0; 
 	$visit_count++;
 	

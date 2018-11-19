@@ -21,10 +21,10 @@ function decodeEntities(input) {
     // Initialize the Lightbox for any links with the 'fancybox' class
 	$(".fancybox").fancybox({
 	
-		fitToView	: false,
-		width		: '60%',
-		height		: '80%',
+		maxWidth	: 0.85 * window.innerWidth,
+		autoHeight	: true,
 		autoSize	: false,
+		fitToView	: false,
 		closeClick	: false,
 		openEffect  : 'fade',
 		closeEffect : 'fade',

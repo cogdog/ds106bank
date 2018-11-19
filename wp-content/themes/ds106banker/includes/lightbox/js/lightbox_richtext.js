@@ -28,10 +28,10 @@ function nl2br (str, is_xhtml) {
     // Initialize the Lightbox for any links with the 'fancybox' class
 	$(".fancybox").fancybox({
 	
-		fitToView	: false,
-		width		: '90%',
-		height		: '90%',
+		maxWidth	: 0.85 * window.innerWidth,
+		autoHeight	: true,
 		autoSize	: false,
+		fitToView	: false,
 		closeClick	: false,
 		openEffect  : 'fade',
 		closeEffect : 'fade',
