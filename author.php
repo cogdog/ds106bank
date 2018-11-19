@@ -5,7 +5,7 @@
 				<div id="main" class="col-sm-8 clearfix" role="main">
 				
 					<div class="page-header"><h1 class="archive_title h2">
-						<span><?php _e("Posts By:", "wpbootstrap"); ?></span> 
+						<span><?php _e("Examples Shared By", "wpbootstrap"); ?></span> 
 						<?php 
 							// If google profile field is filled out on author profile, link the author's page to their google+ profile page
 							$curauth = (get_query_var('author_name')) ? get_user_by('slug', get_query_var('author_name')) : get_userdata(get_query_var('author'));
@@ -28,7 +28,15 @@
 							
 							<h3 class="h2"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 							
-							<p class="meta"><?php _e("Posted", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_time(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php the_author_posts_link(); ?> <span class="amp">&</span> <?php _e("filed under", "wpbootstrap"); ?> <?php the_category(', '); ?>.</p>
+							
+							<?php 
+							 	// get the ID for the assignment this belongs to
+							 	$aid = get_assignment_id_from_terms( get_the_ID() );
+							 	// make a link string
+							 	$assignment_str = ($aid) ? '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
+							 ?>
+
+							<p class="meta"><?php _e("Added", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php the_author_posts_link(); ?> for  <?php echo ds106bank_option( 'thingname' )?>  <?php echo $assignment_str?></p>
 						
 						</header> <!-- end article header -->
 					
@@ -36,7 +44,10 @@
 						
 							<?php the_post_thumbnail( 'wpbs-featured' ); ?>
 						
-							<?php the_excerpt(); ?>
+							<?php the_content(); ?>
+							
+							<p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">See Example</a>
+							<?php edit_post_link( __( 'Edit', 'bonestheme' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					
 						</section> <!-- end article section -->
 						
@@ -48,9 +59,9 @@
 					
 					<?php endwhile; ?>	
 					
-					<?php if (function_exists('wp_bootstrap_page_navi')) { // if expirimental feature is active ?>
+					<?php if (function_exists('page_navi')) { // if expirimental feature is active ?>
 						
-						<?php wp_bootstrap_page_navi(); // use the page navi function ?>
+						<?php page_navi(); // use the page navi function ?>
 
 					<?php } else { // if it is disabled, display regular wp prev & next links ?>
 						<nav class="wp-prev-next">

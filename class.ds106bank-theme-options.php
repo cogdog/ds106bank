@@ -58,7 +58,11 @@ class ds106bank_Theme_Options {
 	
 	/* HTML to display the theme options page and it's tabs */
 	public function display_page() {
+	
+	
 		$settings_headings = array('theme_setup' => 'Theme Setup', 'thing_heading' => 'Things', 'notify_heading' => 'Notifications', 'twitter_heading' => 'Twitter', 'thumbnail_heading' => 'Media', 'cc_heading' => 'Licensing', 'ratings_heading' => 'Ratings', 'examples_heading' => 'Responses and Tutorials', 'login_heading' => 'Login', 'syndication_heading' => 'Syndication', 'captcha_heading' => 'Captcha', 'thing_type_heading' => 'Organize Types', 'type_mod_heading' => 'Edit Types', 'reset_heading' => 'Reset Settings');
+		
+		$nav = '';
 		
 		foreach ($settings_headings as $label => $heading) {
 			$nav .= '<a href="#' . $label . '" class="button-primary">' . $heading . '</a>';
@@ -721,7 +725,7 @@ class ds106bank_Theme_Options {
 				array(
 					'title'   => __( ucfirst($atype->name) . ' Thumbnail' ),
 					'desc'    => __( '<hr /><p>&nbsp;</p>' ),
-					'std'     =>  'http://placehold.it/' . THUMBW . 'x' . THUMBH,
+					'std'     =>  'http://placehold.it/' . ds106bank_option('thumb_w') . 'x' . ds106bank_option('thumb_h'),
 					'type'    => 'medialoader',
 					'section' => 'types'
 				);
@@ -846,7 +850,7 @@ class ds106bank_Theme_Options {
 
 			case 'textarea':
 			
-				echo '<textarea class="' . $field_class . '" id="' . $id . '" name="ds106banker_options[' . $id . ']" placeholder="' . $std . '" rows="5" style="width:80%">' . wp_htmledit_pre( $options[$id] ) . '</textarea>';
+				echo '<textarea class="' . $field_class . '" id="' . $id . '" name="ds106banker_options[' . $id . ']" placeholder="' . $std . '" rows="5" style="width:80%">' . format_for_editor( $options[$id] ) . '</textarea>';
 
 				if ( $desc != '' )
 					echo '<br /><span class="description">' . $desc . '</span>';
@@ -856,9 +860,9 @@ class ds106bank_Theme_Options {
 			case 'medialoader':
 					
 				if ( strpos ( $options[$id], 'http') !==false ) {
-					echo '<img id="previewimage_' . $id . '" src="' . $options[$id] . '" width="' . (THUMBW / 2) . '" height="' . (THUMBH / 2) . '" alt="default thumbnail" />';
+					echo '<img id="previewimage_' . $id . '" src="' . $options[$id] . '" width="' . (ds106bank_option('thumb_w') / 2) . '" height="' . (ds106bank_option('thumb_h') / 2) . '" alt="default thumbnail" />';
 				} else {
-					echo '<img id="previewimage_' . $id . '" src="http://placehold.it/' . (THUMBW / 2) . 'x' . (THUMBH / 2) . '" alt="default thumbnail" />';
+					echo '<img id="previewimage_' . $id . '" src="http://placehold.it/' . (ds106bank_option('thumb_w') / 2) . 'x' . (ds106bank_option('thumb_h') / 2) . '" alt="default thumbnail" />';
 				}
 
 				echo '<input type="hidden" name="ds106banker_options[' . $id . ']" id="' . $id . '" value="' . esc_attr( $options[$id] ) . '" />
@@ -974,18 +978,12 @@ class ds106bank_Theme_Options {
 			}
 			
 			// has thumbnail sizes changed? If so, update option for thumbnail sizes
-			if ( $input['thumb_w'] !=  THUMBW  ) {
+			if ( $input['thumb_w'] !=   ds106bank_option( 'thumb_w' )  ) {
 				update_option('thumbnail_size_w', $input['thumb_w']);
 			}
 			
-			if ( $input['thumb_h'] !=  THUMBH  ) {
+			if ( $input['thumb_h'] !=  ds106bank_option( 'thumb_h' )  ) {
 				update_option('thumbnail_size_h', $input['thumb_h']);
-			}
-			
-			// has page media width changed? if so, update options for medium sized images
-			if ( $input['page_media_width'] !=  MEDIAW  ) {
-				update_option('medium_size_w', $input['page_media_width']);
-				update_option('medium_size_h', $input['page_media_width']);
 			}
 			
 			// if we new types list, add to assignmemttypes taxonomy

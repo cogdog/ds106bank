@@ -8,9 +8,6 @@ URL: http://cogdog.info/
 
 */
 
-// Exit if accessed directly outside of WP
-if ( !defined('ABSPATH')) exit;
-
 /* -------------------------------------- SET UP -------------------------------------- */	
 
 // all the inits

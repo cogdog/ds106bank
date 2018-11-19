@@ -8,8 +8,6 @@ by Alan Levine http://cog.dog/ or http://cogdogblog.com/
 
 ----- 
 
-
-
 The DS106 Assignment Bank Theme is a Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/). With it you can build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  
 
 Got a question? Suggestion? Feature Requests? Problem? A surplus of money? Please send them my way via [GitHub Issues](https://github.com/cogdog/ds106bank/issues) or directly to cogdogblog@gmail.com
@@ -38,6 +36,8 @@ For more details behind how this theme came to be see [related posts on CogDogBl
 
 ## What's New?
 
+
+* Nov 18, 2018: Rolled this theme and it's previous parent WP-Bootstrap (no longer updated) into a single theme, so now child themes can be generated from this (also easier installs). Yo update an existing site, first switch your theme to somering like Twenty-Seventeen, upload this new version to replace the older child theme (you can later delete WP-Bootstrap) then switch back to DS106 Assignment Bank
 * Mar 12, 2018: CSS support for [User Interface Options plugin](https://github.com/fluid-project/uio-wordpress-plugin)
 * Oct 16, 2017: New site option to include a general set of instructions to appear when responding to an assignment. In addition, each assignment can include extra instructions that are specific to it. Both of these will appear at the top of the form when used to submit a reponse.
 * June 22, 2017: New Assignment Bank options to make use of Wordpress user accounts to track contributions, either optionally or make it require. In the latter case, submssion forms are hidden until a visitor has logged in.
@@ -91,7 +91,7 @@ The combination of these two features can let you customize instructions:
 
 ## Theming
 
-This ds106 Assignment Bank Theme is build as a child theme of the [Wordpress Bootstrap Theme[(https://github.com/320press/wordpress-bootstrap) chosen for its responsive layout and flexible grid display (and sadly no longer being supported). 
+This ds106 Assignment Bank Theme is built on and now (as of Nov 18, 2018) includes all code from [Wordpress Bootstrap Theme[(https://github.com/320press/wordpress-bootstrap) chosen for its responsive layout and flexible grid display (and sadly no longer being supported).  As a stand-alone theme, ypu are now free to generate your own child themes.
 
 It is pretty basic on design, but hopefully flexible to your use cases. The design allows you to create a site where the front of the site is the menu of types of things, but that could also be an internal page, and a normal blog flow can be front and center. The theme does not create any of the navigation menus for you, but you will find suggestions as to the types of things you can make available via the built in Wordpress menu editor.
 
@@ -104,8 +104,7 @@ A self hosted Wordpress hosted site (in other words "you cannot use this on Word
 
 Note: Do not upload the zip for this GitHub repo to install the themes. It won't work!
 
-1. Upload the **ds106banker** and the **wp-bootstrap** directories (from wp-content/ on this distro) to your site's wp-content/themes directory. Or if you wish to install from within the Wordpress Dashboard, from **Appearance** select **Themes** and click the **Upload** links.  A zip of both themes is included with this repo, or you can download directly [installable-ds106banker.zip](https://github.com/cogdog/ds106bank/blob/master/installable-ds106banker.zip) and  [installable-wp-bootstrap.zip](https://github.com/cogdog/ds106bank/blob/master/installable-wp-bootstrap.zip) 
-
+1. Download a ZIP file of this GitHub Repo (that's via the green **Clone or Download** button above as a file `ds106bank-master.zip`). The zip can be uploaded directly to your site via **Add Themes** in the Wordpress dashboard. If you run into size upload limits or just prefer going old school like me, unzip the package and ftp the entire folder into your `wp-content/themes` directory.
 2. Activate the **ds106banker** theme (you do not have to activate the wp-bootstrap theme)
 3. Install WP-PostRatings and/or Feed Wordpress plugins according to the way you plan to use the theme (see below).
 4. Create /modify as needed pages for the Main Index, the page with a form to add examples, and a form for creating new "things" (see below).  The theme *should* create these for you, but if not you can create them and set the appropriate template as described below.

@@ -6,7 +6,7 @@
 				
 				<?php 
 					// if search was on post_type modify the output string
-					$thing_query = ( get_query_var('post_type') == 'assignments' ) ? THINGNAME . 's' : '';
+					$thing_query = ( get_query_var('post_type') == 'assignments' ) ? ds106bank_option( 'pluralthings' ) : '';
 				?>
 				
 					<div class="page-header"><h1><span><?php _e("Search $thing_query for","wpbootstrap"); ?></span> "<?php echo esc_attr(get_search_query()); ?>"</h1></div>
@@ -25,9 +25,9 @@
 									// get the ID for the assignment this belongs to
 									$aid = get_assignment_id_from_terms( get_the_ID() );
 									// make a link string
-									$type_str = ($aid) ? 'for ' .  THINGNAME .  ' <a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
+									$type_str = ($aid) ? 'for ' .  ds106bank_option( 'thingname' ) .  ' <a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
 								} elseif ( get_post_type( get_the_ID() ) == 'assignments' ) {
-									$type_str = ' as a ' . THINGNAME;
+									$type_str = ' as a ' . ds106bank_option( 'thingname' );
 								}
 							 ?>
 
@@ -38,7 +38,7 @@
 						<section class="post_content">
 							<?php the_content(); ?>
 							
-							<p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo THINGNAME?></a>
+							<p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo ds106bank_option( 'thingname' )?></a>
 							<?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 
 					

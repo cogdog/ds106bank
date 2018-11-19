@@ -29,7 +29,7 @@ if 	($typ == 'tut') {
 	add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_simpletext_scripts' );
 
 	$sub_type = strtolower( ds106bank_option('helpthingname') );
-	$feedback_msg = '<div class="alert alert-info" role="alert">Enter all of information below to describe a' . $sub_type . ' that would be helpful to someone else who responds to this '  . THINGNAME . '. It must be something available on the web at a public URL. ';
+	$feedback_msg = '<div class="alert alert-info" role="alert">Enter all of information below to describe a' . $sub_type . ' that would be helpful to someone else who responds to this '  . ds106bank_option( 'thingname' ) . '. It must be something available on the web at a public URL. ';
 
 
 } else {
@@ -57,7 +57,7 @@ if 	($typ == 'tut') {
 		add_action( 'wp_enqueue_scripts', 'ds106bank_enqueue_simpletext_scripts' );
 		
 		// simple editor and instructions
-		$feedback_msg .= '<div class="alert alert-info" role="alert">Enter all information in the form below to share your response to this ' . THINGNAME . '. Then <a href="#" class="btn btn-primary btn-xs disabled">update</a> the information to  verify that is entered correctly. Once entered, <a href="#" class="btn btn-success btn-xs disabled">submit</a> so it will be saved as an example for others to see.';
+		$feedback_msg .= '<div class="alert alert-info" role="alert">Enter all information in the form below to share your response to this ' . ds106bank_option( 'thingname' ) . '. Then <a href="#" class="btn btn-primary btn-xs disabled">update</a> the information to  verify that is entered correctly. Once entered, <a href="#" class="btn btn-success btn-xs disabled">submit</a> so it will be saved as an example for others to see.';
 
 	} else {
 		
@@ -106,7 +106,7 @@ if ( is_user_logged_in() ) {
 		$must_login = true;
 		
 		// feedback message now an alert
-		$feedback_msg = '<div class="alert alert-danger" role="alert"> You must sign in to ' . bloginfo( 'name' ) . ' to add your response to this ' . THINGNAME . '. Return to <a href="' . get_permalink( $aid ) . '">' . get_the_title( $aid ) . '</a> to login so you can add your response here.';
+		$feedback_msg = '<div class="alert alert-danger" role="alert"> You must sign in to ' . bloginfo( 'name' ) . ' to add your response to this ' . ds106bank_option( 'thingname' ) . '. Return to <a href="' . get_permalink( $aid ) . '">' . get_the_title( $aid ) . '</a> to login so you can add your response here.';
 	}
 		
 }
@@ -151,7 +151,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
  		setcookie( "bank106email", $submitterEmail, strtotime( '+14 days' ),  '/' );  /* expire in 14 days */
 
  		
- 		$my_assignment_tag = THINGNAME . $aid;
+ 		$my_assignment_tag = ds106bank_option( 'thingname' ) . $aid;
 		$my_tutorial_tag = 'Tutorial' . $aid;
 			
  		// let's do some validation, story an error message for each problem found
@@ -283,14 +283,14 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 						// notice of new examples are put into draft or not
 						$pending_msg = ( ds106bank_option('new_example_status') == 'draft' ) ? ', pending moderation, will be available at ' : ' is available now at ';
 						 
-						$feedback_msg = '<div class="alert alert-success" role="alert">Your new ' . $sub_type . ' response has been added' . $pending_msg .  '<a href="' . get_permalink(  $post_id ) . '" class="alert-link">' . get_permalink( $post_id ) . '</a>. Or you can return now to the <a href="' . get_permalink( $aid ) . '" class="alert-link">' . get_the_title( $aid ) . '</a> ' . THINGNAME . '.</div>'; 
+						$feedback_msg = '<div class="alert alert-success" role="alert">Your new ' . $sub_type . ' response has been added' . $pending_msg .  '<a href="' . get_permalink(  $post_id ) . '" class="alert-link">' . get_permalink( $post_id ) . '</a>. Or you can return now to the <a href="' . get_permalink( $aid ) . '" class="alert-link">' . get_the_title( $aid ) . '</a> ' . ds106bank_option( 'thingname' ) . '.</div>'; 
 					} else {
 						// feedback link returns to the assignment
 						
 						// notice of new examples are put into draft or not
 						$pending_msg = ( ds106bank_option('new_example_status') == 'draft' ) ? ', pending moderation, will be added ' : ' has been added ';
 						
-						$feedback_msg = '<div class="alert alert-success" role="alert">Your new ' . $sub_type . ' response ' . $pending_msg .  ' to the <a href="' . get_permalink( $aid ) . '" class="alert-link">' . get_the_title( $aid ) . '</a> ' . THINGNAME . '.</div>';  
+						$feedback_msg = '<div class="alert alert-success" role="alert">Your new ' . $sub_type . ' response ' . $pending_msg .  ' to the <a href="' . get_permalink( $aid ) . '" class="alert-link">' . get_the_title( $aid ) . '</a> ' . ds106bank_option( 'thingname' ) . '.</div>';  
 					
 					}
  
@@ -320,7 +320,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
 				
 					<header>
-					<div class="page-header"><h1 class="page-title" itemprop="headline">Add a <?php echo ucfirst($sub_type)?> for the "<?php the_title(); ?>" <?php echo THINGNAME?></h1></div>
+					<div class="page-header"><h1 class="page-title" itemprop="headline">Add a <?php echo ucfirst($sub_type)?> for the "<?php the_title(); ?>" <?php echo ds106bank_option( 'thingname' )?></h1></div>
 					</header> <!-- end article header -->
 					</article>
 
@@ -339,7 +339,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					
 						<p><em><?php the_excerpt(); ?></em></p>
 					
-						<p class="lead">Use the form below to add a <?php echo $sub_type?> to the <strong><a href="<?php echo get_permalink( $aid );?>"><?php the_title(); ?></a></strong> <?php echo lcfirst(THINGNAME)?>.</p>
+						<p class="lead">Use the form below to add a <?php echo $sub_type?> to the <strong><a href="<?php echo get_permalink( $aid );?>"><?php the_title(); ?></a></strong> <?php echo lcfirst(ds106bank_option( 'thingname' ))?>.</p>
 					</div>
 				</div>
 				
@@ -458,7 +458,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 					<!-- hidden data shhhhhh -->
 					<input type="hidden" id="aid" value="<?php echo $aid;?>" />
 					<input type="hidden" id="typ" value="<?php echo $typ;?>" />
-					<input type="hidden" id="thingName" value="<?php echo THINGNAME?>" />
+					<input type="hidden" id="thingName" value="<?php echo ds106bank_option( 'thingname' )?>" />
 					<input type="hidden" id="subType" value="<?php echo ucfirst( $sub_type );?>" />
 					
 					<?php if ( $use_full_editor ) :?>

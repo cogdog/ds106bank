@@ -6,6 +6,7 @@ This formats the main menu for the types of things, linking each to the page tha
 assignments within.  A Wordpress Page should be created and set to use this template. the
 title of the page and any content are displayed above the menu.
 */
+
 ?>
 
 <?php get_header(); ?>
@@ -68,7 +69,7 @@ title of the page and any content are displayed above the menu.
  				if ( count($assignmenttypes) == 0 ) {
  				
  					// warning warning if no things have yet created
- 					echo '<div class="clearfix row"><div class="col-sm-2 col-sm-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . THINGNAME . 's have been set up. You can do that if you explore the Assignment Bank Options under the <em>Types</em> tab.</p></div></div>';
+ 					echo '<div class="clearfix row"><div class="col-sm-2 col-sm-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . ds106bank_option( 'pluralthings' ) . ' have been set up. You can do that if you explore the Assignment Bank Options under the <em>Types</em> tab.</p></div></div>';
  					
  				} else {	
  					
@@ -90,12 +91,12 @@ title of the page and any content are displayed above the menu.
  						$items = get_term_by('id', $atype->term_id, 'assignmenttypes');
  						
  						// Add "s" if the count is 0 or more than 1
- 						$plural = ( $atype->count == 1 ) ? '' : 's';
+ 						$plural = ( $atype->count == 1 ) ? ds106bank_option( 'thingname' ) : ds106bank_option( 'pluralthings' );
  						
  						// string for start of link around icon
- 						$type_url_str = '<a href="' . get_site_url() . '?type=' . $atype->slug . '" title="View All ' . $atype->name . ' ' . THINGNAME .  's">';
+ 						$type_url_str = '<a href="' . get_site_url() . '?type=' . $atype->slug . '" title="View All ' . $atype->name . ' ' . $plural . '">';
  						// string for start of link around 
- 						$type_url_btn = '<a href="' . get_site_url() . '?type=' . $atype->slug . '" title="View All ' .  $atype->name . ' ' . THINGNAME .  's" class="btn btn-primary">';
+ 						$type_url_btn = '<a href="' . get_site_url() . '?type=' . $atype->slug . '" title="View All ' .  $atype->name . ' ' . $plural . '" class="btn btn-primary">';
  						
  						?>
  						
@@ -117,7 +118,7 @@ title of the page and any content are displayed above the menu.
 								<section class="post_content">
 						
 									<p><?php echo $atype->description ?></p>
-									<p class="more-link"><?php echo $type_url_btn?>View <?php echo $atype->count?> <?php echo THINGNAME . $plural?></a></p>
+									<p class="more-link"><?php echo $type_url_btn?>View <?php echo $atype->count?> <?php echo $plural?></a></p>
 	
 								</section> <!-- end article section -->
 						

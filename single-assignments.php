@@ -1,6 +1,6 @@
 <?php
 	// unique assignment/tutorial tags
-	$my_assignment_tag = THINGNAME . $post->ID;
+	$my_assignment_tag = ds106bank_option( 'thingname' ) . $post->ID;
 	$my_tutorial_tag = 'Tutorial' . $post->ID;
 	
 	// display option for exmaples & tutorials
@@ -67,7 +67,7 @@
 							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
 							?>
 							
-							<p class="meta">This <?php echo THINGNAME?> was 
+							<p class="meta">This <?php echo ds106bank_option( 'thingname' )?> was 
 							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo bank106_twitter_credit_link( $post->ID, '(', ')' )?><br />
 							</p>
 
@@ -88,7 +88,7 @@
 													
 							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', $single = true); ?></strong><br />
 							<!-- Thing types -->
-							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', 'Type: ', ', ', '' ); ?> <br />
+							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', ds106bank_option( 'type_name' ) . ': ', ', ', '' ); ?> <br />
 
 							<!-- Thing categories (if allowed) -->
 							<?php  
@@ -124,7 +124,7 @@
 							?>
 							
 							<div class="col-sm-9">	
-							<?php bank106_twitter_button ( $post->ID, THINGNAME );?>
+							<?php bank106_twitter_button ( $post->ID, ds106bank_option( 'thingname' ) );?>
 							</div>
 							
 							
@@ -157,7 +157,7 @@
 					
 						} else {
 							$extra_btn_class = ' btn-disabled';
-							$signin .= 'You must sign in to this site to add a response to this ' . THINGNAME . '. ';
+							$signin .= 'You must sign in to this site to add a response to this ' . ds106bank_option( 'thingname' ) . '. ';
 						}
 						
 						$signin .= wp_loginout('', false);
@@ -184,8 +184,8 @@
 					
 						<?php if ( $my_show_ex != 'tut' ) :?>
 						
-							<h3>Complete This <?php echo THINGNAME?></h3>
-							<p>After you do this <?php echo lcfirst(THINGNAME)?>, please share it so it can appear with other responses below. 
+							<h3>Complete This <?php echo ds106bank_option( 'thingname' )?></h3>
+							<p>After you do this <?php echo lcfirst(ds106bank_option( 'thingname' ))?>, please share it so it can appear with other responses below. 
 												
 							<?php if ( $my_fwp_mode == 'internal' ):?>
 							If you are writing to a blog connected to this site just use a tag or category <strong><?php echo $my_assignment_tag;?></strong> when writing a post on your own blog. Then your response will be added to the list below. <br /><br />Or if 
@@ -219,8 +219,8 @@
 						
 						<?php if ( $my_show_ex != 'ex' ) : ?>	
 					
-							<h3><?php echo $helpthing?>s for this <?php echo THINGNAME?></h3>
-								<p>Have you created something or know of an external resource that might help others complete this <?php echo lcfirst(THINGNAME)?>? 
+							<h3><?php echo $helpthing?>s for this <?php echo ds106bank_option( 'thingname' )?></h3>
+								<p>Have you created something or know of an external resource that might help others complete this <?php echo lcfirst(ds106bank_option( 'thingname' ))?>? 
 											
 								<?php if ( $my_fwp_mode == 'internal' ):?>
 								If you are writing to a blog connected to this site just use a tag or category <strong><?php echo $my_tutorial_tag;?></strong> when writing a post on your own blog. Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
@@ -276,7 +276,7 @@
 
 							?>
 		
-							<h3><?php echo $example_count?> Response<?php echo $plural?> Completed for this <?php echo THINGNAME?></h3>
+							<h3><?php echo $example_count?> Response<?php echo $plural?> Completed for this <?php echo ds106bank_option( 'thingname' )?></h3>
 							
 							
 							
@@ -372,7 +372,7 @@
 							$plural = ( $tutorial_count == 1) ? '' : 's';
 						?>
 					
-							<h3><?php echo $tutorial_count . ' ' . $helpthing . $plural?> for this <?php echo THINGNAME?></h3>	
+							<h3><?php echo $tutorial_count . ' ' . $helpthing . $plural?> for this <?php echo ds106bank_option( 'thingname' )?></h3>	
 							<ul>
 							
 							<?php 

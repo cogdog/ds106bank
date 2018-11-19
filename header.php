@@ -16,6 +16,11 @@
 		<!-- wordpress head functions -->
 		<?php wp_head(); ?>
 		<!-- end of wordpress head -->
+		
+		<!-- last and not least, the bank's own CSS -->
+		<?php echo '<link rel="stylesheet" href="' . get_stylesheet_directory_uri() . '/ds106bank.css" type="text/css" media="all">';?>
+		
+		
 		<!-- IE8 fallback moved below head to work properly. Added respond as well. Tested to work. -->
 			<!-- media-queries.js (fallback) -->
 		<!--[if lt IE 9]>
@@ -36,9 +41,21 @@
 	<body <?php body_class(); ?>>
 				
 		<header role="banner">
+
+				
+
 				
 			<div class="navbar navbar-default navbar-fixed-top">
 				<div class="container">
+				
+				<?php if ( get_header_image() ) : ?>
+					<div id="site-header">
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+							<img src="<?php header_image(); ?>" width="<?php echo get_custom_header()->width; ?>" height="<?php echo get_custom_header()->height; ?>" alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
+						</a>
+					</div>
+				<?php endif; ?>
+				
           
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -56,10 +73,13 @@
 						<?php //if(of_get_option('search_bar', '1')) {?>
 						<form class="navbar-form navbar-right" role="search" method="get" id="searchform" action="<?php echo home_url( '/' ); ?>">
 							<div class="form-group">
-								<input name="s" id="s" type="text" class="search-query form-control" autocomplete="off" placeholder="<?php _e('Search','wpbootstrap'); ?>">
+								<input name="s" id="s" type="text" class="search-query form-control" autocomplete="off" placeholder="<?php _e('Search ' . ds106bank_option( 'pluralthings' ) ,'wpbootstrap'); ?>" data-provide="typeahead" data-items="4" data-source='<?php echo $typeahead_data; ?>'>
+								<!-- use post_type to restrict search to things/assignments -->
+								<input type="hidden" name="post_type" value="assignments" />
 							</div>
 						</form>
 						<?php //} ?>
+
 					</div>
 
 				</div> <!-- end .container -->

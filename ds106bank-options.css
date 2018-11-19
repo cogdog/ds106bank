@@ -1,0 +1,9 @@
+/* -----------------------------= Options Need Style =--------------------------------- */
+.appearance_page_ds106bank-options h2 {
+    font-size: 2.5em;
+    text-align: center;
+}
+.appearance_page_ds106bank-options h2 + p {
+    text-align: center;
+    font-size: 1.2em;
+}

@@ -35,7 +35,7 @@
 						
 							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title(); ?></h1>
 						
-							<p class="meta">A response to the <a href="<?php echo $assignment_link?>"><?php echo get_the_title( $assignment_id );?></a> <?php echo THINGNAME?><br />
+							<p class="meta">A response to the <a href="<?php echo $assignment_link?>"><?php echo get_the_title( $assignment_id );?></a> <?php echo ds106bank_option( 'thingname' )?><br />
 							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $exampleSource?></strong> <?php echo bank106_twitter_credit_link( $post->ID, '(', ')', 'exampletags' )?><br /><br />
 							Number of views: <strong><?php echo get_post_meta( $post->ID, 'examples_visits', $single = true);?></strong>
 							</p>

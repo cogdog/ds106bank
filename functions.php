@@ -722,4 +722,6 @@ function wp_bootstrap_filter_ptags_on_images( $content ){
 }
 add_filter( 'the_content', 'wp_bootstrap_filter_ptags_on_images' );
 
+// Now bring on the custom stuff!
+require_once('functions-ds106bank.php');
 ?>
