@@ -17,18 +17,21 @@ This Wordpress Theme is modeled after the original [DS106 Open Assignment Bank](
 
 The banks we know of include:
 
+* [Add Copy and Layout Challenge Bank](https://jmc3353.adamcroom.com/bank/) Adam Croom, JMC3353  University of Oklahoma
 * [All The Toys](http://www.allthetoys.org/)
 * [Box of Magic Web Tricks](https://cog.dog/roo/box/) Alan Levine, ISS Institute Tour Workshops, Nov 2017
 * [Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
+* [eduToolkit](https://edutoolkit.org/)
 * [Foodworks Assignment Bank](http://foodworks.middcreate.net/assignments/) Middlebury College
 * [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
 * [Instructional Technology Assignments](http://tcoffman.org/INDT/) INDT501 at University of Mary Washington
 * [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
 * [Ontario Extend Activity Bank](https://extend-bank.ecampusontario.ca/)
 * [OER's for Transitional Learning](http://ctl.openlcc.net/oer/) Lansing Community College
-* [Still Web Contemplative Practices Bank](http://practices.stillweb.org/)
+* [Tiny Gigs](https://dlc.middcreate.net/tinygig/)  Digital Learning Commons, Middlebury Institute of International Studies at Monterey.
 * [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
 * [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
+* [Business Readiness Challenge Bank](http://business-wpl.com/) Faculty of Business, Justice and Behavioural Sciences at Charles Sturt University
 
 Hey, if you know more...  let me know-- or better yet, DIY; please fork this in GitHub, add your example, and submit a pull request. That's how this git thing gets things!
 
