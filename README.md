@@ -19,15 +19,22 @@ The banks we know of include:
 
 * [Add Copy and Layout Challenge Bank](https://jmc3353.adamcroom.com/bank/) Adam Croom, JMC3353  University of Oklahoma
 * [All The Toys](http://www.allthetoys.org/)
+* [Bank of Things](http://splots.coventry.domains/demo/bank/) Template for installer on Coventry.domains
 * [Box of Magic Web Tricks](https://cog.dog/roo/box/) Alan Levine, ISS Institute Tour Workshops, Nov 2017
+* [Business Readiness Challenge Bank](http://business-wpl.com/) 
+* [CALI Challenges](https://challenge.classcaster.net/)
 * [Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
+* [Digital Learning Activities](http://tcoffman.org/INDT/)
 * [eduToolkit](https://edutoolkit.org/)
+* [Enriched Science Projects](http://enrichedscience.edcamp.se/) 
 * [Foodworks Assignment Bank](http://foodworks.middcreate.net/assignments/) Middlebury College
 * [HumanMOOC Activity Bank](http://humanmooc.com/activities/)
+* [Ideas Bank](https://cte.openlcc.net/ideasbank/) Lansing Community College
 * [Instructional Technology Assignments](http://tcoffman.org/INDT/) INDT501 at University of Mary Washington
 * [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
 * [Ontario Extend Activity Bank](https://extend-bank.ecampusontario.ca/)
 * [OER's for Transitional Learning](http://ctl.openlcc.net/oer/) Lansing Community College
+* [Storied Make Bank](https://storied.kenyoncip.org/make/) Kenyon College
 * [Tiny Gigs](https://dlc.middcreate.net/tinygig/)  Digital Learning Commons, Middlebury Institute of International Studies at Monterey.
 * [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
 * [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
