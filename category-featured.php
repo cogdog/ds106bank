@@ -6,7 +6,7 @@
 				
 					<div class="page-header">
  						<h1 class="archive_title h2">
-					    	<span><?php _e('Featured ' . ds106bank_option( 'thingname' ) . ' Responses', "wpbootstrap"); ?> </span>
+					    	<span><?php _e('Featured ' . bank106_option( 'thingname' ) . ' Responses', "wpbootstrap"); ?> </span>
 					    </h1>					</div>
 
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
@@ -20,17 +20,10 @@
 						$assignment_str = ($aid) ? '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
 					
 						// get link to item
-						if ( get_post_meta( $post->ID, 'syndication_permalink' ) ) {
-							  // use remote link
-							  $the_real_permalink = get_post_meta( $post->ID, 'syndication_permalink', true );
-							  
-							  $more_link = '<a href="' .  $the_real_permalink . '" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-link"></span> ' . $the_real_permalink . '</a>';
-						} else {
-							  //use local link
-							  $the_real_permalink = get_permalink( $post->ID );
-							  
-							  $more_link = '<a href="' .  $the_real_permalink . '" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-eye-open"></span> read more</a>';
-						} 						?>
+						
+						$the_real_permalink = bank106_get_response_link( $post->ID );
+						$more_link = '<a href="' .  $the_real_permalink . '" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-link"></span> ' . $the_real_permalink . '</a>';
+						?>
 			
 						<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
 						
@@ -38,7 +31,7 @@
 							
 							<h3 class="h2"><a href="<?php echo $the_real_permalink ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a> </h3>
 							
-							<p class="meta"><?php _e("Added", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php echo get_post_meta($post->ID, 'syndication_source', $single = true);?>, response  for  <?php echo $assignment_str?> <?php echo ds106bank_option( 'thingname' )?></p>
+							<p class="meta"><?php _e("Created", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php echo get_post_meta($post->ID, 'syndication_source', $single = true);?>, response  for  <?php echo $assignment_str?> <?php echo bank106_option( 'thingname' )?></p>
 						
 						</header> <!-- end article header -->
 					

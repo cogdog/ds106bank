@@ -7,9 +7,6 @@ $term =	$wp_query->queried_object; // the term we need for this taxonomy
 $sortedby =  ( isset( $wp_query->query_vars['srt'] ) ) ? $wp_query->query_vars['srt'] : 'newest';
 
 $use_public_ratings = function_exists('the_ratings');
-$use_difficulty = ds106bank_option('difficulty_rating');
-
-$assignment_difficulty = '';
 
 // we are looking for a random assignment?
 if ($sortedby  == 'random') {
@@ -55,7 +52,7 @@ get_header(); ?>
 							$sortoptions['ratings'] = 'Public Ratings';
 						} 
 						
-						if ( $use_difficulty ) {
+						if ( bank106_option('difficulty_rating') ) {
 							// add option for sorting by wp-ratings
 							$sortoptions['difficulty'] = 'Difficulty';
 						}
@@ -95,10 +92,10 @@ get_header(); ?>
 					$found_things = $wp_query->found_posts;				
 					// Because grammar
 					if ( $found_things == 1 ) {
-						$plural = ds106bank_option( 'thingname' );
+						$plural = bank106_option( 'thingname' );
 						$verb = "is";
 					} else {
-						$plural = ds106bank_option( 'pluralthings' );
+						$plural = bank106_option( 'pluralthings' );
 						$verb = "are";
 					}
 
@@ -158,15 +155,13 @@ get_header(); ?>
 							// insert ratings if enabled
 							if ( $use_public_ratings ) { the_ratings(); }
 							
-							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_assignment_meta( $post->ID, 'fwp_name', 'Anonymous' );
-													
-							if ( $use_difficulty ) $assignment_difficulty = 'Difficulty: <strong>' .  get_post_meta( $post->ID, 'assignment_difficulty', $single = true )  . '</strong> (rated by author; 1=easy &lt--&gt; 5=difficult)<br />';
+							// author name either from WP user or from meta data (uses old FWP meta)
+							$assignmentAuthor = bank106_get_display_name( $post->ID, 'fwp_name' );
 							?>
 							
 							
 							<p class="meta">
-								<?php echo $assignment_difficulty?>Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo get_assignment_meta_string( $post->ID );?>
+								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo bank106_user_credit_link( $post->ID, '(', ')' )?> <?php echo get_assignment_meta_string( $post->ID );?>
 							</p>
 							
 						</header> 
@@ -181,7 +176,7 @@ get_header(); ?>
 						<!-- thing content -->
 						<section class="post_content">
 						
-							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>"  class="btn btn-primary"><?php echo ds106bank_option( 'thingname' )?> Details</a><?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
+							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>"  class="btn btn-primary"><?php echo bank106_option( 'thingname' )?> Details</a><?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					
 						</section> <!-- end article section -->
 						
@@ -219,7 +214,7 @@ get_header(); ?>
 									<header>
 									</header>
 									<section class="post_content">
-										<p><?php _e("Hmmm, Nothing here. You should create some " . ds106bank_option( 'pluralthings' ) . " to go here!", "wpbootstrap"); ?></p>
+										<p><?php _e("Hmmm, Nothing here. You should create some " . bank106_option( 'pluralthings' ) . " to go here!", "wpbootstrap"); ?></p>
 									</section>
 									<footer>
 									</footer>

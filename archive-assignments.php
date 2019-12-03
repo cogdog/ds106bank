@@ -6,7 +6,7 @@ global $wp_query; // give us query
 $sortedby =  ( isset( $wp_query->query_vars['srt'] ) ) ? $wp_query->query_vars['srt'] : 'newest';
 
 // label for the tutorials, now customizable as theme option
-$help_thing_name = lcfirst( ds106bank_option('helpthingname') );
+$help_thing_name = lcfirst( bank106_option('helpthingname') );
 
 // we are looking for a random assignment?
 if ($sortedby  == 'random') {
@@ -73,10 +73,10 @@ get_header(); ?>
 					
 					?>
 					<div class="page-header">
-						<h1 class="archive_title">All <?php echo ds106bank_option( 'pluralthings' )?></h1>
+						<h1 class="archive_title">All <?php echo bank106_option( 'pluralthings' )?></h1>
 						
 						<form action="" id="taxassignmentview" method="get" action="">
-						<p>There are <strong><?php echo $wp_query->found_posts;?></strong> <?php echo lcfirst(ds106bank_option( 'pluralthings' ));?>s.  View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
+						<p>There are <strong><?php echo $wp_query->found_posts;?></strong> <?php echo lcfirst(bank106_option( 'pluralthings' ));?>s.  View sorted by <select name="goto" id="assignmentList" onchange="window.location.href= this.form.goto.options[this.form.goto.selectedIndex].value">
 							<?php
 							// remove any query string from current URL
 							$base_url = strtok( $_SERVER["REQUEST_URI"], '?' );
@@ -130,16 +130,13 @@ get_header(); ?>
 							// insert ratings if enabled
 							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
 						
-							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
-							
-							// no author assigned
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+						
+							// author name either from WP user or from meta data (uses old FWP meta)
+							$assignmentAuthor = bank106_get_display_name( $post->ID, 'fwp_name' );
 							?>
 							
-							
 							<p class="meta">
-								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> &bull; <strong><?php echo get_assignment_meta( $post->ID, 'assignment_visits')?></strong> views &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_examples')?></strong> responses</strong> &bull;  <strong><?php echo get_assignment_meta( $post->ID, 'assignment_tutorials')?></strong> <?php echo $help_thing_name?>s
+								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo bank106_user_credit_link( $post->ID, '(', ')' )?> <?php echo get_assignment_meta_string( $post->ID );?>
 							</p>
 							
 						</header> 
@@ -157,7 +154,7 @@ get_header(); ?>
 					
 						<section class="post_content">
 						
-							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo ds106bank_option( 'pluralthings' )?></a></a>
+							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>"  class="btn btn-primary"><?php echo bank106_option( 'thingname' )?> Details</a><?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 							
 							<?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					

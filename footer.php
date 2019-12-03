@@ -10,10 +10,8 @@
 		            <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('footer3') ) : ?>
 		            <?php endif; ?>
 		          </div>
-					
-					<p class="pull-right"><a href="http://cogdog.info/" id="credit320" title="By the big dog">built by @cogdog</a></p>
 			
-					<p class="attribution"><strong><?php bloginfo('name'); ?></strong> is a version of the <a href="http://assignments.ds106.us/">DS106 Assignment Bank</a> as a Wordpress theme (<a href="https://github.com/cogdog/ds106bank" target="_blank">available on Github</a>)</p>
+					<p class="attribution"><strong><?php bloginfo('name'); ?></strong> is a version of the <a href="http://assignments.ds106.us/">DS106 Assignment Bank</a> as a Wordpress theme <a href="http://cogdog.info/" id="credit320" title="By the big dog">built by @cogdog</a> and <a href="https://github.com/cogdog/ds106bank" target="_blank">available on GitHub</a></p>
 				
 				</div> <!-- end #inner-footer -->
 				

@@ -12,10 +12,12 @@
 						
 						if ( $the_tag[0] == '@' ) {
 							// this is a twitter tag
-							echo ds106bank_option( 'pluralthings' ) . "s Created by $the_tag";
+							echo bank106_option( 'pluralthings' ) . " Created by " . $the_tag ;
+							$descriptor = substr($the_tag, 1) . " has contributed to " . get_bloginfo() . '. See also <a href=' . site_url() . '/exampletags/' .  $the_tag . '">responses to '   . bank106_option( 'pluralthings' ) . ' by ' . substr($the_tag, 1)  . '</a>';
 						} else {
 							// just a regular tag
-							echo ds106bank_option( 'pluralthings' ) . ' Tagged "' . $the_tag . '"';
+							echo bank106_option( 'pluralthings' ) . ' Tagged "' . $the_tag . '"';
+							$descriptor = "with this tag";
 						}
 						?>
 						
@@ -25,16 +27,18 @@
 					$found_things = $wp_query->found_posts;				
 					// Because grammar
 					if ( $found_things == 1 ) {
-						$tagged_name = ds106bank_option( 'thingname' );
+						$tagged_name = bank106_option( 'thingname' );
 						$verb = "is";
+						
 					} else {
 					
-						$tagged_name = ds106bank_option( 'pluralthings' );
+						$tagged_name = bank106_option( 'pluralthings' );
 						$verb = "are";
+						
 					}
 					?>
 
-						<p>There <?php echo $verb?> <strong><?php echo $found_things;?></strong>  <?php echo  $tagged_name?> with this tag.
+						<p>There <?php echo $verb?> <strong><?php echo $found_things;?></strong>  <?php echo $tagged_name?> <?php echo $descriptor?>.
 						
 					</div>
 
@@ -70,12 +74,9 @@
 							<?php 
 							// insert ratings if enabled
 							if ( function_exists( 'the_ratings' ) ) { the_ratings(); }
-						
-							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
 							
-							// no author assigned
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							// look for author name in Feedwordpress meta data
+							$assignmentAuthor = bank106_get_display_name( $post->ID, 'syndication_source' );
 							?>
 							
 							
@@ -98,7 +99,7 @@
 					
 						<section class="post_content">
 						
-							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo ds106bank_option( 'pluralthings' )?></a></a>
+							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">View <?php echo bank106_option( 'pluralthings' )?></a></a>
 							
 							<?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					

@@ -10,9 +10,9 @@
 	
 	// We got a real thing to show, get some meta data first
 								  
-	$exampleURL = get_post_meta($post->ID, 'example_url', $single = true); 
-	$exampleTwitter = get_post_meta($post->ID, 'submitter_twitter', $single = true);
-	$exampleSource =  get_post_meta($post->ID, 'syndication_source', $single = true);
+	$exampleURL = get_post_meta( $post->ID, 'example_url', true ); 
+	$exampleTwitter = get_post_meta( $post->ID, 'submitter_twitter', true );
+	$exampleCredit = ( get_post_meta( $post->ID, 'example_source', true ) ) ? ' (' . get_post_meta( $post->ID, 'example_source', true ) . ')' : '';
 	
 	// get the assignment ID and permalink this example is a response to
 	$assignment_id = get_assignment_id_from_terms( $post->ID );
@@ -24,20 +24,23 @@
 <div id="content" class="clearfix row">
 
 	<div id="main" class="col-sm-12 clearfix" role="main">	
-		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+		<?php if (have_posts()) : while (have_posts()) : the_post(); 
+			
+			$exampleSource = bank106_get_display_name( $post->ID, 'syndication_source' );
+			?>
 			
 			
 			<article id="post-<?php the_ID(); ?>"  role="article">
 			
 				<div class="clearfix row">
 					<header>
-						<div class="col-sm-7">
+						<div class="col-sm-8">
 						
-							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title(); ?></h1>
+							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title(); echo $exampleCredit; ?></h1>
 						
-							<p class="meta">A response to the <a href="<?php echo $assignment_link?>"><?php echo get_the_title( $assignment_id );?></a> <?php echo ds106bank_option( 'thingname' )?><br />
-							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $exampleSource?></strong> <?php echo bank106_twitter_credit_link( $post->ID, '(', ')', 'exampletags' )?><br /><br />
-							Number of views: <strong><?php echo get_post_meta( $post->ID, 'examples_visits', $single = true);?></strong>
+							<p class="meta">A response to the <a href="<?php echo $assignment_link?>"><?php echo get_the_title( $assignment_id );?></a> <?php echo bank106_option( 'thingname' )?><br />
+							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $exampleSource?></strong> <?php echo bank106_user_credit_link( $post->ID, '(', ')', 'exampletags' )?><br /><br />
+							Number of views: <strong><?php echo get_post_meta( $post->ID, 'examples_visits', true);?></strong>
 							</p>
 						
 							<p class="tags"><?php echo get_the_term_list( $post->ID, 'exampletags', 'Tags: ', ', ', '' ); ?></p>
@@ -50,7 +53,7 @@
 						
 						</div>	
 						
-						<div class="col-sm-5" id="examplemedia">
+						<div class="col-sm-4" id="examplemedia">
 						
 						<?php echo get_example_media( $post->ID,  'example_url' )?>
 						

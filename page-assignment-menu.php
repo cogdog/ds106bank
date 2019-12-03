@@ -14,48 +14,69 @@ title of the page and any content are displayed above the menu.
 		
 			<div id="content" class="clearfix row">
 			
-				<div id="main" class="col-sm-8 clearfix" role="main">
+				<div id="main" role="main">
 
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
 					<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-						
+						<div class="col-sm-12">
 						<header>
 							
 							<div class="page-header"><h1 class="page-title" itemprop="headline"><?php the_title(); ?></h1></div>
 						
 						</header> <!-- end article header -->
-					
-						<section class="post_content clearfix" itemprop="articleBody">
-							<?php the_content(); ?>
-					
-						</section> <!-- end article section -->
 						
-						<footer>
+						</div>
+						
+						
+						<div class="col-sm-10 clearfix">
+							<section class="post_content clearfix" itemprop="articleBody">
+								<?php the_content(); ?>
+					
+							</section> <!-- end article section -->
+						
+							<footer>
 							
-						</footer> <!-- end article footer -->
+							</footer> <!-- end article footer -->
+						</div>
+						
+						<?php if (has_site_icon()) :?>
+							<div id="site-icon" class="col-sm-2">
+				
+							<img src="<?php echo get_site_icon_url()?>" alt="" class="img-responsive" />
+				
+							</div>
+				
+						<?php endif?>
+
+						
 					
 					</article> <!-- end article -->
 				
 					
-					<?php endwhile; ?>		
+					<?php endwhile; ?>	
+					
+					
+						
 					
 					<?php else : ?>
-					
+					<div class="col-sm-12">
 					<article id="post-not-found">
 					    <header>
-					    	<h1><?php _e("Not Found", "wpbootstrap"); ?></h1>
+					    	<h1><?php _e('No ' . bank106_option('pluralthings') . ' Found', "wpbootstrap"); ?></h1>
 					    </header>
 					    <section class="post_content">
-					    	<p><?php _e("Sorry, we could not find anything to display", "wpbootstrap"); ?></p>
+					    	<p><?php _e("Sorry, there are no" . bank106_option('pluralthings') . 
+					    	' to display.' , "wpbootstrap"); ?></p>
 					    </section>
 					    <footer>
 					    </footer>
 					</article>
-					
+					</div>
 					<?php endif; ?>
 			
 				</div> <!-- end #main -->    
+				
 
 				
 				
@@ -64,12 +85,12 @@ title of the page and any content are displayed above the menu.
 				// Generate the menu of "things"
 								
 				// get all the terms for the custom post type for things, in sort order specified in settings
-				$assignmenttypes = get_assignment_types( ds106bank_option( 'thing_order'), ds106bank_option( 'thing_orderby') );
+				$assignmenttypes = get_assignment_types( bank106_option( 'thing_order'), bank106_option( 'thing_orderby') );
 
- 				if ( count($assignmenttypes) == 0 ) {
+ 				if ( count( $assignmenttypes ) == 0 ) {
  				
  					// warning warning if no things have yet created
- 					echo '<div class="clearfix row"><div class="col-sm-2 col-sm-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . ds106bank_option( 'pluralthings' ) . ' have been set up. You can do that if you explore the Assignment Bank Options under the <em>Types</em> tab.</p></div></div>';
+ 					echo '<div class="clearfix row"><div class="col-sm-2 col-sm-offset-4 clearfix"><p><strong>Woah Neo</strong>; No ' . bank106_option( 'pluralthings' ) . ' have been set up. You can do that if you explore the Bank Options under the <em>Types</em> tab.</p></div></div>';
  					
  				} else {	
  					
@@ -91,12 +112,12 @@ title of the page and any content are displayed above the menu.
  						$items = get_term_by('id', $atype->term_id, 'assignmenttypes');
  						
  						// Add "s" if the count is 0 or more than 1
- 						$plural = ( $atype->count == 1 ) ? ds106bank_option( 'thingname' ) : ds106bank_option( 'pluralthings' );
+ 						$plural = ( $atype->count == 1 ) ? bank106_option( 'thingname' ) : bank106_option( 'pluralthings' );
  						
  						// string for start of link around icon
- 						$type_url_str = '<a href="' . get_site_url() . '?type=' . $atype->slug . '" title="View All ' . $atype->name . ' ' . $plural . '">';
+ 						$type_url_str = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="View All ' . $atype->name . ' ' . $plural . '">';
  						// string for start of link around 
- 						$type_url_btn = '<a href="' . get_site_url() . '?type=' . $atype->slug . '" title="View All ' .  $atype->name . ' ' . $plural . '" class="btn btn-primary">';
+ 						$type_url_btn = '<a href="' . get_site_url() . '/type/' . $atype->slug . '" title="View All ' .  $atype->name . ' ' . $plural . '" class="btn btn-primary">';
  						
  						?>
  						
@@ -110,7 +131,7 @@ title of the page and any content are displayed above the menu.
 
 								<!-- thing icon -->		
 								<div class="thing-icon">
-								<?php echo $type_url_str . '<img src="' . ds106bank_option( 'thing_type_' . $atype->term_id . '_thumb') . '" alt="' . $atype->name . ' assignments" /></a>'; ?>
+								<?php echo $type_url_str . '<img src="' . bank106_option( 'thing_type_' . $atype->term_id . '_thumb') . '" alt="' . $atype->name . ' assignments" /></a>'; ?>
 								</div>
 								<!-- end icon -->
 					

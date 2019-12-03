@@ -7,7 +7,7 @@ $term =	$wp_query->queried_object; // the term we need for this taxonomy
 $sortedby =  ( isset( $wp_query->query_vars['srt'] ) ) ? $wp_query->query_vars['srt'] : 'newest';
 
 $use_public_ratings = function_exists('the_ratings');
-$use_difficulty = ds106bank_option('difficulty_rating');
+$use_difficulty = bank106_option('difficulty_rating');
 
 // we are looking for a random assignment?
 if ($sortedby  == 'random') {
@@ -92,16 +92,16 @@ get_header(); ?>
 					$found_things = $wp_query->found_posts;				
 					// Because grammar
 					if ( $found_things == 1 ) {
-						$plural = ds106bank_option( 'thingname' );
+						$plural = bank106_option( 'thingname' );
 						$verb = "is";
 					} else {
-						$plural = ds106bank_option( 'pluralthings' );
+						$plural = bank106_option( 'pluralthings' );
 						$verb = "are";
 					}
 
 					?>				
 					<div class="page-header">
-						<h1 class="archive_title"><?php echo ds106bank_option( 'pluralthings' );?> Categorized "<?php echo $term->name;?>" </h1>
+						<h1 class="archive_title"><?php echo bank106_option( 'pluralthings' );?> Categorized "<?php echo $term->name;?>" </h1>
 						<p><em><?php echo $term->description;?></em></p>
 						
 						<form id="taxassignmentview" method="get">
@@ -180,7 +180,7 @@ get_header(); ?>
 						<!-- thing content -->
 						<section class="post_content">
 						
-							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>"  class="btn btn-primary"><?php echo ds106bank_option( 'thingname' )?> Details</a><?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
+							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>"  class="btn btn-primary"><?php echo bank106_option( 'thingname' )?> Details</a><?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
 					
 						</section> <!-- end article section -->
 						
@@ -218,7 +218,7 @@ get_header(); ?>
 									<header>
 									</header>
 									<section class="post_content">
-										<p><?php _e("Hmmm, Nothing here. You should create some " . ds106bank_option( 'pluralthings' ) . " to go here!", "wpbootstrap"); ?></p>
+										<p><?php _e("Hmmm, Nothing here. You should create some " . bank106_option( 'pluralthings' ) . " to go here!", "wpbootstrap"); ?></p>
 									</section>
 									<footer>
 									</footer>

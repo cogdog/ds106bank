@@ -1,97 +1,298 @@
 <?php get_header(); ?>
 			
-			<div id="content" class="clearfix row">
-			
-				<div id="main" class="col-sm-8 clearfix" role="main">
+<div id="content" class="clearfix row">
+	<div id="main" class="col-sm-12 clearfix" role="main">
+	
 				
-					<div class="page-header"><h1 class="archive_title h2">
-						<span><?php _e("Examples Shared By", "wpbootstrap"); ?></span> 
-						<?php 
-							// If google profile field is filled out on author profile, link the author's page to their google+ profile page
-							$curauth = (get_query_var('author_name')) ? get_user_by('slug', get_query_var('author_name')) : get_userdata(get_query_var('author'));
-							$google_profile = get_the_author_meta( 'google_profile', $curauth->ID );
-							if ( $google_profile ) {
-								echo '<a href="' . esc_url( $google_profile ) . '" rel="me">' . $curauth->display_name . '</a>'; 
-						?>
-						<?php 
-							} else {
-								echo get_the_author_meta('display_name', $curauth->ID);
-							}
-						?>
-					</h1></div>
+		<div class="page-header">
+			<h1 class="archive_title h2">
+			<span><?php _e( get_bloginfo() . " &bull; ", "wpbootstrap"); ?></span> 
+			<?php 
+				$curauth = (get_query_var('author_name')) ? get_user_by('slug', get_query_var('author_name')) : get_userdata(get_query_var('author'));
+				$author_display_name = get_the_author_meta('display_name', $curauth->ID);
+				echo $author_display_name;
+			?>
+
+			</h1>
+		</div>	<!-- page-header -->		
+
+		<?php if ( bank106_option( 'show_ex' ) == 'both' OR bank106_option( 'show_ex' ) == 'ex' ): // show response types?>
+
+		<div class="row exlist">
+			<div class="col-sm-10">	
+				<?php 
 					
+					// count of items found
+					$found_things = $wp_query->found_posts;				
+
+					$title_str =  $found_things . ' ' . bank106_option( 'thingname' ) . ' Response';
+					//because grammar
+					$title_str .= ( $found_things == 1 ) ? '' : 's';
+									
+					// array to hold results
+					$author_results = [];
+					?>
+							
+					<h2><?php echo $title_str?></h2>		
+								
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
-					<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
+						<?php 
+						/* to group the responses by Type, we need to load all results
+						   in an array, then sort and display 
+						*/
+								
+						// get the ID for the assignment this belongs to
+						$aid = get_assignment_id_from_terms( get_the_ID() );
 						
-						<header>
-							
-							<h3 class="h2"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
-							
-							
-							<?php 
-							 	// get the ID for the assignment this belongs to
-							 	$aid = get_assignment_id_from_terms( get_the_ID() );
-							 	// make a link string
-							 	$assignment_str = ($aid) ? '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
-							 ?>
-
-							<p class="meta"><?php _e("Added", "wpbootstrap"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time> <?php _e("by", "wpbootstrap"); ?> <?php the_author_posts_link(); ?> for  <?php echo ds106bank_option( 'thingname' )?>  <?php echo $assignment_str?></p>
+						// get the assignment types for this thing
+						$terms = get_the_terms( $aid, 'assignmenttypes' );
 						
-						</header> <!-- end article header -->
+						// make a link string for the thing/assignment this is response to
+						$assignment_str = ($aid) ? '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
 					
-						<section class="post_content">
+						// get link for item
+						$the_real_permalink = bank106_get_response_link( $post->ID );
+						$more_link = '<a href="' .  $the_real_permalink . '" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-link"></span> ' . $the_real_permalink . '</a>';
 						
-							<?php the_post_thumbnail( 'wpbs-featured' ); ?>
+						$byline = bank106_user_credit_link( $aid, '', '', 'exampletags' );
 						
-							<?php the_content(); ?>
-							
-							<p class="more-link"><a href="<?php the_permalink(); ?>" class="btn btn-primary">See Example</a>
-							<?php edit_post_link( __( 'Edit', 'bonestheme' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
-					
-						</section> <!-- end article section -->
+						// build the output
+						$example_str = '';
 						
-						<footer>
-							
-						</footer> <!-- end article footer -->
-					
-					</article> <!-- end article -->
+						$example_str .= '<article class="clearfix" role="article"><header><h4><a href="' . $the_real_permalink . '">' . get_the_title() . '</a>' ; 
+						
+						$example_str .= '</h4><p class="meta"><time datetime="' . get_the_time('Y-m-j') . '" pubdate>' . get_the_date() . '</time> &bull; Response for ' . $assignment_str . ' ' . bank106_option( 'thingname' ) . '</p></header><section class="post_content">' . get_the_excerpt() . ' <p class="more-link">' . $more_link .  '</p></section></article>';
+						
+						// now iterate over the assignment terms
+						
+						if ($terms) {
+							foreach ($terms as $term) {
+								if (array_key_exists( $term->slug, $author_results ) ) {
+									// see if we have used this term, if so append to results
+									$author_results[$term->slug]["results"][] = $example_str;
+								} else {
+									$author_results[$term->slug] = array( 
+										'name' => $term->name,
+										'results' => array($example_str)
+									);
+								}
+							}
+						}
+						?>
 					
 					<?php endwhile; ?>	
 					
-					<?php if (function_exists('page_navi')) { // if expirimental feature is active ?>
+					
+					<?php 
 						
-						<?php page_navi(); // use the page navi function ?>
-
-					<?php } else { // if it is disabled, display regular wp prev & next links ?>
-						<nav class="wp-prev-next">
-							<ul class="clearfix">
-								<li class="prev-link"><?php next_posts_link(_e('&laquo; Older Entries', "wpbootstrap")) ?></li>
-								<li class="next-link"><?php previous_posts_link(_e('Newer Entries &raquo;', "wpbootstrap")) ?></li>
-							</ul>
-						</nav>
-					<?php } ?>
-								
-					
+						foreach ($author_results as $key => $value) {
+						
+							echo '<h3>' . $value['name'] . ' '  . ucfirst( bank106_option('type_name') ) . '</h3><ul>' . implode("\n", $value['results']) . '</ul>';
+						
+						}
+					?>
+													
 					<?php else : ?>
-					
-					<article id="post-not-found">
-					    <header>
-					    	<h1><?php _e("No Posts Yet", "wpbootstrap"); ?></h1>
-					    </header>
-					    <section class="post_content">
-					    	<p><?php _e("Sorry, What you were looking for is not here.", "wpbootstrap"); ?></p>
-					    </section>
-					    <footer>
-					    </footer>
-					</article>
-					
+					    <p><?php _e('No responses to' . bank106_option( 'pluralthings' ) . ' have been made by ' . $author_display_name . '.', "wpbootstrap"); ?></p>
 					<?php endif; ?>
+					
+				</div><!--col -->
+			</div><!-- row -->
+
+		<?php if ( bank106_option( 'show_ex' ) == 'both' OR bank106_option( 'show_ex' ) == 'tut' ): // show tutorial types?>
+		
+		<div class="row tutlist">
+			<div class="col-sm-10">	
+				<?php 
+
+					// Fix the examples to add new post meta
+					$example_query = new WP_Query( 
+						array(
+							'posts_per_page' =>'-1', 
+							'post_type' => 'examples',
+							'meta_key' => 'example_type', 
+        					'meta_value' =>  'tut'
+						)
+					);
+					
+					if ( $example_query->have_posts() ) {
+						// count of items found
+						$found_things = $example_query->found_posts;				
+
+						$title_str = $found_things . ' ' . bank106_option( 'thingname' ) . ' ' . bank106_option('helpthingname');
+						//because grammar
+						$title_str .= ( $found_things == 1 ) ? '' : 's';
+									
+						// array to hold results
+						$author_results = [];
+						
+						echo '<h2>' . $title_str . '</h2>';		
+
+						while ($example_query->have_posts()) : $example_query->the_post();
+
+							/* to group the responses by Type, we need to load all results
+							   in an array, then sort and display 
+							*/
+								
+							// get the ID for the assignment this belongs to
+							$aid = get_assignment_id_from_terms( get_the_ID() );
+						
+							// get the assignment types for this thing
+							$terms = get_the_terms( $aid, 'assignmenttypes' );
+						
+							// make a link string for the thing/assignment this is response to
+							$assignment_str = ($aid) ? '<a href="' . get_permalink($aid) . '">' . get_the_title($aid) . '</a>' : '';
+					
+							// get link for item
+							$the_real_permalink = bank106_get_response_link( $post->ID );
+							$more_link = '<a href="' .  $the_real_permalink . '" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-link"></span> ' . $the_real_permalink . '</a>';
+						
+							$byline = bank106_user_credit_link( $aid, '', '', 'exampletags' );
+						
+							// build the output
+							$example_str = '';
+						
+							$example_str .= '<article class="clearfix" role="article"><header><h4><a href="' . $the_real_permalink . '">' . get_the_title() . '</a>' ; 
+						
+							$example_str .= '</h4><p class="meta"><time datetime="' . get_the_time('Y-m-j') . '" pubdate>' . get_the_date() . '</time> &bull; ' . bank106_option( 'helpthingname' ) . ' for ' . $assignment_str . ' ' . bank106_option( 'thingname' ) . '</p></header><section class="post_content">' . get_the_excerpt() . ' <p class="more-link">' . $more_link .  '</p></section></article>';
+						
+							// now iterate over the assignment terms
+						
+							if ($terms) {
+								foreach ($terms as $term) {
+									if (array_key_exists( $term->slug, $author_results ) ) {
+										// see if we have used this term, if so append to results
+										$author_results[$term->slug]["results"][] = $example_str;
+									} else {
+										$author_results[$term->slug] = array( 
+											'name' => $term->name,
+											'results' => array($example_str)
+										);
+									}
+								}
+							}						
+						
+						endwhile;	
+
+					foreach ($author_results as $key => $value) {	
+						echo '<h3>' . $value['name'] . ' '  . ucfirst( bank106_option('type_name') ) . '</h3><ul>' . implode("\n", $value['results']) . '</ul>';
+					}
+						
+				} else {
+					echo '<p>No ' .  bank106_option( 'thingname' ) . 's to' . bank106_option( 'pluralthings' ) . ' have been made by ' . $author_display_name . '.</p>';			
+				
+				}
+				?>	
+				
+			</div><!--col -->
+		</div><!-- row -->
 			
-				</div> <!-- end #main -->
-    
-				<?php get_sidebar(); // sidebar 1 ?>
-    
-			</div> <!-- end #content -->
+		<?php endif?>				
+			
+			
+			<?php
+				// find all things created by this user
+				$things_query = new WP_Query( 
+					array(
+						'posts_per_page' =>'-1', 
+						'post_type' => 'assignments',
+						'author' => $curauth->ID
+					)
+				);
+				
+				
+			?>	
+				
+			<?php if ($things_query->have_posts()) :?>
+			
+			<div class="row">
+				<div class="col-sm-10">
+			
+					<?php 
+					// count of items found
+					$found_things = $things_query->found_posts;				
+					// Because grammar
+					$plural = ( $found_things == 1 ) ? bank106_option( 'thingname' ) : bank106_option( 'pluralthings' );
+					
+					$use_public_ratings = function_exists('the_ratings');
+					?>
+					
+					<h2><?php echo $found_things . ' ' . $plural?> Created</h2>
+
+				</div><!--col -->
+			</div><!-- row -->
+			
+			<?php endif?>
+					
+			<div id="assignmentmenu" class="clearfix row"> <!-- thing menu -->
+				<?php
+					  
+					$odd = false; // flag to start a new row
+					
+					while ($things_query->have_posts()) : $things_query->the_post();
+						
+						if ( $odd ) {
+							echo '<div class="col-sm-offset-1 col-sm-5">';
+						} else {
+							echo '<div class="clearfix row"><div class="col-sm-5">'; 
+						}
+					 
+						$odd = !$odd;
+					?>
+					
+					
+					<article id="post-<?php the_ID(); ?>" role="article" class="thing-archive">
+						<!--  thing header -->
+						<header>
+<h3><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
+							
+							<?php 
+							// insert ratings if enabled
+							if ( $use_public_ratings ) { the_ratings(); }
+							
+							// author name either from WP user or from meta data (uses old FWP meta)
+							$assignmentAuthor = bank106_get_display_name( $post->ID, 'fwp_name' );
+							
+							?>
+							
+							
+							<p class="meta">
+								Created <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo bank106_user_credit_link( $post->ID, '(', ')' )?> <?php echo get_assignment_meta_string( $post->ID );?>
+							</p>
+							
+						</header> 
+						<!-- end thing header -->
+
+						<!-- thing icon or embedded media -->
+						<div class="thing-icon">
+						<a href="<?php the_permalink(); ?>"><?php echo get_thing_icon ($post->ID, 'thumbnail', 'thing-archive') ?></a>
+						</div>
+						<!-- end icon or media -->
+					
+						<!-- thing content -->
+						<section class="post_content">
+						
+							<?php the_excerpt(); ?><p class="more-link"><a href="<?php the_permalink(); ?>"  class="btn btn-primary"><?php echo bank106_option( 'thingname' )?> Details</a><?php edit_post_link( __( 'Edit', 'wpbootstrap' ), '<br /><span class="edit-link">', '</span>' ); ?></p>
+					
+						</section> <!-- end article section -->
+						
+						<!-- end thing content -->
+					
+					</article> <!-- end article -->
+					
+					</div> <!-- end assignment listing -->
+					<?php if ( !$odd ) echo '</div> <!-- end row -->';?>
+					
+					<?php endwhile; ?>	
+					
+					</div> <!-- end assignment menu -->
+				<?php endif; ?>		
+				
+			
+	</div> <!-- end #main -->
+
+
+</div> <!-- end #content -->
 
 <?php get_footer(); ?>

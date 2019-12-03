@@ -2,7 +2,7 @@
 Theme Name: 	ds106 Assignment Banker
 Theme URI: 		http://github.com/cogdog/ds106bank
 Description: 	Customizable theme to create sites like the ds106 Assignment bank (http://assignments.ds106.us/). Based on WP-Bootstrap (https://github.com/320press/wordpress-bootstrap) and now incorporates all that so children can be generated
-Version: 		1.0
+Version: 		2.0
 Author: 		CogDog
 Author URI: 	https://cog/dog
 Tags: ds106, black, white, one-column, two-columns, flexible-width, custom-background, custom-colors, custom-menu, full-width-template, theme-options
@@ -10,7 +10,359 @@ License: GNU General Public License v2.0 & Apache License 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html http://www.apache.org/licenses/LICENSE-2.0
 
 
-    Do not import parent style sheet since it is progreammed in already via the parent theme.       
+Custom CSS for the DS106 banker theme  */
 
-    Any custom CSS should be added to ds106bank.css so it becomes last to load
-    If it is added here, a bootstrap theme might override your precious CSS.  */
+
+body, html {
+   font-size: 100%;
+}
+
+
+h1,
+.h1 {
+    font-size: 2.25rem;
+}
+
+h2,
+.h2 {
+    font-size: 1.875rem;
+}
+
+h3,
+.h3 {
+    font-size: 1.5rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.625rem;
+}
+
+h4,
+.h4 {
+    font-size: 1.125rem;
+}
+
+h5,
+.h5 {
+    font-size: .875rem
+}
+
+h6,
+.h6 {
+    font-size: 0.75rem;
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
+
+}
+
+p {
+    margin: 0 0 0.65rem;
+}
+
+blockquote {
+    padding: 0.625rem 1.25rem;
+    margin: 0 0 1.25rem;
+    font-size: 1.09rem;
+}
+
+
+.lead {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+}
+
+.page-header {
+    padding-bottom: 0.56rem;
+    margin: 2.5rem 0 1.25rem;
+}
+
+.tutlist {
+    background-color: #ededed;
+}
+
+figure {
+    margin: 1rem 2.5rem
+}  
+
+hr {
+    margin-top: 1.25rem;
+    margin-bottom:  1.25rem;
+}  
+
+ul,
+ol {
+    margin-bottom: 0.625rem;
+}
+
+@media (min-width:768px) {
+    .lead {
+        font-size: 1.31rem;
+        line-height: 2rem;
+    }
+}  
+
+@media (max-width: 768px) {
+	#site-icon {display:none}
+}
+
+                                                                     
+
+/* --------------------------------= General STUFF =----------------------------------- */
+
+
+#site-header {
+    padding-top: 6px;
+}
+
+#content {
+    padding: 16px 0 0;
+}
+
+.more-link {
+	text-align: right;
+}
+
+p.attribution {
+	margin:1em 2em;
+	text-align:center;
+}
+
+.alert {
+    word-wrap: break-word;
+}
+
+.twitter-tweet-rendered {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-disabled {
+    pointer-events: none;
+	opacity: 0.5;
+}
+
+
+
+/* --------------------------=      Be Responsive    =--------------------------------- */
+/* h/t http://wordpress.stackexchange.com/a/37768/14945                                */
+
+.entry-content img,
+.comment-content img,
+.widget img {
+    max-width: 97.5%; /* Fluid images for posts, comments, and widgets */
+}
+img[class*="align"],
+img[class*="wp-image-"] {
+    height: auto; /* Make sure images with WordPress-added height and width attributes are scaled correctly */
+}
+img.size-full {
+    max-width: 97.5%;
+    width: auto; /* Prevent stretching of full-size images with height and width attributes in IE8 */
+}
+
+.wp-caption { max-width: 100%; }
+
+p.wp-caption-text {
+    color: #969393;
+    font-weight: bold;
+    font-size: 90%;
+    padding-bottom: 2px;
+    border-bottom: 2px dotted rgb(234, 240, 240)
+}
+
+#thingthumb {
+    cursor: pointer;
+     object-fit: cover;
+     width: 100%;
+     height: auto;
+}
+
+
+#examplemedia .wp-embedded-content, audio.audio-player {
+    width: 100%;
+}
+
+
+/* --------------------------= Nav bar =----------------------------- */
+
+.navbar-default .navbar-nav>li>a.btn {
+    margin: 8px 4px;
+    padding: 6px 12px;
+}
+
+.navbar-default .navbar-nav>li>a.btn-info {
+    color: #fff;
+}
+
+
+.navbar-default .navbar-nav>li>a.btn-info:hover {
+    color: #222;
+}
+
+
+/* --------------------------= Single Thingie =----------------------------- */
+
+
+.thing-icon-single {
+	margin: 0 auto 20px;
+	padding:0;
+	overflow: hidden;
+}
+
+.thing-icon-single img {	
+	border: 8px solid #fff;
+	width: 100%;
+    height: auto;
+	-moz-border-radius: 30px;
+	border-radius: 30px;	
+}
+
+.videoWrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	/* padding-top: 25px; */
+	height: 0;
+}
+
+.videoWrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#examplemedia img {
+	max-width: 100%;
+	height: auto;
+	
+}
+
+#examplemedia {
+	background-color: #f8f8f8;
+	padding: 2em;
+	border: 8px solid #fff;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	word-wrap: break-word;
+	overflow: hidden;
+}
+
+th.user_credit {
+    font-size: 0.85em;
+    color: #777;
+    font-style: italic;
+}
+
+/* ------------------------------= Lightbox =------------------------------ */
+
+.fancybox-inner .wtext img {
+    width: 100%;
+}
+
+
+/* -----------------------= Assignment Type Index =------------------------- */
+.thing-archive header, .thing-archive section {
+	padding: 1em;
+}
+
+.thing-archive {
+	background-color: #f8f8f8;
+	margin:2em 0;
+	border: 8px solid #fff;
+	border-radius: 30px;
+}
+
+.thing-icon {
+	text-align:center;
+	background-color: #f8f8f8;
+	padding:0;
+	height: 0;
+    padding-bottom: 75%;	
+    position: relative;
+	overflow: hidden;
+}
+
+.thing-icon img {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  border: 0px;
+  border-radius: initial;
+}
+
+
+article.thing-archive section.post_content p, article.type-assignments #content p, #thingcontent p {
+	overflow:hidden;
+	word-wrap:break-word;
+}
+
+.assignment-header {
+	margin: 0 0 0.5em;
+}
+
+.assignment-selector {
+	margin: 1em 0;
+}
+
+.hilite {
+	background-color: #f8f8f8;
+}
+
+.page-header {
+  border-bottom: none;
+}
+
+
+/* ------------------------------= Ajax Load More =----------------------------------- */
+
+
+#load-more {
+    margin: 1em 35%;
+    width: 20%;
+    min-width: 200px;
+}
+
+
+
+
+/* ------------------------------= Forms Be Formed =----------------------------------- */
+
+#bank106form {
+	margin:4em 0;
+	background-color: #f8f8f8;
+	padding: 2em;
+	border: 8px solid #fff;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+}
+
+#bank106form  .help-block {
+  line-height: 1.1;
+  font-style: italic;
+}
+
+#bank106form label {
+	font-variant: small-caps;
+	font-size: large;
+	text-transform: lowercase;
+}
+
+.group-span-filestyle .buttonText {
+  font-size: 0.875rem;
+  font-variant: normal;
+  text-transform: lowercase;
+}
+
+#bank106form fieldset  {
+	margin: 0 0 20px 0;
+}
+
+#commentform textarea {
+	width: 60%;
+	height: 150px;
+}
+
+#uploadresponse {
+    color: #673ab7;
+}

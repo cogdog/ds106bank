@@ -1,4 +1,7 @@
 function wp_tags( taglist ) {
+
+	if (taglist === undefined) return '';
+	
 	var mystr = '';
 	var tagarray = taglist.split(',');
 		
@@ -30,8 +33,16 @@ function decodeEntities(input) {
 		closeEffect : 'fade',
 		scrolling   : 'yes',
 		afterLoad   : function() {
+
+
+
+			if ( $('#displayCredit').val() ) {
+				var myCredit = ' (' + $('#displaySource').val() + ')';
+			} else {
+				var myCredit = '';
+			}
 		
-			this.content = '<h1 class="single-title assignment-header">Resource for this ' +   $('#thingName').val()  + '</h1><ol><li><a href="' + $('#exampleURL').val() + '" onclick="return false;">' + $('#exampleTitle').val() + '</a> (' + $('#submitterName').val() + ')<br />' + $('#exampleDescription').val() + '</li></ol>'
+			this.content = '<h1 class="single-title assignment-header">Resource for this ' +   $('#thingName').val()  + '</h1><ol><li><a href="' + $('#exampleURL').val() + '" onclick="return false;">' + $('#exampleTitle').val() + '</a>'   + myCredit + '<br /><span class="user_credit"> by <strong>' + $('#submitterName').val() + '</strong> ' + $('#displayCredit').val() + '</span><br />' + $('#exampleDescription').val() + '</li></ol>';
 								
 			$('#submitexample').removeClass( "disabled" );
 		},

@@ -1,39 +1,21 @@
 <?php
-	// defaults
-	$signin = '';
-
-	// unique assignment/tutorial tags
-	$my_assignment_tag = ds106bank_option( 'thingname' ) . $post->ID;
-	$my_tutorial_tag = 'Tutorial' . $post->ID;
+	// defaults set to empty
+	$signin = $extra_btn_class = '';
 	
-	// display option for exmaples & tutorials
-	$my_show_ex = ( empty( ds106bank_option( 'show_ex' ) ) ) ? 'both' : ds106bank_option( 'show_ex' ) ; 
+	// zero the counts
+	$example_count = $tutorial_count = 0;
 	
-	// allow form additions of examples, tutorials
-	$my_use_example_form = ds106bank_option( 'example_via_form' ); 
-	
-	
-	// use wp login options
-	$my_use_wp_login = 	ds106bank_option('use_wp_login');
-	
-	// name for the support materials
-	$helpthing = ds106bank_option('helpthingname'); 
-	
-	//options for example/tutorial syndication
-	$my_fwp_mode = ds106bank_option( 'use_fwp'); // Syndication mode = none, intenal, external
-	$my_hub_site = ds106bank_option('syndication_site_name'); // external syndication site
-	$my_hub_url =  ds106bank_option('syndication_site_url'); // external syndication url
-	$my_syndication_tag = ds106bank_option( 'extra_tag' ); // external syndication required tag	
-	
-	$my_cc_mode = ds106bank_option( 'use_cc' ); // creative commons usage mode
-
 	// store assignment link for later use
 	$my_permalink = get_permalink();
 	$my_id = $post->ID;
 
+	// unique assignment/tutorial tags
+	$my_assignment_tag = bank106_option( 'thingname' ) . $post->ID;
+	$my_tutorial_tag = 'Tutorial' . $post->ID;
 
-
-	
+	// display option for examples &/or tutorials or none
+	$my_show_ex = ( empty( bank106_option( 'show_ex' ) ) ) ? 'both' : bank106_option( 'show_ex' ) ; 
+					
 	// let's roll! 
 	get_header();
 ?>
@@ -59,19 +41,19 @@
 
 						<div class="col-sm-8" >
 							
-							<h1 class="single-title assignment-header" itemprop="headline"><?php the_title();?></h1>
+							<h1 class="single-title assignment-header" itemprop="headline">
+							<?php the_title();?>
+							
+							
+							</h1>
 
 							<?php 
-							
-							// look for author name in Feedwordpress meta data
-							$assignmentAuthor = get_post_meta($post->ID, 'fwp_name', $single = true); 
-							
-							// no author assigned
-							if ( !$assignmentAuthor) $assignmentAuthor = 'Anonymous';
+							// author name either from WP user or from meta data (uses old FWP meta)
+							$assignmentAuthor = bank106_get_display_name( $post->ID, 'fwp_name' );
 							?>
 							
-							<p class="meta">This <?php echo ds106bank_option( 'thingname' )?> was 
-							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo bank106_twitter_credit_link( $post->ID, '(', ')' )?><br />
+							<p class="meta">This <?php echo bank106_option( 'thingname' )?> was 
+							<?php _e("created", "wpbootstrap"); ?> <strong><time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_date(); ?></time></strong> by <strong><?php echo $assignmentAuthor?></strong> <?php echo bank106_user_credit_link( $post->ID, '(', ')' )?><br />
 							</p>
 
 							<?php 							
@@ -80,25 +62,23 @@
 							?>
 
 							<p>
-							
-							
 							<?php // show creator difficulty rating if enabled
 
-							if (ds106bank_option('difficulty_rating') and  get_post_meta($post->ID, 'assignment_difficulty', $single = true) ) {
-								echo 'Difficulty: <strong>' .  get_post_meta($post->ID, 'assignment_difficulty', $single = true)  . '</strong> (rated by author; 1=easy &lt--&gt; 5=difficult)</br>';
+							if (bank106_option('difficulty_rating') and  get_post_meta($post->ID, 'assignment_difficulty', true) ) {
+								echo 'Difficulty: <strong>' .  get_post_meta($post->ID, 'assignment_difficulty', true)  . '</strong> (rated by author; 1=easy &lt--&gt; 5=difficult)</br>';
 							}
 							?>
 													
-							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', $single = true); ?></strong><br />
+							Views: <strong><?php echo get_post_meta($post->ID, 'assignment_visits', true); ?></strong><br />
 							<!-- Thing types -->
-							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', ds106bank_option( 'type_name' ) . ': ', ', ', '' ); ?> <br />
+							<?php echo get_the_term_list( $post->ID, 'assignmenttypes', bank106_option( 'type_name' ) . ': ', ', ', '' ); ?> <br />
 
 							<!-- Thing categories (if allowed) -->
 							<?php  
 							// only display thning categories if option is 1 (user defined) or 2 (admin defined)
-							if ( ds106bank_option('use_thing_cats') ) {
+							if ( bank106_option('use_thing_cats') ) {
 							
-								$thingcats = get_the_term_list( $post->ID, 'assignmentcats',  ds106bank_option( 'thing_cat_name' ) . ': ', ', ', '' ); 
+								$thingcats = get_the_term_list( $post->ID, 'assignmentcats',  bank106_option( 'thing_cat_name' ) . ': ', ', ', '' ); 
 								if ($thingcats) echo $thingcats . '<br />'; 
 							}
 							?> 
@@ -119,59 +99,52 @@
 							
 							the_content(); 
 							
-							$thingextras = get_post_meta($post->ID, 'assignment_extras', $single = true);
+							$thingextras = get_post_meta($post->ID, 'assignment_extras', true);
 							
 							if ( $thingextras ) echo '<div class="col-sm-offset-1 col-sm-9"><div class="alert alert-info" role="alert">' .  make_links_clickable($thingextras) . "</div>\n</div>\n";
-							
-							
 							?>
 							
+							
+							<?php if (bank106_option('show_tweet_button')):?>
 							<div class="col-sm-9">	
-							<?php bank106_twitter_button ( $post->ID, ds106bank_option( 'thingname' ) );?>
+							<?php bank106_twitter_button ( $post->ID, bank106_option( 'thingname' ) );?>
 							</div>
-							
-							
+							<?php endif?>
 							
 						</div>
 						
-						<?php if ( get_post_meta($post->ID, 'fwp_url', $single = true) ): // only if we have example ?> 
+						<?php if ( get_post_meta($post->ID, 'fwp_url', true) ): // only if we have example ?> 
 						<div class="col-sm-4" id="examplemedia">
 							<?php echo get_example_media($my_id)?>
 						</div>
 						<?php endif?>
 						
-				</div>
+				</div> <!--row -->
 					
 				</article> <!-- end article -->
 				
 				<?php if ( $my_show_ex != 'none'): // show at least examples and/or tutorials ?>
-				
-							
+					
 					<?php
 					
-					if ( $my_use_example_form and !is_user_logged_in() and $my_use_wp_login ) {
+					if ( !is_user_logged_in() and bank106_option('use_wp_login') ) {
 					
 						$signin = '<div class="alert alert-warning" role="alert">';
 							
-						if ( $my_use_wp_login == 1 ) {
+						if ( bank106_option('use_wp_login') == 1 ) {
 						
-							$extra_btn_class = '';
-							$signin .= 'Signing into this site is optional, but doing so will allow you to maintain a profile of your responses. ';
+							$signin .= 'Signing into this site is optional, but doing so will allow your profile to include your responses. ';
 					
 						} else {
 							$extra_btn_class = ' btn-disabled';
-							$signin .= 'You must sign in to this site to add a response to this ' . ds106bank_option( 'thingname' ) . '. ';
+							$signin .= 'You must sign in to this site to add a response to this ' . bank106_option( 'thingname' ) . '. ';
 						}
 						
 						$signin .= wp_loginout('', false);
-						
 						$signin .= '</div>';
 						
-					}
-					
+					}			
 					?>
-
-				
 								
 					<div class="clearfix row hilite">
 				
@@ -187,23 +160,21 @@
 					
 						<?php if ( $my_show_ex != 'tut' ) :?>
 						
-							<h3>Complete This <?php echo ds106bank_option( 'thingname' )?></h3>
-							<p>After you do this <?php echo lcfirst(ds106bank_option( 'thingname' ))?>, please share it so it can appear with other responses below. 
-												
-							<?php if ( $my_fwp_mode == 'internal' ):?>
-							If you are writing to a blog connected to this site just use a tag or category <strong><?php echo $my_assignment_tag;?></strong> when writing a post on your own blog. Then your response will be added to the list below. <br /><br />Or if 
-						
-							<?php elseif ( $my_fwp_mode == 'external' ):?>
-							If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags/categories when writing a post on your own blog. (You must use BOTH!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_assignment_tag;?></strong> Then your response will be added to the list below. <br /><br />Or if 
-						
-							<?php else:?>
-							If 
-							<?php endif?>
-						
-							<?php if ( $my_use_example_form):?>
+							<h3>Complete This <?php echo bank106_option( 'thingname' )?></h3>
 							
-							your response exists at a public viewable URL, you can add the information directly to this site<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear pending moderator approval)'?>.</p><?php echo $signin?><p class="text-center"><a href="<?php echo site_url(); ?>/?page_id=<?php echo bank106_get_page_id_by_slug( ds106bank_option( 'example_form_page' ) )?>&aid=<?php echo $my_id?>&typ=ex" class="btn btn-primary<?php echo $extra_btn_class?>"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add A Response</a>
+							<p>After you complete this <?php echo lcfirst(bank106_option( 'thingname' ))?> please share a link to it and a description so it can be added to the responses below. 
+												
+							<?php if ( bank106_option('helpthingname') == 'internal' ): // syndicated responses on this site ?>
+							If you are writing on a blog connected to this site include a tag <strong><?php echo $my_assignment_tag;?></strong> when writing a post on your own blog. A link to your response should be automatically added below within an hour. <br /><br />Or you 
+						
+							<?php elseif ( bank106_option('helpthingname') == 'external' ): // syndicated responses from another site ?>
+							If you are writing to a site that is connected to  <a href="<?php echo bank106_option('syndication_site_url')?>"><?php echo bank106_option('syndication_site_name')?></a>  include the following tags when writing a post on your own blog. (You must use BOTH!):  <strong><?php echo bank106_option( 'extra_tag' ) . ', ' .  $my_assignment_tag;?></strong> Then a link to your response will be automatically added within an hour to the ones below. <br /><br />Or you 
+						
+							<?php else: // no syndication?>
+							You 
 							<?php endif?>
+						
+							can add it directly to this site<?php if ( bank106_option( 'new_example_status' ) == 'draft') echo ' (it will appear after moderator approval)'?>.</p><?php echo $signin?><p class="text-center"><a href="<?php echo site_url(); ?>/<?php echo bank106_option( 'example_form_page' ) ?>/?aid=<?php echo $my_id?>&typ=ex" class="btn btn-primary<?php echo $extra_btn_class?>"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add A Response</a>
 	
 		
 							</p>
@@ -222,23 +193,21 @@
 						
 						<?php if ( $my_show_ex != 'ex' ) : ?>	
 					
-							<h3><?php echo $helpthing?>s for this <?php echo ds106bank_option( 'thingname' )?></h3>
-								<p>Have you created something or know of an external resource that might help others complete this <?php echo lcfirst(ds106bank_option( 'thingname' ))?>? 
+							<h3><?php echo bank106_option('helpthingname')?>s for this <?php echo bank106_option( 'thingname' )?></h3>
+								<p>Have you created a helpful guide or do you know one that might help others complete this <?php echo lcfirst(bank106_option( 'thingname' ))?>? 
 											
-								<?php if ( $my_fwp_mode == 'internal' ):?>
-								If you are writing to a blog connected to this site just use a tag or category <strong><?php echo $my_tutorial_tag;?></strong> when writing a post on your own blog. Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
+								<?php if ( bank106_option('helpthingname') == 'internal' ):?>
+								If you are writing on a blog connected to this site include the tag <strong><?php echo $my_tutorial_tag;?></strong> when writing a post on your own blog. A link to your <?php echo strtolower(bank106_option('helpthingname'))?> A should be automatically added below within an hour.  <br /><br />Or you  
 					
-								<?php elseif ( $my_fwp_mode == 'external' ):?>
-								If you are writing to a blog that feeds  <a href="<?php echo $my_hub_url?>"><?php echo $my_hub_site?></a>  just use the following tags/categories when writing a post on your own blog. (You must use BOTH!):  <strong><?php echo $my_syndication_tag . ', ' .  $my_tutorial_tag;?></strong> Then your <?php echo strtolower($helpthing)?> will be added to the list below. <br /><br />Or if 
+								<?php elseif ( bank106_option('helpthingname') == 'external' ):?>
+								If you are writing to a site that is connected to  <a href="<?php echo bank106_option('syndication_site_url')?>"><?php echo bank106_option('syndication_site_name')?></a> include the following yags when writing a post on your own blog. (You must use BOTH!):  <strong><?php echo bank106_option( 'extra_tag' ) . ', ' .  $my_tutorial_tag;?></strong> Then a link to your <?php echo strtolower(bank106_option('helpthingname'))?> will be automatically added within an hour to the ones below. <br /><br />Or you 
 					
 								<?php else:?>
-								If 
+								You 
 								<?php endif?>
 					
-								<?php if ( $my_use_example_form):?>
-								the <?php echo strtolower($helpthing)?> is available at a public URL please share it<?php if ( ds106bank_option( 'new_example_status' ) == 'draft') echo ' (it will appear below pending moderator approval)'?>.</p><?php echo $signin?><p class="text-center"><a href="<?php echo site_url(); ?>/?page_id=<?php echo bank106_get_page_id_by_slug( ds106bank_option( 'example_form_page' ) )?>&aid=<?php echo $my_id?>&typ=tut" class="btn btn-primary<?php echo $extra_btn_class?>"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add a <?php echo $helpthing?></a> 
+								can share a <?php echo strtolower(bank106_option('helpthingname'))?> if it is available at a public URL. <?php if ( bank106_option( 'new_example_status' ) == 'draft') echo ' (it will appear below after moderator approval)'?>.</p><?php echo $signin?><p class="text-center"><a href="<?php echo site_url(); ?>/<?php echo bank106_option( 'example_form_page' );?>/?aid=<?php echo $my_id?>&typ=tut" class="btn btn-primary<?php echo $extra_btn_class?>"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Add a <?php echo bank106_option('helpthingname')?></a> 
 								
-								<?php endif?>
 								
 								
 								</p>
@@ -275,18 +244,14 @@
 							$plural = ( $example_count == 1) ? '' : 's';
 							
 							// flag if the Ajax Load More plugin is loaded
-							$use_ajax_load_more = ( function_exists('alm_install' ) ) ? true : false;
-
-							?>
+							$use_ajax_load_more = ( function_exists('alm_install' ) ) ? true : false; ?>
 		
-							<h3><?php echo $example_count?> Response<?php echo $plural?> Completed for this <?php echo ds106bank_option( 'thingname' )?></h3>
-							
-							
+							<h3><?php echo $example_count?> Response<?php echo $plural?> for this <?php echo bank106_option( 'thingname' )?></h3>
 							
 							<?php if ($use_ajax_load_more) : //use the Ajax Load More Plugin
 
 								// how many example responses to show at a time
-								$examples_per_view = ds106bank_option('examplesperview');
+								$examples_per_view = bank106_option('examplesperview');
 
 								// query to get first set of responses
 								$responses_query = new WP_Query( 
@@ -301,16 +266,13 @@
 								<ul>
 								
 								<?php while ( $responses_query->have_posts() ) : $responses_query->the_post();?>
-										<?php
-										// get link
-										if ( get_post_meta($post->ID, 'syndication_permalink' ) ) {
-										  $the_real_permalink = get_post_meta( $post->ID, 'syndication_permalink', true );
-										} else {
-										  $the_real_permalink = get_permalink( $post->ID );
-										} 
-						
-										?>
-										<li><a href="<?php echo $the_real_permalink ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a> (<?php echo get_post_meta( $post->ID, 'syndication_source', true ) . bank106_twitter_credit_link( $post->ID, ', ', '', 'exampletags' ) ?>)<br />
+									<?php 
+									// author name either from WP user or from meta data (uses old FWP meta)
+									$example_source = bank106_get_display_name( $post->ID, 'syndication_source' );
+									$exampleCredit = ( get_post_meta( $post->ID, 'example_source', true ) ) ? ' (' . get_post_meta( $post->ID, 'example_source', true ) . ')' : '';
+									?>
+
+										<li><a href="<?php echo bank106_get_response_link( $post->ID )  ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark" target="_blank"><?php the_title(); ?></a> <?php echo $exampleCredit . '<br /><span class="user_credit"> by <strong>'  . $example_source . '</strong> (' .  bank106_user_credit_link( $post->ID, '', '', 'exampletags' ); ?>)</span><br />
 										<?php the_excerpt(); ?></li>
 										
 										
@@ -321,25 +283,18 @@
 									<?php if ( $example_count > $examples_per_view ) :?>
 
 										<?php echo do_shortcode ('[ajax_load_more post_type="examples" taxonomy="assignmenttags" taxonomy_terms="' . $my_assignment_tag . '"  offset="' . $examples_per_view . '" posts_per_page="' . $examples_per_view . '" pause="true" scroll="false" transition="fade" button_label="More Responses" button_loading_label="Loading Responses"]');?>
-
-
-											
 										
 									<?php endif ?>
 								
 								<?php else: // just list all resposnes (no ajax)?>
 									<?php 
 										while ( $examples_done_query->have_posts() ) : $examples_done_query->the_post();
-									
-											// get link
-											if ( get_post_meta($post->ID, 'syndication_permalink' ) ) {
-											  $the_real_permalink = get_post_meta( $post->ID, 'syndication_permalink', true );
-											} else {
-											  $the_real_permalink = get_permalink( $post->ID );
-											} 
-							
+											// author name either from WP user or from meta data (uses old FWP meta)
+											$example_source = bank106_get_display_name( $post->ID, 'syndication_source' );
+											$exampleCredit = ( get_post_meta( $post->ID, 'example_source', true ) ) ? ' (' . get_post_meta( $post->ID, 'example_source', true ) . ')' : '';
 											?>
-											<li><a href="<?php echo $the_real_permalink ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a> (<?php echo get_post_meta( $post->ID, 'syndication_source', true ) . bank106_twitter_credit_link( $post->ID, ', ', '', 'exampletags' ) ?>)<br />
+											
+											<li><a href="<?php echo bank106_get_response_link( $post->ID );?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark" target="_blank"><?php the_title(); ?></a> <?php echo $exampleCredit . '<br /><span class="user_credit"> by <strong>'  . $example_source . '</strong> (' .  bank106_user_credit_link( $post->ID, '', '', 'exampletags' ); ?>)</span><br />
 											<?php the_excerpt(); ?></li>
 						
 										<?php endwhile; ?>
@@ -362,32 +317,34 @@
 						<?php if ( $my_show_ex != 'ex' ) : ?>	
 								
 						<?php 
-						// now get all tutorials done for this assignment
+						// now get all tutorials done for this assignment, list alphabetically
 	
 							$tutorials_done_query = new WP_Query( 
 								array(
 									'posts_per_page' =>'-1', 
 									'post_type' => 'examples',
-									'tutorialtags'=> $my_tutorial_tag, 	
+									'tutorialtags'=> $my_tutorial_tag, 
+									'orderby' => 'title',
+									'order' => 'ASC'	
 								)
 							);
 							$tutorial_count = $tutorials_done_query->post_count;
 							$plural = ( $tutorial_count == 1) ? '' : 's';
 						?>
 					
-							<h3><?php echo $tutorial_count . ' ' . $helpthing . $plural?> for this <?php echo ds106bank_option( 'thingname' )?></h3>	
+							<h3><?php echo $tutorial_count . ' ' . bank106_option('helpthingname') . $plural?> for this <?php echo bank106_option( 'thingname' )?></h3>	
 							<ul>
 							
 							<?php 
+							
 							while ( $tutorials_done_query->have_posts() ) : $tutorials_done_query->the_post();
-									
-								// get link
-								if (get_post_meta($post->ID, 'syndication_permalink')) {
-								  $the_real_permalink = get_post_meta($post->ID, 'syndication_permalink', true);
-								} else {
-								   $the_real_permalink = get_permalink( $post->ID );
-								} ?>
-								<li><a href="<?php echo $the_real_permalink ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a> (<?php echo get_post_meta( $post->ID, 'syndication_source', true ) . bank106_twitter_credit_link( $post->ID, ', ', '', 'exampletags' ) ?>)<br />
+							
+								// author name either from WP user or from meta data (uses old FWP meta)
+								$example_source = bank106_get_display_name( $post->ID, 'syndication_source' );
+								$exampleCredit = ( get_post_meta( $post->ID, 'example_source', true ) ) ? ' (' . get_post_meta( $post->ID, 'example_source', true ) . ')' : '';
+								?>
+								
+								<li><a href="<?php echo bank106_get_response_link( $post->ID); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'wpbootstrap' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark" target="_blank"><?php the_title(); ?></a>  <?php echo $exampleCredit . '<br /><span class="user_credit">shared by <strong>'  . $example_source . '</strong> (' .  bank106_user_credit_link( $post->ID, '', '', 'exampletags' ); ?>)</span><br />
 								<?php the_excerpt(); ?></li>
 						
 							<?php endwhile; ?>
@@ -407,47 +364,46 @@
 					<p class="meta" style="text-align:center; padding:1em;">
 					<?php 
 						// display creative commons?
-						if ( $my_cc_mode != 'none' ) {
+						if ( bank106_option( 'use_cc' ) != 'none' ) {
 							// get the license code, either define for site or post meta for user assigned						
-							$cc_code = ( $my_cc_mode == 'site') ? ds106bank_option( 'cc_site' ) : get_post_meta($post->ID, 'cc', true);
+							$cc_code = ( bank106_option( 'use_cc' ) == 'site') ? bank106_option( 'cc_site' ) : get_post_meta($post->ID, 'cc', true);
 							echo cc_license_html($cc_code, $assignmentAuthor, get_the_time( "Y", $my_id ));
 						}
 					?>						
 					</p>
-				</div>
-					
-
-					
+				</div>					
 					
 				<div id="content" class="row">
+
 					<div class="col-sm-8 ">
-				<!-- comments -->	
+					<!-- begin comments -->	
 					<?php comments_template('',true); ?>
-				
+					<!-- end comments -->	
 					</div>
 					
-					<?php endwhile; ?>	
+				<?php endwhile; ?>	
 					
 					<?php
 					// let's update meta data for this assignment (count of exmaples done, bump visit count)
 					update_assignment_meta($post->ID, $example_count, $tutorial_count);		
 					?>
-							
+						
 					
-					<?php else : ?>
-					<div class="col-sm-8">
-					<article id="post-not-found">
-					    <header>
-					    	<h1><?php _e("Not Found", "wpbootstrap"); ?></h1>
-					    </header>
-					    <section class="post_content">
-					    	<p><?php _e("Sorry, but the requested resource was not found on this site.", "wpbootstrap"); ?></p>
-					    </section>
-					    <footer>
-					    </footer>
-					</article>
-				</div>
-				<?php endif; ?>			
+				<?php else : ?>
+				
+				<div class="col-sm-8">
+				<article id="post-not-found">
+					<header>
+						<h1><?php _e("Not Found", "wpbootstrap"); ?></h1>
+					</header>
+					<section class="post_content">
+						<p><?php _e("Sorry, but an entry was not found on this site.", "wpbootstrap"); ?></p>
+					</section>
+					<footer>
+					</footer>
+				</article>
+			</div>
+			<?php endif; ?>			
 			
 	</div> <!-- end #main -->
 </div> <!-- end #content -->
