@@ -8,7 +8,7 @@ by Alan Levine http://cog.dog/ or http://cogdogblog.com/
 
 ----- 
 
-[![](images/screenshot.png "Screenshot of NetNarr Make Bank")](http://make.arganee.world/)
+![](images/screenshot.png "Screenshot of NetNarr Make Bank")
 *[http://make.arganee.world/](http://make.arganee.world/)*
 
 The DS106 Assignment Bank Theme is a Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/). With it you can build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  
@@ -245,16 +245,12 @@ If the user account is optional, the alert offers a chance to sign in as an opti
 
 ![](images/optional-login.jpg)
 
-And if logged in, the submission forms indicate that their work will be associated with their account:
 
-![](images/logged-in-add-ex.jpg)
-
-The same prompts are provided on the page used to add a new Thing to a bank site.
-
-
-The **User names on submission forms** creates a field for a user to enter a desired username to identify their shared content (if not logging in); previously this was a twitter account but it cold be any unique name a user chooses; it acts more like a tag,
+The setting for **User names on submission forms** creates a field for a user to enter a desired username to identify their shared content (if not logging in); previously this was a twitter account but it cold be any unique name a user chooses; it acts more like a tag,
 
 Whether a WordPress username or a user defined one, we use the convention of `@username` when displayed (again this is not linked to twitter). 
+
+The default user name is a fall back if for some reason none was entered.
 
 
 #### Apply Creative Commons to Each Thing
@@ -385,7 +381,7 @@ Install the [WP-PostRatings plugin](http://wordpress.org/plugins/wp-postratings/
 
 A few settings for the plugin are necessary (found in the new Ratings option in the Admin Sidebar).
 
- ![](images/ratings-options.jpg)
+![](images/ratings-options.jpg)
 
 On the **Post Rating Options** choose the graphic style for the ratings- the suggestion is one of the stars settings with a max ratings of 5 but any setting is viable. The suggested set up mode is to use the ratings as a measure of popularity, so the default `1 Star`, `2 Stars`, etc can be used. On the other hand, the original DS106 Assignment Bank was a crowd sourced measured of difficulty, so the labels could be customized as follows
 
