@@ -8,7 +8,7 @@ by Alan Levine http://cog.dog/ or http://cogdogblog.com/
 
 ----- 
 
-![](images/screenshot.png "Screenshot of NetNarr Make Bank")
+![](screenshot.png "Screenshot of NetNarr Make Bank")
 *[http://make.arganee.world/](http://make.arganee.world/)*
 
 The DS106 Assignment Bank Theme is a Wordpress Theme allows you to create and customize a site that has all of the functionality of the [DS106 Open Assignment Bank](http://assignments.ds106.us/). With it you can build a site to house any collection of assignments, tasks etc, create a categorization, and then like [ds106](http://ds106.us) allow your community to add to the collection.  
@@ -134,7 +134,6 @@ If the pages are *not* created for you on theme activation...
 
 **To repeat: You should always, always create your "things" via this form, even if you do not allow the public to do so.** The form adds a number of post custom field values necessary to make everything work. You can always modify these later, in the editor (making sure you make Custom Fields visible via screen options).
 
-The one field that you may need to edit is the URL for the example of the assignment, stored as custom field named `fwp_url`. If you prefer not to display any example, simply leave the value blank.
 
 3. Create a new page to **Submit Examples**. This form is used to allow visitors to add examples or tutorial for things via a web form. The title and content of the page is displayed above the input form. To enable the functionality, set the page template to **Submit Example/Tutorial Form**
 
