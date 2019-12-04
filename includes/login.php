@@ -103,8 +103,14 @@ function bank106_login_logout_link( $items, $args ) {
         
         if (  is_user_logged_in() ) {
         	 $items .= '<li>'. bank106_get_author_menu_link() .'</li>';
+        	 
+        } elseif (bank106_option( 'register_btn_link' ) == '#' ) {
+        	// register link uses label from theme options, but is disabled
+        	$items .= '<li><a href="#" class="btn btn-info" onClick="alert(\'Registration is not currently available.\')">' . bank106_option( 'register_btn_name' ) . ' </a></li>';
+        
         } else {
-        	$items .= '<li><a href="'. site_url() . '/wp-login.php?action=register' . '" class="btn btn-info">Register</a></li>';
+        	// register link uses label and destination from theme options
+        	$items .= '<li><a href="'. bank106_option( 'register_btn_link' ) . '" class="btn btn-info">' . bank106_option( 'register_btn_name' ) . ' </a></li>';
         }
         
     	return $items;

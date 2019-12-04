@@ -227,7 +227,7 @@ Activating **Embed Media Icon** will use an assignments example media as an icon
 
 ![](images/user-options.jpg)
 
-**Use wordpress accounts for adding responses and/or items to the bank.** provides a bank owner the ability to use Wordpress user accounts to track activity. Note that a site owner will need to manage user account creation. No Wordpress capabilities are needed, a contributor level account will work. 
+**Use wordpress accounts for adding responses and/or items to the bank.** provides a bank owner the ability to use Wordpress user accounts to track activity.
 
 If you enable the second or third options, a **Sign in** button will appear at the end of the navigation bar:
 
@@ -237,13 +237,15 @@ After logging in, a user will be redirected back to the page they were using. Th
 
 ![](images/logged-in.jpg)
 
-If the setting is for a user account  required, on the buttons that link to the form from a Thing, the button is disabled and a sign in button is provided:
+If the setting is for a user account required, on the buttons that link to the form from a Thing, the button is disabled and a sign in button is provided:
 
 ![](images/must-login-ex.jpg)
 
 If the user account is optional, the alert offers a chance to sign in as an option:
 
 ![](images/optional-login.jpg)
+
+A lesson learned the hard way; never allow self-registration on WordPress sites where accounts get authoring privileges- this is a spam account magnet. The theme has an option for you to label the button as you see fit, but also to provide a link where it should go- it could be a page on the site with information on how to get an account or link to a managed signup form. Putting `#` in the link field will disable the button and it provides a Javascript alert that registration is not available.
 
 
 The setting for **User names on submission forms** creates a field for a user to enter a desired username to identify their shared content (if not logging in); previously this was a twitter account but it cold be any unique name a user chooses; it acts more like a tag,

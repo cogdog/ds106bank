@@ -158,7 +158,7 @@ if ( isset( $_POST['bank106_form_add_example_submitted'] ) && wp_verify_nonce( $
 				$newupload = bank106_insert_attachment( $file, $post->ID );
 				if ( $newupload ) {
 					$exampleURL = wp_get_attachment_url( $newupload );
-					$exampleURLstatus = 'File uploaded and its is link listed above. Choose another or enter any other URL to replace it.'; 
+					$exampleURLstatus = 'File uploaded and its web address is listed above. Choose another or enter any other URL to replace it.'; 
 				}
 			}
 		}

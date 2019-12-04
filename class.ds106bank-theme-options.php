@@ -155,7 +155,7 @@ class bank106_Theme_Options {
 		<a class="nav-tab nav-tab-active" href="?page=ds106bank-docs">Documentation</a></h2>';
 		
 		// doc tab content in HTML
-		include( get_stylesheet_directory() . '/includes/ds106bank-theme-options-docs.php');
+		include( get_template_directory() . '/includes/ds106bank-theme-options-docs.php');
 		
 		echo '</div>';		
 	}
@@ -461,7 +461,22 @@ class bank106_Theme_Options {
 					)
 		);
 		
-	
+		$this->settings['register_btn_name'] = array(
+			'title'   => __( 'Register Button Label' ),
+			'desc'    => __( 'Text for the button leading to registration info' ),
+			'std'     => 'Register',
+			'type'    => 'text',
+			'section' => 'general'
+		);
+
+		$this->settings['register_btn_link'] = array(
+			'title'   => __( 'Register Button Link' ),
+			'desc'    => __( 'URL for register button destination, use <strong>#</strong> to deactivate' ),
+			'std'     => '#',
+			'type'    => 'text',
+			'section' => 'general'
+		);
+
 		$this->settings['user_code_name'] = array(
 			'section' => 'general',
 			'title'   => __( 'User names on submission forms?'),
