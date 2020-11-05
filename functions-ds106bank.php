@@ -410,7 +410,7 @@ function bank106_set_custom_edit_examples_columns( $columns ) {
 	// modify the admin listing for examples
     unset($columns['categories']); //remove categories
     
-    // add column for the THINGNAMEs
+    // add column for the things
     $columns['thing'] = __( ds106bank_option( 'thingname' ), 'bonestheme' );
     return $columns;
 }

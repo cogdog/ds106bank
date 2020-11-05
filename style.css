@@ -1,8 +1,9 @@
 /*
 Theme Name: 	ds106 Assignment Banker
 Theme URI: 		http://github.com/cogdog/ds106bank
+Text Domain: wpbootstrap
 Description: 	Customizable theme to create sites like the ds106 Assignment bank (http://assignments.ds106.us/). Based on WP-Bootstrap (https://github.com/320press/wordpress-bootstrap) and now incorporates all that so children can be generated
-Version: 		2.1
+Version: 		2.11
 Author: 		CogDog
 Author URI: 	https://cog/dog
 Tags: ds106, black, white, one-column, two-columns, flexible-width, custom-background, custom-colors, custom-menu, full-width-template, theme-options
@@ -80,12 +81,12 @@ blockquote {
 
 figure {
     margin: 1rem 2.5rem
-}  
+}
 
 hr {
     margin-top: 1.25rem;
     margin-bottom:  1.25rem;
-}  
+}
 
 ul,
 ol {
@@ -97,13 +98,13 @@ ol {
         font-size: 1.31rem;
         line-height: 2rem;
     }
-}  
+}
 
 @media (max-width: 768px) {
 	#site-icon {display:none}
 }
 
-                                                                     
+
 
 /* --------------------------------= General STUFF =----------------------------------- */
 
@@ -207,12 +208,12 @@ p.wp-caption-text {
 	overflow: hidden;
 }
 
-.thing-icon-single img {	
+.thing-icon-single img {
 	border: 8px solid #fff;
 	width: 100%;
     height: auto;
 	-moz-border-radius: 30px;
-	border-radius: 30px;	
+	border-radius: 30px;
 }
 
 .videoWrapper {
@@ -233,7 +234,7 @@ p.wp-caption-text {
 #examplemedia img {
 	max-width: 100%;
 	height: auto;
-	
+
 }
 
 #examplemedia {
@@ -276,7 +277,7 @@ th.user_credit {
 	background-color: #f8f8f8;
 	padding:0;
 	height: 0;
-    padding-bottom: 75%;	
+    padding-bottom: 75%;
     position: relative;
 	overflow: hidden;
 }
