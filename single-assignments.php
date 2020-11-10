@@ -9,6 +9,10 @@
 	$my_permalink = get_permalink();
 	$my_id = $post->ID;
 
+
+	// example url
+	$my_example_url = get_post_meta($post->ID, 'fwp_url', true);
+
 	// unique assignment/tutorial tags
 	$my_assignment_tag = bank106_option( 'thingname' ) . $post->ID;
 	$my_tutorial_tag = 'Tutorial' . $post->ID;
@@ -113,7 +117,7 @@
 
 						</div>
 
-						<?php if ( get_post_meta($post->ID, 'fwp_url', true) ): // only if we have example ?>
+						<?php if ( $my_example_url and $my_example_url != 'n/a' ): // only if we have example ?>
 						<div class="col-sm-4" id="examplemedia">
 							<?php echo get_example_media($my_id)?>
 						</div>
