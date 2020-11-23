@@ -39,6 +39,7 @@ The banks we know of include:
 * [Ontario Extend Activity Bank](https://extend-bank.ecampusontario.ca/)
 * [OER's for Transitional Learning](http://ctl.openlcc.net/oer/) Lansing Community College
 * [Storied Make Bank](https://storied.kenyoncip.org/make/) Kenyon College
+* [Teaching & Learning Knowledge Base](https://dlinq.middcreate.net/tlkb/) Middlebury College
 * [Tiny Gigs](https://dlc.middcreate.net/tinygig/)  Digital Learning Commons, Middlebury Institute of International Studies at Monterey.
 * [UBC Open For Learning Challenges](http://openlearning.sites.olt.ubc.ca/) University of British Columbia 
 * [UDG Agora Challenge Bank](http://udg.theagoraonline.net/bank) University of Guadalajara Agora Project
