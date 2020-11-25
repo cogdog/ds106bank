@@ -36,7 +36,7 @@ The banks we know of include:
 * [Ideas Bank](https://cte.openlcc.net/ideasbank/) Lansing Community College
 * [Instructional Technology Assignments](http://tcoffman.org/INDT/) INDT501 at University of Mary Washington
 * [Mobile Social Media Learning Technologies Project Bank](http://mosomelt.org/the-project-bank/view-all/) Aukland University of Technology
-* [Ontario Extend Activity Bank](https://extend-bank.ecampusontario.ca/)
+* [Ontario Extend Activity Bank](https://bank.ecampusontario.ca/)
 * [OER's for Transitional Learning](http://ctl.openlcc.net/oer/) Lansing Community College
 * [Storied Make Bank](https://storied.kenyoncip.org/make/) Kenyon College
 * [Teaching & Learning Knowledge Base](https://dlinq.middcreate.net/tlkb/) Middlebury College
