@@ -24,11 +24,13 @@ The banks we know of include:
 * [Add Copy and Layout Challenge Bank](https://jmc3353.adamcroom.com/bank/) Adam Croom, JMC3353  University of Oklahoma
 * [All The Toys](http://www.allthetoys.org/)
 * [Bank of Things](http://splots.coventry.domains/demo/bank/) Template for installer on Coventry.domains
+* [Being a Digital Scholar of Teaching and Learning](https://digital-sotl.csu.domains/) Charles Sturt University
 * [Box of Magic Web Tricks](https://cog.dog/roo/box/) Alan Levine, ISS Institute Tour Workshops, Nov 2017
 * [Business Readiness Challenge Bank](http://business-wpl.com/) 
 * [CALI Challenges](https://challenge.classcaster.net/)
 * [Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
 * [Digital Learning Activities](http://tcoffman.org/INDT/)
+* [Domain Kits](https://domains.eduhack.eu/) EduHack project
 * [eduToolkit](https://edutoolkit.org/)
 * [Enriched Science Projects](http://enrichedscience.edcamp.se/) 
 * [Foodworks Assignment Bank](http://foodworks.middcreate.net/assignments/) Middlebury College
