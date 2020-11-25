@@ -28,7 +28,7 @@ The banks we know of include:
 * [Box of Magic Web Tricks](https://cog.dog/roo/box/) Alan Levine, ISS Institute Tour Workshops, Nov 2017
 * [Business Readiness Challenge Bank](http://business-wpl.com/) 
 * [CALI Challenges](https://challenge.classcaster.net/)
-* [Connected Learning Make Bank](http://clmoocmb.educatorinnovator.org/2014/)
+* [Connected Learning Make Bank](https://mb.clmooc.com/home/)
 * [Digital Learning Activities](http://tcoffman.org/INDT/)
 * [Domain Kits](https://domains.eduhack.eu/) EduHack project
 * [eduToolkit](https://edutoolkit.org/)
