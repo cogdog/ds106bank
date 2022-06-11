@@ -53,7 +53,7 @@ function nl2br (str, is_xhtml) {
 		afterLoad   : function() {
 
 			if ( $('#embedMedia').val() == '-1') {
-				var myEmbed = '<img src="https://placehold.it/240x180" alt=""><br /><em>(place holder for media preview until you have saved once)</em>';
+				var myEmbed = '<img src="https://place-hold.it240x180" alt=""><br /><em>(place holder for media preview until you have saved once)</em>';
 			} else {
 				var myEmbed = decodeEntities( $('#embedMedia').val() );
 			}

@@ -805,7 +805,7 @@ class bank106_Theme_Options {
 				array(
 					'title'   => __( ucfirst($atype->name) . ' Thumbnail' ),
 					'desc'    => __( '<hr /><p>&nbsp;</p>' ),
-					'std'     =>  'https://placehold.it/' . ( bank106_option('thumb_w') / 2 ) . 'x' . (bank106_option('thumb_h') / 2),
+					'std'     =>  'https://place-hold.it' . ( bank106_option('thumb_w') / 2 ) . 'x' . (bank106_option('thumb_h') / 2),
 					'type'    => 'medialoader',
 					'section' => 'types'
 				);
@@ -944,7 +944,7 @@ public function display_general() {
 				if ( strpos ( $options[$id], 'http') !==false ) {
 					echo '<img id="previewimage_' . $id . '" src="' . $options[$id] . '" width="' .  (bank106_option('thumb_w') / 2 ) . '" height="' . (bank106_option('thumb_h') / 2 ) . '" alt="default thumbnail" />';
 				} else {
-					echo '<img id="previewimage_' . $id . '" src="https://placehold.it/' . ( bank106_option('thumb_w') / 2 ) . 'x' . (bank106_option('thumb_h') / 2 ) . '" alt="default thumbnail" />';
+					echo '<img id="previewimage_' . $id . '" src="https://place-hold.it' . ( bank106_option('thumb_w') / 2 ) . 'x' . (bank106_option('thumb_h') / 2 ) . '" alt="default thumbnail" />';
 				}
 
 				echo '<input type="hidden" name="ds106banker_options[' . $id . ']" id="' . $id . '" value="' . esc_attr( $options[$id] ) . '" />
